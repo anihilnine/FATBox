@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8F52A812-8BB6-45F2-BA90-2603ECD407F6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FATBox.Ui</RootNamespace>
+    <AssemblyName>FATBox.Ui</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>7d393131</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX">
+      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlueprintGridRow.cs" />
+    <Compile Include="DataNavigator\BaseRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataNavigator\DataNavigator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataNavigator\DataNavigator.Designer.cs">
+      <DependentUpon>DataNavigator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataNavigator\DataNavigatorRenderers.cs" />
+    <Compile Include="MapExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapExplorer.Designer.cs">
+      <DependentUpon>MapExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\DdsRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Renderers\DdsRenderer.Designer.cs">
+      <DependentUpon>DdsRenderer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\ImageRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Renderers\ImageRenderer.Designer.cs">
+      <DependentUpon>ImageRenderer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\MapFolderRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Renderers\MapFolderRenderer.Designer.cs">
+      <DependentUpon>MapFolderRenderer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\StrategicIconRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Renderers\StrategicIconRenderer.Designer.cs">
+      <DependentUpon>StrategicIconRenderer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlueprintExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlueprintExplorer.Designer.cs">
+      <DependentUpon>BlueprintExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\UnitRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Renderers\UnitRenderer.Designer.cs">
+      <DependentUpon>UnitRenderer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StratPreview.cs" />
+    <Compile Include="UiData.cs" />
+    <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
+      <DependentUpon>DataNavigator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapExplorer.resx">
+      <DependentUpon>MapExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Renderers\DdsRenderer.resx">
+      <DependentUpon>DdsRenderer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Renderers\ImageRenderer.resx">
+      <DependentUpon>ImageRenderer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Renderers\MapFolderRenderer.resx">
+      <DependentUpon>MapFolderRenderer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Renderers\StrategicIconRenderer.resx">
+      <DependentUpon>StrategicIconRenderer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlueprintExplorer.resx">
+      <DependentUpon>BlueprintExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Renderers\UnitRenderer.resx">
+      <DependentUpon>UnitRenderer.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FATBox.Util\FATBox.Util.csproj">
+      <Project>{61B9DEA4-2E0C-4955-8301-F14B7190467C}</Project>
+      <Name>FATBox.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FATBox.Core\FATBox.Core.csproj">
+      <Project>{0E075CF2-EDBD-42C2-AFE3-11ABFC0214FB}</Project>
+      <Name>FATBox.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FATBox.Mapping\FATBox.Mapping.csproj">
+      <Project>{587788F5-4602-4ADF-87AB-1E567103EED8}</Project>
+      <Name>FATBox.Mapping</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

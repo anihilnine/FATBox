@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0E075CF2-EDBD-42C2-AFE3-11ABFC0214FB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FATBox.Core</RootNamespace>
+    <AssemblyName>FATBox.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CatalogReading\CatalogCache.cs" />
+    <Compile Include="CatalogReading\CatalogReader.cs" />
+    <Compile Include="CatalogReading\FolderModReader.cs" />
+    <Compile Include="CatalogReading\IModReader.cs" />
+    <Compile Include="CategoryExpression.cs" />
+    <Compile Include="Lore.cs" />
+    <Compile Include="Maps\MapFolder.cs" />
+    <Compile Include="Maps\MapLibrary.cs" />
+    <Compile Include="Maps\MapRepository.cs" />
+    <Compile Include="StrategicIconFactionifier.cs" />
+    <Compile Include="Localizer.cs" />
+    <Compile Include="ModCatalog\Abilities.cs" />
+    <Compile Include="ModCatalog\Add.cs" />
+    <Compile Include="ModCatalog\Add2.cs" />
+    <Compile Include="ModCatalog\AdvancedCombat.cs" />
+    <Compile Include="ModCatalog\AdvancedCoolingUpgrade.cs" />
+    <Compile Include="ModCatalog\AdvancedCoolingUpgradeRemove.cs" />
+    <Compile Include="ModCatalog\AdvancedEngineering.cs" />
+    <Compile Include="ModCatalog\AdvancedEngineeringRemove.cs" />
+    <Compile Include="ModCatalog\AdvancedRegenAura.cs" />
+    <Compile Include="ModCatalog\AdvancedRegenAuraRemove.cs" />
+    <Compile Include="ModCatalog\AI.cs" />
+    <Compile Include="ModCatalog\Air.cs" />
+    <Compile Include="ModCatalog\Air2.cs" />
+    <Compile Include="ModCatalog\Air3.cs" />
+    <Compile Include="ModCatalog\AirLand.cs" />
+    <Compile Include="ModCatalog\AltFootprint.cs" />
+    <Compile Include="ModCatalog\AnimationDeath.cs" />
+    <Compile Include="ModCatalog\AntiAir.cs" />
+    <Compile Include="ModCatalog\AntiMissile.cs" />
+    <Compile Include="ModCatalog\Audio.cs" />
+    <Compile Include="ModCatalog\Audio2.cs" />
+    <Compile Include="ModCatalog\Back.cs" />
+    <Compile Include="ModCatalog\BarrelLoop.cs" />
+    <Compile Include="ModCatalog\BarrelStart.cs" />
+    <Compile Include="ModCatalog\BeamExhaust.cs" />
+    <Compile Include="ModCatalog\BlastAttack.cs" />
+    <Compile Include="ModCatalog\BlastAttackRemove.cs" />
+    <Compile Include="ModCatalog\BlinkingLight.cs" />
+    <Compile Include="ModCatalog\BlinkingLightsFx.cs" />
+    <Compile Include="ModCatalog\Blueprint.cs" />
+    <Compile Include="ModCatalog\Bone.cs" />
+    <Compile Include="ModCatalog\BubbleShield.cs" />
+    <Compile Include="ModCatalog\Buff.cs" />
+    <Compile Include="ModCatalog\BuffFields.cs" />
+    <Compile Include="ModCatalog\Buffs.cs" />
+    <Compile Include="ModCatalog\BuildBones.cs" />
+    <Compile Include="ModCatalog\BuildBonesAlt1.cs" />
+    <Compile Include="ModCatalog\CameraShake.cs" />
+    <Compile Include="ModCatalog\CameraShake2.cs" />
+    <Compile Include="ModCatalog\Catalog.cs" />
+    <Compile Include="ModCatalog\ChargeFxAtUnitBone.cs" />
+    <Compile Include="ModCatalog\ChronoDampener.cs" />
+    <Compile Include="ModCatalog\ChronoDampenerRemove.cs" />
+    <Compile Include="ModCatalog\Cloak.cs" />
+    <Compile Include="ModCatalog\CloakingGenerator.cs" />
+    <Compile Include="ModCatalog\CloakingGeneratorRemove.cs" />
+    <Compile Include="ModCatalog\Combat.cs" />
+    <Compile Include="ModCatalog\Contrails.cs" />
+    <Compile Include="ModCatalog\CoolingUpgrade.cs" />
+    <Compile Include="ModCatalog\CoolingUpgradeRemove.cs" />
+    <Compile Include="ModCatalog\CrysalisBeam.cs" />
+    <Compile Include="ModCatalog\CrysalisBeamRemove.cs" />
+    <Compile Include="ModCatalog\Damage.cs" />
+    <Compile Include="ModCatalog\DamageEffect.cs" />
+    <Compile Include="ModCatalog\DamageStabilization.cs" />
+    <Compile Include="ModCatalog\DamageStabilizationAdvanced.cs" />
+    <Compile Include="ModCatalog\DamageStabilizationAdvancedRemove.cs" />
+    <Compile Include="ModCatalog\DamageStabilizationRemove.cs" />
+    <Compile Include="ModCatalog\DamageStablization.cs" />
+    <Compile Include="ModCatalog\DamageStablizationRemove.cs" />
+    <Compile Include="ModCatalog\Defense.cs" />
+    <Compile Include="ModCatalog\DepthCharge.cs" />
+    <Compile Include="ModCatalog\Display.cs" />
+    <Compile Include="ModCatalog\DroneL.cs" />
+    <Compile Include="ModCatalog\DroneR.cs" />
+    <Compile Include="ModCatalog\Economy.cs" />
+    <Compile Include="ModCatalog\Effect.cs" />
+    <Compile Include="ModCatalog\Effect10.cs" />
+    <Compile Include="ModCatalog\Effect11.cs" />
+    <Compile Include="ModCatalog\Effect12.cs" />
+    <Compile Include="ModCatalog\Effect13.cs" />
+    <Compile Include="ModCatalog\Effect14.cs" />
+    <Compile Include="ModCatalog\Effect15.cs" />
+    <Compile Include="ModCatalog\Effect16.cs" />
+    <Compile Include="ModCatalog\Effect17.cs" />
+    <Compile Include="ModCatalog\Effect2.cs" />
+    <Compile Include="ModCatalog\Effect3.cs" />
+    <Compile Include="ModCatalog\Effect4.cs" />
+    <Compile Include="ModCatalog\Effect5.cs" />
+    <Compile Include="ModCatalog\Effect6.cs" />
+    <Compile Include="ModCatalog\Effect7.cs" />
+    <Compile Include="ModCatalog\Effect8.cs" />
+    <Compile Include="ModCatalog\Effect9.cs" />
+    <Compile Include="ModCatalog\EMPCharge.cs" />
+    <Compile Include="ModCatalog\EMPChargeRemove.cs" />
+    <Compile Include="ModCatalog\Engineer.cs" />
+    <Compile Include="ModCatalog\EngineeringFocusingModule.cs" />
+    <Compile Include="ModCatalog\EngineeringFocusingModuleRemove.cs" />
+    <Compile Include="ModCatalog\EngineeringPod.cs" />
+    <Compile Include="ModCatalog\EngineeringThroughput.cs" />
+    <Compile Include="ModCatalog\EngineeringThroughputRemove.cs" />
+    <Compile Include="ModCatalog\EnhancedSensors.cs" />
+    <Compile Include="ModCatalog\EnhancedSensorsRemove.cs" />
+    <Compile Include="ModCatalog\EnhancementPresetAssigned.cs" />
+    <Compile Include="ModCatalog\EnhancementPresets.cs" />
+    <Compile Include="ModCatalog\Enhancements.cs" />
+    <Compile Include="ModCatalog\FireTargetLayerCapsTable.cs" />
+    <Compile Include="ModCatalog\Flare.cs" />
+    <Compile Include="ModCatalog\FocusConvertor.cs" />
+    <Compile Include="ModCatalog\FocusConvertorRemove.cs" />
+    <Compile Include="ModCatalog\Footfall.cs" />
+    <Compile Include="ModCatalog\Footprint.cs" />
+    <Compile Include="ModCatalog\Footprint2.cs" />
+    <Compile Include="ModCatalog\General.cs" />
+    <Compile Include="ModCatalog\HeatSink.cs" />
+    <Compile Include="ModCatalog\HeatSinkRemove.cs" />
+    <Compile Include="ModCatalog\HeavyAntiMatterCannon.cs" />
+    <Compile Include="ModCatalog\HeavyAntiMatterCannonRemove.cs" />
+    <Compile Include="ModCatalog\HighExplosiveOrdnance.cs" />
+    <Compile Include="ModCatalog\HighExplosiveOrdnanceRemove.cs" />
+    <Compile Include="ModCatalog\IdleEffects.cs" />
+    <Compile Include="ModCatalog\ImpactEffects.cs" />
+    <Compile Include="ModCatalog\Intel.cs" />
+    <Compile Include="ModCatalog\IntelJammer.cs" />
+    <Compile Include="ModCatalog\Interface.cs" />
+    <Compile Include="ModCatalog\JamRadius.cs" />
+    <Compile Include="ModCatalog\Land.cs" />
+    <Compile Include="ModCatalog\Land2.cs" />
+    <Compile Include="ModCatalog\LandAir.cs" />
+    <Compile Include="ModCatalog\LandAnimationDeath.cs" />
+    <Compile Include="ModCatalog\LayerChangeEffects.cs" />
+    <Compile Include="ModCatalog\LCH.cs" />
+    <Compile Include="ModCatalog\LeftPod.cs" />
+    <Compile Include="ModCatalog\LeftPodRemove.cs" />
+    <Compile Include="ModCatalog\LOD.cs" />
+    <Compile Include="ModCatalog\LOD2.cs" />
+    <Compile Include="ModCatalog\Mesh.cs" />
+    <Compile Include="ModCatalog\Mesh2.cs" />
+    <Compile Include="ModCatalog\MicrowaveLaserGenerator.cs" />
+    <Compile Include="ModCatalog\MicrowaveLaserGeneratorRemove.cs" />
+    <Compile Include="ModCatalog\Missile.cs" />
+    <Compile Include="ModCatalog\Missile2.cs" />
+    <Compile Include="ModCatalog\MissileRemove.cs" />
+    <Compile Include="ModCatalog\MotionAdjustment.cs" />
+    <Compile Include="ModCatalog\MotionChangeEffects.cs" />
+    <Compile Include="ModCatalog\MovementEffects.cs" />
+    <Compile Include="ModCatalog\MuzzleChargeStart.cs" />
+    <Compile Include="ModCatalog\NaniteMissileSystem.cs" />
+    <Compile Include="ModCatalog\NaniteMissileSystemRemove.cs" />
+    <Compile Include="ModCatalog\NaniteTorpedoTube.cs" />
+    <Compile Include="ModCatalog\NaniteTorpedoTubeRemove.cs" />
+    <Compile Include="ModCatalog\NanoCombat.cs" />
+    <Compile Include="ModCatalog\Offset.cs" />
+    <Compile Include="ModCatalog\OrderOverrides.cs" />
+    <Compile Include="ModCatalog\Overcharge.cs" />
+    <Compile Include="ModCatalog\OverchargeRemove.cs" />
+    <Compile Include="ModCatalog\Physics.cs" />
+    <Compile Include="ModCatalog\PingPongScroller.cs" />
+    <Compile Include="ModCatalog\Pod.cs" />
+    <Compile Include="ModCatalog\PodRemove.cs" />
+    <Compile Include="ModCatalog\RackBone.cs" />
+    <Compile Include="ModCatalog\RadarJammer.cs" />
+    <Compile Include="ModCatalog\RadarJammerRemove.cs" />
+    <Compile Include="ModCatalog\Rambo.cs" />
+    <Compile Include="ModCatalog\RateOfFire.cs" />
+    <Compile Include="ModCatalog\RateOfFireRemove.cs" />
+    <Compile Include="ModCatalog\RCH.cs" />
+    <Compile Include="ModCatalog\Regen.cs" />
+    <Compile Include="ModCatalog\RegenAura.cs" />
+    <Compile Include="ModCatalog\RegenAuraRemove.cs" />
+    <Compile Include="ModCatalog\ResourceAllocation.cs" />
+    <Compile Include="ModCatalog\ResourceAllocationAdvanced.cs" />
+    <Compile Include="ModCatalog\ResourceAllocationAdvancedRemove.cs" />
+    <Compile Include="ModCatalog\ResourceAllocationRemove.cs" />
+    <Compile Include="ModCatalog\RightPod.cs" />
+    <Compile Include="ModCatalog\RightPodRemove.cs" />
+    <Compile Include="ModCatalog\RollOffPoint.cs" />
+    <Compile Include="ModCatalog\RULEUCCNuke.cs" />
+    <Compile Include="ModCatalog\RULEUCCSiloBuildNuke.cs" />
+    <Compile Include="ModCatalog\RULEUCCTransport.cs" />
+    <Compile Include="ModCatalog\RULEUTCIntelToggle.cs" />
+    <Compile Include="ModCatalog\RULEUTCJammingToggle.cs" />
+    <Compile Include="ModCatalog\RULEUTCProductionToggle.cs" />
+    <Compile Include="ModCatalog\RULEUTCShieldToggle.cs" />
+    <Compile Include="ModCatalog\RULEUTCStealthToggle.cs" />
+    <Compile Include="ModCatalog\RULEUTCWeaponToggle.cs" />
+    <Compile Include="ModCatalog\Sacrifice.cs" />
+    <Compile Include="ModCatalog\SacrificeRemove.cs" />
+    <Compile Include="ModCatalog\Seabed.cs" />
+    <Compile Include="ModCatalog\Seabed2.cs" />
+    <Compile Include="ModCatalog\SeabedLand.cs" />
+    <Compile Include="ModCatalog\SelfRepairSystem.cs" />
+    <Compile Include="ModCatalog\SelfRepairSystemRemove.cs" />
+    <Compile Include="ModCatalog\SensorRangeEnhancer.cs" />
+    <Compile Include="ModCatalog\SensorRangeEnhancerRemove.cs" />
+    <Compile Include="ModCatalog\Shield.cs" />
+    <Compile Include="ModCatalog\Shield2.cs" />
+    <Compile Include="ModCatalog\ShieldCombat.cs" />
+    <Compile Include="ModCatalog\ShieldGeneratorField.cs" />
+    <Compile Include="ModCatalog\ShieldGeneratorFieldRemove.cs" />
+    <Compile Include="ModCatalog\ShieldHeavy.cs" />
+    <Compile Include="ModCatalog\ShieldHeavyRemove.cs" />
+    <Compile Include="ModCatalog\ShieldRemove.cs" />
+    <Compile Include="ModCatalog\SimpleCombat.cs" />
+    <Compile Include="ModCatalog\Slots.cs" />
+    <Compile Include="ModCatalog\SplitDamage.cs" />
+    <Compile Include="ModCatalog\SpoofRadius.cs" />
+    <Compile Include="ModCatalog\StabilitySuppressant.cs" />
+    <Compile Include="ModCatalog\StabilitySuppressantRemove.cs" />
+    <Compile Include="ModCatalog\Stealth.cs" />
+    <Compile Include="ModCatalog\StealthGenerator.cs" />
+    <Compile Include="ModCatalog\StealthGeneratorRemove.cs" />
+    <Compile Include="ModCatalog\Stun.cs" />
+    <Compile Include="ModCatalog\Sub.cs" />
+    <Compile Include="ModCatalog\Sub2.cs" />
+    <Compile Include="ModCatalog\SubBottomUp.cs" />
+    <Compile Include="ModCatalog\Switchback.cs" />
+    <Compile Include="ModCatalog\SwitchbackRemove.cs" />
+    <Compile Include="ModCatalog\SystemIntegrityCompensator.cs" />
+    <Compile Include="ModCatalog\SystemIntegrityCompensatorRemove.cs" />
+    <Compile Include="ModCatalog\T3Engineering.cs" />
+    <Compile Include="ModCatalog\T3EngineeringRemove.cs" />
+    <Compile Include="ModCatalog\TacticalMissile.cs" />
+    <Compile Include="ModCatalog\TacticalMissileRemove.cs" />
+    <Compile Include="ModCatalog\TacticalNukeMissile.cs" />
+    <Compile Include="ModCatalog\TacticalNukeMissileRemove.cs" />
+    <Compile Include="ModCatalog\TargetLocation.cs" />
+    <Compile Include="ModCatalog\Tarmac.cs" />
+    <Compile Include="ModCatalog\TeleportEffects.cs" />
+    <Compile Include="ModCatalog\Teleporter.cs" />
+    <Compile Include="ModCatalog\TeleporterRemove.cs" />
+    <Compile Include="ModCatalog\Transport.cs" />
+    <Compile Include="ModCatalog\TransportAnimation.cs" />
+    <Compile Include="ModCatalog\TransportDropAnimation.cs" />
+    <Compile Include="ModCatalog\Tread.cs" />
+    <Compile Include="ModCatalog\TreadMark.cs" />
+    <Compile Include="ModCatalog\Treads.cs" />
+    <Compile Include="ModCatalog\Treads2.cs" />
+    <Compile Include="ModCatalog\Veteran.cs" />
+    <Compile Include="ModCatalog\Water.cs" />
+    <Compile Include="ModCatalog\Water2.cs" />
+    <Compile Include="ModCatalog\Water3.cs" />
+    <Compile Include="ModCatalog\WaterAnimationDeath.cs" />
+    <Compile Include="ModCatalog\WaterLand.cs" />
+    <Compile Include="ModCatalog\WaterTopDown.cs" />
+    <Compile Include="ModCatalog\Weapon.cs" />
+    <Compile Include="ModCatalog\Wreckage.cs" />
+    <Compile Include="ModCatalog\WreckageLayers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CatalogReading\ZipModReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FATBox.Util\FATBox.Util.csproj">
+      <Project>{61B9DEA4-2E0C-4955-8301-F14B7190467C}</Project>
+      <Name>FATBox.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

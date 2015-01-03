@@ -1,0 +1,34 @@
+﻿using System;
+using Xamasoft.JsonClassGenerator;
+
+namespace FATBox.CatalogGenerator
+{
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            var gen = new JsonClassGenerator();
+            gen.Example = System.IO.File.ReadAllText(@"e:\projects\fa\logtest\good.json");
+            gen.ExplicitDeserialization = false;
+            gen.Namespace = "FATBox.Core.ModCatalog";
+            //gen.SecondaryNamespace = "FATBox.Core.ModCatalog";
+            gen.NoHelperClass = false;
+            gen.TargetFolder = @"..\..\..\FatBox.Core\ModCatalog";
+            gen.UseProperties = true;
+            gen.MainClass = "Catalog";
+            gen.UsePascalCase = true;
+            gen.UseNestedClasses = false;
+            gen.ApplyObfuscationAttributes = false;
+            gen.SingleFile = false;
+            gen.ExamplesInDocumentation = false;            
+            gen.GenerateClasses();
+
+        }
+
+
+    }
+}
