@@ -63,13 +63,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // FilenameTextbox
+            // KeywordTextbox
             // 
             this.KeywordTextbox.Location = new System.Drawing.Point(12, 12);
             this.KeywordTextbox.Name = "KeywordTextbox";
             this.KeywordTextbox.Size = new System.Drawing.Size(834, 20);
             this.KeywordTextbox.TabIndex = 1;
-            this.KeywordTextbox.Text = "crim";
             // 
             // MapExplorer
             // 

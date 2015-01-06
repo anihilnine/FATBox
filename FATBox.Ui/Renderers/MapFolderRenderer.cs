@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Ui.DataNavigator;
+using SCMAPTools;
 
 namespace FATBox.Ui.Renderers
 {
@@ -25,8 +26,9 @@ namespace FATBox.Ui.Renderers
             var map = new Map();
             map.Load(value.ScmapPath, UiData.DirectX9Device);
             var stratPvw = new StratPreview(UiData.Catalog.Blueprints).GetImage(map);
-
-            var data = new {map, stratPvw};
+            var previewBuilder = new PreviewBuilder(map, UiData.Cache);
+            var rp = previewBuilder.Internal_CreatePreview(map.Width, map.Height);
+            var data = new {map, stratPvw, rp};
             dataNavigator1.SetObject(propertyName, data, false);
 
             return true;

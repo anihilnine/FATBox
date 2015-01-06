@@ -9,6 +9,7 @@ namespace FATBox.Ui.DataNavigator
 {
     public partial class DataNavigator : UserControl
     {
+
         public DataNavigator()
         {
             InitializeComponent();
@@ -147,7 +148,6 @@ namespace FATBox.Ui.DataNavigator
                 var renderer = DataNavigatorRenderers.Get(propertyName, o);
                 if (renderer != null)
                 {
-                    renderer.SetObject(propertyName, o);
                     return renderer;
                 }
             }

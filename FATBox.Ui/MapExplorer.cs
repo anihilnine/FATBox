@@ -23,7 +23,7 @@ namespace FATBox.Ui
             _maps = new MapRepository()
                 .GetAllMaps();
 
-            Go();
+            //Go();
         }
 
         private void Go()
