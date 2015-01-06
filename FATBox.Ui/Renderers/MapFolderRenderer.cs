@@ -27,7 +27,7 @@ namespace FATBox.Ui.Renderers
             map.Load(value.ScmapPath, UiData.DirectX9Device);
             var stratPvw = new StratPreview(UiData.Catalog.Blueprints).GetImage(map);
             var previewBuilder = new PreviewBuilder(map, UiData.Cache);
-            var rp = previewBuilder.Internal_CreatePreview(map.Width, map.Height);
+            var rp = previewBuilder.DoFrame(map.Width, map.Height);
             var data = new {map, stratPvw, rp};
             dataNavigator1.SetObject(propertyName, data, false);
 

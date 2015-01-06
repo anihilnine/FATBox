@@ -43,7 +43,7 @@ namespace FATBox.Ui
 
         private void Redraw()
         {
-            var img = _previewBuilder.Internal_CreatePreview(pictureBox1.Width, pictureBox1.Height);
+            var img = _previewBuilder.DoFrame(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.Image = img;
         }
 
