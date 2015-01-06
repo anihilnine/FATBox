@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using FATBox.Core.CatalogReading;
@@ -64,7 +65,7 @@ namespace SCMAPTools
         private const float UpElevation = 0.0f; 
 
         //Misc
-        public readonly float TimeValue;  //Controls animation of water waves
+        public float TimeValue;  //Controls animation of water waves
         readonly MergedModDdsLoader _mergedModDdsLoader;
 
         public PreviewBuilder(Map mapData, CatalogCache cache)
@@ -72,7 +73,7 @@ namespace SCMAPTools
             _map = mapData;
             _device = new Device(DriverType.Hardware, DeviceCreationFlags.None);
             _mergedModDdsLoader = new MergedModDdsLoader(cache, _device);
-
+            
             _mapScale = Math.Max(_map.Width, _map.Height);
             CreateVertexData();
             LoadTerrainAndFrameShaders();
@@ -84,6 +85,7 @@ namespace SCMAPTools
             _viewport = new Viewport(0, 0, 10, 10);
         }
 
+        
         //public SlimDX.Direct3D9.Texture CreatePreview(SlimDX.Direct3D9.Device device, int width, int height)
         //{
         //    Bitmap bm = Internal_CreatePreview(width, height);
@@ -92,7 +94,7 @@ namespace SCMAPTools
         //    bm.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
         //    ms.Seek(0, SeekOrigin.Begin);
         //    return SlimDX.Direct3D9.Texture.FromStream(device, ms, bm.Width, bm.Height, 1, SlimDX.Direct3D9.Usage.None, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.Scratch, SlimDX.Direct3D9.Filter.None, SlimDX.Direct3D9.Filter.None, 0);
-        //}
+        //} q
 
         public Bitmap DoFrame(int width, int height)
         {
@@ -131,7 +133,7 @@ namespace SCMAPTools
         }
         Bitmap CreateFinalImage()
         {
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new MemoryStream();            
             Texture2D.ToStream(_renderTargetTexture, ImageFileFormat.Png, ms);
             ms.Seek(0, SeekOrigin.Begin);
 
@@ -672,9 +674,10 @@ namespace SCMAPTools
 
         public Vector3 Change(Point location, int delta)
         {
+            TimeValue++;
             var oldPos = ScreenToWorld(location);
 
-            _cameraY -= delta/3;
+            _cameraY -= delta;
             if (_cameraY < 100) _cameraY = 100;
             CalculateProjections();
 
@@ -688,7 +691,6 @@ namespace SCMAPTools
             _lookatY = _cameraZ;
 
             return ScreenToWorld(location);
-
         }
 
         private Vector3 ScreenToWorld(Point screenPoint)

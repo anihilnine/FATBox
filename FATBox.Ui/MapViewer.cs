@@ -15,6 +15,7 @@ namespace FATBox.Ui
     public partial class MapViewer : Form
     {
         PreviewBuilder _previewBuilder;
+        private bool _suppress;
 
         public MapViewer()
         {
@@ -32,6 +33,8 @@ namespace FATBox.Ui
 
         private void OnMouseWheel(object sender, MouseEventArgs mouseEventArgs)
         {
+            if (_suppress) return;
+            _suppress = true;
             var pa = mouseEventArgs.Location;
             var pb = pictureBox1.Location;
             var pc = new Point(pa.X - pb.X, pa.Y - pb.Y);
@@ -39,12 +42,14 @@ namespace FATBox.Ui
             Text = pc.ToString() + " ... " + v.ToString();
             Text = (int) v.X + "..." + (int) v.Z;
             Redraw();
+            _suppress = false;
         }
 
         private void Redraw()
         {
             var img = _previewBuilder.DoFrame(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.Image = img;
+            Application.DoEvents();
         }
 
         private void button1_Click(object sender, EventArgs e)
