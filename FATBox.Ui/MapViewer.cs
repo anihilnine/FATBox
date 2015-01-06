@@ -16,6 +16,7 @@ namespace FATBox.Ui
     {
         PreviewBuilder _previewBuilder;
         private bool _suppress;
+        Control _renderControl;
 
         public MapViewer()
         {
@@ -25,10 +26,12 @@ namespace FATBox.Ui
             var map = new Map();
             var device = UiData.DirectX9Device;
             map.Load(mapFolder.ScmapPath, device);
-            _previewBuilder = new PreviewBuilder(map, UiData.Cache);
-            Redraw();
+            _renderControl = panel1;
+            _previewBuilder = new PreviewBuilder(_renderControl, map, UiData.Cache);
 
             MouseWheel += OnMouseWheel;
+            Redraw();
+            KeyPreview = true;
         }
 
         private void OnMouseWheel(object sender, MouseEventArgs mouseEventArgs)
@@ -36,31 +39,32 @@ namespace FATBox.Ui
             if (_suppress) return;
             _suppress = true;
             var pa = mouseEventArgs.Location;
-            var pb = pictureBox1.Location;
+            var pb = _renderControl.Location;
             var pc = new Point(pa.X - pb.X, pa.Y - pb.Y);
-            var v = _previewBuilder.Change(pc, mouseEventArgs.Delta);
-            Text = pc.ToString() + " ... " + v.ToString();
-            Text = (int) v.X + "..." + (int) v.Z;
+            _previewBuilder.HandleMouseWheel(pc, mouseEventArgs.Delta);
             Redraw();
             _suppress = false;
         }
 
         private void Redraw()
         {
-            var img = _previewBuilder.DoFrame(pictureBox1.Width, pictureBox1.Height);
-            pictureBox1.Image = img;
-            Application.DoEvents();
+            _previewBuilder.Redraw();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //pb.Do();
-            //Redraw();
+            Redraw();
+
         }
 
         private void MapViewer_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = _previewBuilder.Snapshot();
         }
     }
 }

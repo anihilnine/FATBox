@@ -1,25 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using FATBox.Core.CatalogReading;
 using SlimDX.Direct3D10;
 using SlimDX.D3DCompiler;
 using SlimDX;
-using SlimDX.Direct3D9;
 using SlimDX.DXGI;
-using SlimDX.RawInput;
 using Device = SlimDX.Direct3D10.Device;
 using Resource = SlimDX.Direct3D10.Resource;
 using Resources = FATBox.Mapping.Properties.Resources;
-using MapFlags = SlimDX.Direct3D10.MapFlags;
 using System.IO;
 using System.Drawing;
 using Effect = SlimDX.Direct3D10.Effect;
 using Format = SlimDX.DXGI.Format;
 using ImageFileFormat = SlimDX.Direct3D10.ImageFileFormat;
+using PresentFlags = SlimDX.DXGI.PresentFlags;
 using ShaderFlags = SlimDX.D3DCompiler.ShaderFlags;
+using SwapChain = SlimDX.DXGI.SwapChain;
+using SwapEffect = SlimDX.DXGI.SwapEffect;
+using Usage = SlimDX.DXGI.Usage;
 using Viewport = SlimDX.Direct3D10.Viewport;
 
 namespace SCMAPTools
@@ -27,9 +25,9 @@ namespace SCMAPTools
     public class PreviewBuilder
     {
         //Direct X
-        readonly Device _device;
+        Device _device;
         RenderTargetView _renderTarget;
-        Texture2D _renderTargetTexture;
+        //Texture2D _renderTargetTexture;
         
         //Effects
         Effect _terrainFx;
@@ -67,13 +65,17 @@ namespace SCMAPTools
         //Misc
         public float TimeValue;  //Controls animation of water waves
         readonly MergedModDdsLoader _mergedModDdsLoader;
+        private SwapChain _swapChain;
+        private object context;
+        private Texture2D _rtt;
 
-        public PreviewBuilder(Map mapData, CatalogCache cache)
+        public PreviewBuilder(Control form, Map mapData, CatalogCache cache)
         {
+            CreateDeviceAndSwapChain(form);
+
             _map = mapData;
-            _device = new Device(DriverType.Hardware, DeviceCreationFlags.None);
             _mergedModDdsLoader = new MergedModDdsLoader(cache, _device);
-            
+
             _mapScale = Math.Max(_map.Width, _map.Height);
             CreateVertexData();
             LoadTerrainAndFrameShaders();
@@ -82,26 +84,37 @@ namespace SCMAPTools
             TimeValue = 0;
 
             SetCameraStartPosition();
-            _viewport = new Viewport(0, 0, 10, 10);
         }
 
-        
-        //public SlimDX.Direct3D9.Texture CreatePreview(SlimDX.Direct3D9.Device device, int width, int height)
-        //{
-        //    Bitmap bm = Internal_CreatePreview(width, height);
 
-        //    MemoryStream ms = new MemoryStream();
-        //    bm.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-        //    ms.Seek(0, SeekOrigin.Begin);
-        //    return SlimDX.Direct3D9.Texture.FromStream(device, ms, bm.Width, bm.Height, 1, SlimDX.Direct3D9.Usage.None, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.Scratch, SlimDX.Direct3D9.Filter.None, SlimDX.Direct3D9.Filter.None, 0);
-        //} q
-
-        public Bitmap DoFrame(int width, int height)
+        public void CreateDeviceAndSwapChain(System.Windows.Forms.Control form)
         {
-            _viewport.Width = width;
-            _viewport.Height = height;
+            var description = new SwapChainDescription()
+            {
+                BufferCount = 1,
+                Usage = Usage.RenderTargetOutput,
+                OutputHandle = form.Handle,
+                IsWindowed = true,
+                ModeDescription = new ModeDescription(0, 0, new Rational(60, 1), Format.R8G8B8A8_UNorm),
+                SampleDescription = new SampleDescription(1, 0),
+                Flags = SwapChainFlags.None,
+                SwapEffect = SwapEffect.Discard
+            };
+
+            _viewport = new Viewport(0, 0, form.Width, form.Height);
+
+            var f = new Factory();
+            var adapter = f.GetAdapter(0);
+            Device.CreateWithSwapChain(adapter, DriverType.Hardware, DeviceCreationFlags.None, description, out _device, out _swapChain);
+
+            // create a view of our render target, which is the backbuffer of the swap chain we just created
+            _rtt = Resource.FromSwapChain<Texture2D>(_swapChain, 0);
+            _renderTarget = new RenderTargetView(_device, _rtt);
+        }
+
+        public void Redraw()
+        {
             CalculateProjections();
-            CreateRenderTarget();
 
             //Set Shader Camera Parameters
             _terrainFx.GetVariableByName("ViewMatrix").AsMatrix().SetMatrix(_viewMatrix);
@@ -125,16 +138,16 @@ namespace SCMAPTools
             finalNormalTex.Dispose();
             normalTexA.Dispose();
             terrTex.Dispose();
-            _renderTarget.Dispose();
+            //_renderTarget.Dispose();
 
-            Bitmap t = CreateFinalImage();
-            _renderTargetTexture.Dispose();
-            return t;
+            _swapChain.Present(0, PresentFlags.None);
         }
-        Bitmap CreateFinalImage()
+
+        
+        public Image Snapshot()
         {
-            MemoryStream ms = new MemoryStream();            
-            Texture2D.ToStream(_renderTargetTexture, ImageFileFormat.Png, ms);
+            MemoryStream ms = new MemoryStream();
+            Texture2D.ToStream(_rtt, ImageFileFormat.Png, ms);
             ms.Seek(0, SeekOrigin.Begin);
 
             Bitmap bm = new Bitmap(ms);
@@ -361,25 +374,6 @@ namespace SCMAPTools
 
             _vertices.Position = 0;
             _vertexBuffer = new SlimDX.Direct3D10.Buffer(_device, _vertices, (int)_vertices.Length, ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None);
-        }
-
-        void CreateRenderTarget()
-        {
-            Texture2DDescription textureDesc = new Texture2DDescription();
-            textureDesc.Width = _viewport.Width;
-            textureDesc.Height = _viewport.Height;
-            textureDesc.MipLevels = 1;
-            textureDesc.ArraySize = 1;
-            textureDesc.Format = Format.R8G8B8A8_UNorm;
-            textureDesc.SampleDescription = new SampleDescription(1,0);
-            textureDesc.Usage = ResourceUsage.Default;
-            textureDesc.BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource;
-            textureDesc.CpuAccessFlags = CpuAccessFlags.None;
-            textureDesc.OptionFlags = ResourceOptionFlags.None;
-            
-            _renderTargetTexture = new Texture2D(_device, textureDesc);
-
-            _renderTarget = new RenderTargetView(_device, _renderTargetTexture);
         }
 
         Texture2D RenderNormalMap()
@@ -672,7 +666,7 @@ namespace SCMAPTools
             vertexBufferW.Dispose();
         }
 
-        public Vector3 Change(Point location, int delta)
+        public void HandleMouseWheel(Point location, int delta)
         {
             TimeValue++;
             var oldPos = ScreenToWorld(location);
@@ -689,8 +683,6 @@ namespace SCMAPTools
             _cameraZ += change.Z;
             _lookatX = _cameraX;
             _lookatY = _cameraZ;
-
-            return ScreenToWorld(location);
         }
 
         private Vector3 ScreenToWorld(Point screenPoint)
@@ -720,5 +712,6 @@ namespace SCMAPTools
             Ray transformedRay = new Ray(position, direction);
             return transformedRay;
         }
+
     }
 }
