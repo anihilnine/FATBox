@@ -22,7 +22,7 @@ using Viewport = SlimDX.Direct3D10.Viewport;
 
 namespace SCMAPTools
 {
-    public class PreviewBuilder
+    public class MapRenderer
     {
         //Direct X
         Device _device;
@@ -69,9 +69,9 @@ namespace SCMAPTools
         private object context;
         private Texture2D _rtt;
 
-        public PreviewBuilder(Control form, Map mapData, CatalogCache cache)
+        public MapRenderer(Control control, Map mapData, CatalogCache cache)
         {
-            CreateDeviceAndSwapChain(form);
+            CreateDeviceAndSwapChain(control);
 
             _map = mapData;
             _mergedModDdsLoader = new MergedModDdsLoader(cache, _device);
@@ -87,13 +87,13 @@ namespace SCMAPTools
         }
 
 
-        public void CreateDeviceAndSwapChain(System.Windows.Forms.Control form)
+        public void CreateDeviceAndSwapChain(System.Windows.Forms.Control control)
         {
             var description = new SwapChainDescription()
             {
                 BufferCount = 1,
                 Usage = Usage.RenderTargetOutput,
-                OutputHandle = form.Handle,
+                OutputHandle = control.Handle,
                 IsWindowed = true,
                 ModeDescription = new ModeDescription(0, 0, new Rational(60, 1), Format.R8G8B8A8_UNorm),
                 SampleDescription = new SampleDescription(1, 0),
@@ -101,7 +101,7 @@ namespace SCMAPTools
                 SwapEffect = SwapEffect.Discard
             };
 
-            _viewport = new Viewport(0, 0, form.Width, form.Height);
+            _viewport = new Viewport(0, 0, control.Width, control.Height);
 
             var f = new Factory();
             var adapter = f.GetAdapter(0);
@@ -114,6 +114,7 @@ namespace SCMAPTools
 
         public void Redraw()
         {
+            TimeValue += 0.1f;
             CalculateProjections();
 
             //Set Shader Camera Parameters

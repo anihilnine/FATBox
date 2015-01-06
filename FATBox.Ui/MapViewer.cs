@@ -8,63 +8,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FATBox.Core;
+using FATBox.Ui.Controls;
 using SCMAPTools;
 
 namespace FATBox.Ui
 {
     public partial class MapViewer : Form
     {
-        PreviewBuilder _previewBuilder;
-        private bool _suppress;
-        Control _renderControl;
-
+        List<MapViewerControl> _mvcs = new List<MapViewerControl>(); 
         public MapViewer()
         {
             InitializeComponent();
 
-            var mapFolder = new MapRepository().GetAllMaps().First(x => x.Name.Contains("sand box"));
-            var map = new Map();
             var device = UiData.DirectX9Device;
-            map.Load(mapFolder.ScmapPath, device);
-            _renderControl = panel1;
-            _previewBuilder = new PreviewBuilder(_renderControl, map, UiData.Cache);
+            var mapFolders = new MapRepository().GetAllMaps().Take(4);
+            foreach (var m in mapFolders)
+            {
+                var map = new Map();
+                map.Load(m.ScmapPath, device);
 
-            MouseWheel += OnMouseWheel;
-            Redraw();
-            KeyPreview = true;
-        }
+                var mvc = new MapViewerControl();
+                mvc.Width = 400;
+                mvc.Height = 400;
+                mvc.SetMap(map);
+                mvc.BorderStyle = BorderStyle.Fixed3D;
+                flowLayoutPanel1.Controls.Add(mvc);
 
-        private void OnMouseWheel(object sender, MouseEventArgs mouseEventArgs)
-        {
-            if (_suppress) return;
-            _suppress = true;
-            var pa = mouseEventArgs.Location;
-            var pb = _renderControl.Location;
-            var pc = new Point(pa.X - pb.X, pa.Y - pb.Y);
-            _previewBuilder.HandleMouseWheel(pc, mouseEventArgs.Delta);
-            Redraw();
-            _suppress = false;
-        }
-
-        private void Redraw()
-        {
-            _previewBuilder.Redraw();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Redraw();
-
-        }
-
-        private void MapViewer_Load(object sender, EventArgs e)
-        {
+                _mvcs.Add(mvc);
+            }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            pictureBox1.Image = _previewBuilder.Snapshot();
+            //pictureBox1.Image = mapViewerControl1.Snapshot();
+        }
+
+        public void MainLoop()
+        {
+            foreach (var m in _mvcs)
+                m.Redraw();
         }
     }
 }

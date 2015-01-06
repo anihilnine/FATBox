@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using FATBox.Core.ModCatalog;
 using FATBox.Ui.DataNavigator;
 using FATBox.Ui.Renderers;
+using SlimDX.Windows;
 
 namespace FATBox.Ui
 {
@@ -27,9 +28,11 @@ namespace FATBox.Ui
             DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
 
 
-            //Application.Run(new MapExplorer());
+            Application.Run(new MapExplorer());
             //Application.Run(new BlueprintExplorer());
-            Application.Run(new MapViewer());
+            
+            //var mv = new MapViewer();
+            //MessagePump.Run(mv, mv.MainLoop);
         }
     }
 }

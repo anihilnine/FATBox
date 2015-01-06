@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueprintGridRow.cs" />
+    <Compile Include="Controls\MapViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MapViewerControl.Designer.cs">
+      <DependentUpon>MapViewerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataNavigator\BaseRenderer.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -59,6 +59,7 @@ namespace FATBox.Ui
 
         private RectangleF GetBounds(IEnumerable<ValueAtPosition> values)
         {
+            if (!values.Any()) return new RectangleF(0,0,0,0);
             var maxX = values.Max(x => x.Position.X);
             var maxZ = values.Max(x => x.Position.Z);
             return new RectangleF(0, 0, maxX, maxZ);
