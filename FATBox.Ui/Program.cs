@@ -27,8 +27,9 @@ namespace FATBox.Ui
             DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
 
 
-            Application.Run(new MapExplorer());
+            //Application.Run(new MapExplorer());
             //Application.Run(new BlueprintExplorer());
+            Application.Run(new MapViewer());
         }
     }
 }

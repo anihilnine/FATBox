@@ -1782,8 +1782,8 @@ float4 TerrainPS( VS_OUTPUT inV, uniform bool inShadows ) : COLOR
 	float waterDepth = tex2Dproj( UtilitySamplerC, inV.mTexWT * TerrainScale).g;
 
     // calculate the lit pixel
-    float4 outColor = CalculateLighting( normal, inV.mTexWT.xyz, albedo.xyz, 1-albedo.w, waterDepth, inV.mShadow, inShadows);
-
+	float4 outColor = CalculateLighting(normal, inV.mTexWT.xyz, albedo.xyz, 1 - albedo.w, waterDepth, inV.mShadow, inShadows);
+	outColor[3] = 1; // for some reason has no alpha which is pretty bad
 	return outColor;
 }
 

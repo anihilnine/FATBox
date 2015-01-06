@@ -69,6 +69,12 @@
     <Compile Include="MapExplorer.Designer.cs">
       <DependentUpon>MapExplorer.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapViewer.Designer.cs">
+      <DependentUpon>MapViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Renderers\DdsRenderer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -114,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MapExplorer.resx">
       <DependentUpon>MapExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapViewer.resx">
+      <DependentUpon>MapViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Renderers\DdsRenderer.resx">
       <DependentUpon>DdsRenderer.cs</DependentUpon>

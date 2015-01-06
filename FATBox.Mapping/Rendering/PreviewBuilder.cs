@@ -6,6 +6,7 @@ using FATBox.Core.CatalogReading;
 using SlimDX.Direct3D10;
 using SlimDX.D3DCompiler;
 using SlimDX;
+using SlimDX.Direct3D9;
 using SlimDX.DXGI;
 using SlimDX.RawInput;
 using Device = SlimDX.Direct3D10.Device;
@@ -14,6 +15,11 @@ using Resources = FATBox.Mapping.Properties.Resources;
 using MapFlags = SlimDX.Direct3D10.MapFlags;
 using System.IO;
 using System.Drawing;
+using Effect = SlimDX.Direct3D10.Effect;
+using Format = SlimDX.DXGI.Format;
+using ImageFileFormat = SlimDX.Direct3D10.ImageFileFormat;
+using ShaderFlags = SlimDX.D3DCompiler.ShaderFlags;
+using Viewport = SlimDX.Direct3D10.Viewport;
 
 namespace SCMAPTools
 {
@@ -47,12 +53,12 @@ namespace SCMAPTools
         ShaderResourceView finalNormalMap;
 
         //Camera Data
-        float xP; //X Position
-        float yP; //Y position (This is the vertical height axis in FA)
-        float zP; //Z Position 
+        float cameraX; //X Position
+        float cameraY; //Y position (This is the vertical height axis in FA)
+        float cameraZ; //Z Position 
         
-        float cX; //Position camera is looking at (X coordinate)
-        float cY; //Position camera is looking at (Y coordinate)  (corresponds to Z above)
+        float lookatX; //Position camera is looking at (X coordinate)
+        float lookatY; //Position camera is looking at (Y coordinate)  (corresponds to Z above)
 
         float uA = (float)-Math.PI; //Up angle
         float uE = 0.0f;            //Up elevation
@@ -73,29 +79,31 @@ namespace SCMAPTools
             LoadWaterShader();
 
             timeValue = 0;
+
+            SetCameraStartPosition();
         }
 
-        public SlimDX.Direct3D9.Texture CreatePreview(SlimDX.Direct3D9.Device device, int width, int height)
-        {
-            Bitmap bm = Internal_CreatePreview(width, height);
+        //public SlimDX.Direct3D9.Texture CreatePreview(SlimDX.Direct3D9.Device device, int width, int height)
+        //{
+        //    Bitmap bm = Internal_CreatePreview(width, height);
 
-            MemoryStream ms = new MemoryStream();
-            bm.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            ms.Seek(0, SeekOrigin.Begin);
-            return SlimDX.Direct3D9.Texture.FromStream(device, ms, bm.Width, bm.Height, 1, SlimDX.Direct3D9.Usage.None, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.Scratch, SlimDX.Direct3D9.Filter.None, SlimDX.Direct3D9.Filter.None, 0);
-        }
+        //    MemoryStream ms = new MemoryStream();
+        //    bm.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+        //    ms.Seek(0, SeekOrigin.Begin);
+        //    return SlimDX.Direct3D9.Texture.FromStream(device, ms, bm.Width, bm.Height, 1, SlimDX.Direct3D9.Usage.None, SlimDX.Direct3D9.Format.A8R8G8B8, SlimDX.Direct3D9.Pool.Scratch, SlimDX.Direct3D9.Filter.None, SlimDX.Direct3D9.Filter.None, 0);
+        //}
 
         public Bitmap Internal_CreatePreview(int width, int height)
         {
-            viewport = new Viewport(0, 0, width, height, 0.0f, 1.0f);
-            SetUpCamera();
+            viewport = new Viewport(0, 0, width, height);
+            CalculateProjections();
             CreateRenderTarget();
 
             //Set Shader Camera Parameters
             TerrainFX.GetVariableByName("ViewMatrix").AsMatrix().SetMatrix(viewMatrix);
             TerrainFX.GetVariableByName("ProjMatrix").AsMatrix().SetMatrix(projectionMatrix);
-            TerrainFX.GetVariableByName("CameraPosition").AsVector().Set(new Vector3(xP, yP, zP));
-            TerrainFX.GetVariableByName("CameraDirection").AsVector().Set(new Vector3(cX, 0, cY));
+            TerrainFX.GetVariableByName("CameraPosition").AsVector().Set(new Vector3(cameraX, cameraY, cameraZ));
+            TerrainFX.GetVariableByName("CameraDirection").AsVector().Set(new Vector3(lookatX, 0, lookatY));
 
             //Generate Normal Texture
             Texture2D normalTexA = RenderNormalMap();
@@ -126,18 +134,30 @@ namespace SCMAPTools
             ms.Seek(0, SeekOrigin.Begin);
 
             Bitmap bm = new Bitmap(ms);
-            for (int i = 0; i < bm.Width; i++)
-            {
-                for (int j = 0; j < bm.Height; j++)
-                {
-                    System.Drawing.Color c = bm.GetPixel(i, j);
-                    System.Drawing.Color d = Color.FromArgb(255, c.R, c.G, c.B);
-                    bm.SetPixel(i, j, d);
-                }
-            }
             return bm;
         }
-        void SetUpCamera()
+
+
+        private void CalculateProjections()
+        {
+            float uX = (float) (Math.Sin(uA)*Math.Cos(uE));
+            float uY = (float) (Math.Sin(uA)*Math.Sin(uE));
+            float uZ = (float) Math.Cos(uA);
+
+            viewMatrix = Matrix.LookAtRH(new Vector3(cameraX, cameraY, cameraZ), new Vector3(lookatX, 0, lookatY), new Vector3(uX, uY, uZ));
+            projectionMatrix = Matrix.PerspectiveFovRH((float) Math.PI/4.0f, viewport.Width/viewport.Height, 0.1f, 80000.0f);
+        }
+
+        private void SetCameraStartPosition()
+        {
+            cameraX = scmapData.Width/2.0f;
+            cameraZ = scmapData.Height/2.0f;
+            cameraY = GenerateStartYFromMapScale();
+            lookatX = cameraX;
+            lookatY = cameraZ;
+        }
+
+        private float GenerateStartYFromMapScale()
         {
             float camStartY = 0.0f;
             if (mapScale <= 257)
@@ -156,21 +176,9 @@ namespace SCMAPTools
             {
                 camStartY = 2416;
             }
-
-            xP = scmapData.Width / 2.0f;
-            zP = scmapData.Height / 2.0f;
-            yP = camStartY;
-            cX = xP;
-            cY = zP;
-
-
-            float uX = (float)(Math.Sin(uA) * Math.Cos(uE));
-            float uY = (float)(Math.Sin(uA) * Math.Sin(uE));
-            float uZ = (float)Math.Cos(uA);
-
-            viewMatrix = Matrix.LookAtRH(new Vector3(xP, yP, zP), new Vector3(cX, 0, cY), new Vector3(uX, uY, uZ));
-            projectionMatrix = Matrix.PerspectiveFovRH((float)Math.PI / 4.0f, viewport.Width / viewport.Height, 0.00001f, 800.0f);
+            return camStartY;
         }
+
         void LoadWaterShader()
         {
             WaterFX = Effect.FromMemory(device, Resources.water_fx, "fx_4_0", ShaderFlags.EnableBackwardsCompatibility, EffectFlags.None);
@@ -339,7 +347,8 @@ namespace SCMAPTools
             {
                 for (int z = 0; z <= scmapData.Height; z++)
                 {
-                    vertices.Write(new Vector4(x, scmapData.GetHeight(x, z), z, w));
+                    var height = scmapData.GetHeight(x, z);
+                    vertices.Write(new Vector4(x, height, z, w));
                     vertices.Write(new Vector4(x + 1, scmapData.GetHeight(x + 1, z), z, w));
                 }
                 vertices.Write(new Vector4(x + 1, scmapData.GetHeight(x + 1, scmapData.Height), scmapData.Height, w));
@@ -645,7 +654,7 @@ namespace SCMAPTools
             WaterFX.GetVariableByName("WorldToView").AsMatrix().SetMatrix(viewMatrix);
 
             WaterFX.GetVariableByName("Time").AsScalar().Set(timeValue);
-            WaterFX.GetVariableByName("ViewPosition").AsVector().Set(new Vector3(xP, yP, zP));
+            WaterFX.GetVariableByName("ViewPosition").AsVector().Set(new Vector3(cameraX, cameraY, cameraZ));
 
 
             for (int i = 0; i < techniqueWaterHF.Description.PassCount; i++)
@@ -657,6 +666,55 @@ namespace SCMAPTools
             layoutD.Dispose();
             refractionSRV.Dispose();
             vertexBufferW.Dispose();
+        }
+
+        public Vector3 Change(Point location, int delta)
+        {
+            var oldPos = ScreenToWorld(location);
+
+            cameraY -= delta/3;
+            if (cameraY < 100) cameraY = 100;
+            CalculateProjections();
+
+            var newPos = ScreenToWorld(location);
+            Console.WriteLine(oldPos + " .. " + newPos);
+
+            var change = Vector3.Subtract(oldPos, newPos);
+            cameraX += change.X;
+            cameraZ += change.Z;
+            lookatX = cameraX;
+            lookatY = cameraZ;
+
+            return ScreenToWorld(location);
+
+        }
+
+        private Vector3 ScreenToWorld(Point screenPoint)
+        {
+            Vector3 worldPosition = GetMousePoint(screenPoint, new Plane(Vector3.Zero, new Vector3(0, 1, 0)));
+            return worldPosition;
+        }
+
+
+        Vector3 GetMousePoint(Point screenPoint, Plane plane)
+        {
+            Ray mouseRay = GetMouseRay(screenPoint);
+            Vector3 intersection;
+            Plane.Intersects(plane, mouseRay.Position, mouseRay.Position + mouseRay.Direction * 10000, out intersection);
+            return intersection;
+        }
+
+        Ray GetMouseRay(Point screenPoint)
+        {
+            Vector3 near = new Vector3(screenPoint.X, screenPoint.Y, 0); // possible improve
+            Vector3 far = new Vector3(screenPoint.X, screenPoint.Y, 1);
+            
+            Matrix worldMatrix = Matrix.Identity;
+            Vector3 position = Vector3.Unproject(near, viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ, worldMatrix * viewMatrix * projectionMatrix);
+            Vector3 direction = Vector3.Unproject(far, viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinZ, viewport.MaxZ, worldMatrix * viewMatrix * projectionMatrix) - position;
+            direction.Normalize(); 
+            Ray transformedRay = new Ray(position, direction);
+            return transformedRay;
         }
     }
 }
