@@ -21,18 +21,19 @@ namespace FATBox.Ui
             InitializeComponent();
 
             var device = UiData.DirectX9Device;
-            var mapFolders = new MapRepository().GetAllMaps().Take(4);
+            var mapFolders = new MapRepository().GetAllMaps().Take(1);
             foreach (var m in mapFolders)
             {
                 var map = new Map();
                 map.Load(m.ScmapPath, device);
 
                 var mvc = new MapViewerControl();
-                mvc.Width = 400;
-                mvc.Height = 400;
+                mvc.Width = 500;
+                mvc.Height = 500;
                 mvc.SetMap(map);
                 mvc.BorderStyle = BorderStyle.Fixed3D;
-                flowLayoutPanel1.Controls.Add(mvc);
+//                flowLayoutPanel1.Controls.Add(mvc);
+                panel1.Controls.Add(mvc);
 
                 _mvcs.Add(mvc);
             }

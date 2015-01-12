@@ -93,6 +93,16 @@ namespace FATBox.Mapping.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] primbatcher_fx {
+            get {
+                object obj = ResourceManager.GetObject("primbatcher_fx", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] ShadowTexture_dds {
             get {
                 object obj = ResourceManager.GetObject("ShadowTexture_dds", resourceCulture);

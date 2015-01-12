@@ -43,7 +43,7 @@ namespace FATBox.Ui.Controls
             _suppress = false;
         }
 
-        public Image Snapshot()
+        public Image Snapshot()        
         {
             return _mapRenderer.Snapshot();
         }

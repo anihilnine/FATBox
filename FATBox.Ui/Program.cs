@@ -28,11 +28,11 @@ namespace FATBox.Ui
             DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
 
 
-            Application.Run(new MapExplorer());
+            //Application.Run(new MapViewer());
             //Application.Run(new BlueprintExplorer());
-            
-            //var mv = new MapViewer();
-            //MessagePump.Run(mv, mv.MainLoop);
+
+            var mv = new MapViewer();
+            MessagePump.Run(mv, mv.MainLoop);
         }
     }
 }

@@ -4,6 +4,7 @@ using FATBox.Core.CatalogReading;
 using SlimDX.Direct3D10;
 using SlimDX.D3DCompiler;
 using SlimDX;
+using SlimDX.Direct3D9;
 using SlimDX.DXGI;
 using Device = SlimDX.Direct3D10.Device;
 using Resource = SlimDX.Direct3D10.Resource;
@@ -15,6 +16,8 @@ using Format = SlimDX.DXGI.Format;
 using ImageFileFormat = SlimDX.Direct3D10.ImageFileFormat;
 using PresentFlags = SlimDX.DXGI.PresentFlags;
 using ShaderFlags = SlimDX.D3DCompiler.ShaderFlags;
+using Sprite = SlimDX.Direct3D10.Sprite;
+using SpriteFlags = SlimDX.Direct3D10.SpriteFlags;
 using SwapChain = SlimDX.DXGI.SwapChain;
 using SwapEffect = SlimDX.DXGI.SwapEffect;
 using Usage = SlimDX.DXGI.Usage;
@@ -41,6 +44,7 @@ namespace SCMAPTools
 
         //Map Information
         readonly Map _map;
+        private readonly CatalogCache _cache;
         readonly float _mapScale;
         DataStream _vertices;
         SlimDX.Direct3D10.Buffer _vertexBuffer;
@@ -50,6 +54,7 @@ namespace SCMAPTools
         ShaderResourceView _normalMap;
         ShaderResourceView _textureMapA;
         ShaderResourceView _finalNormalMap;
+
 
         //Camera Data
         float _cameraX; //X Position
@@ -69,21 +74,36 @@ namespace SCMAPTools
         private object context;
         private Texture2D _rtt;
 
+
+        private Effect _primBatchFx;
+        private Texture2D _stratIcon;
+        Matrix _stratIconCompositeMatrix;
+
+
         public MapRenderer(Control control, Map mapData, CatalogCache cache)
         {
             CreateDeviceAndSwapChain(control);
 
             _map = mapData;
+            _cache = cache;
             _mergedModDdsLoader = new MergedModDdsLoader(cache, _device);
 
             _mapScale = Math.Max(_map.Width, _map.Height);
             CreateVertexData();
             LoadTerrainAndFrameShaders();
             LoadWaterShader();
+            LoadStratIconStuff();
 
             TimeValue = 0;
 
             SetCameraStartPosition();
+        }
+
+        private void LoadStratIconStuff()
+        {
+            _primBatchFx = Effect.FromMemory(_device, Resources.primbatcher_fx, "fx_4_0", ShaderFlags.EnableBackwardsCompatibility, EffectFlags.None);
+            _stratIcon = _mergedModDdsLoader.LoadTexture("/textures/ui/common/game/strategicicons/icon_bot3_armored_rest.dds");
+            _stratIconCompositeMatrix = Matrix.OrthoLH(_viewport.Width, _viewport.Height, 0, 1) * Matrix.Translation(-1f, -1f, 0);
         }
 
 
@@ -105,7 +125,7 @@ namespace SCMAPTools
 
             var f = new Factory();
             var adapter = f.GetAdapter(0);
-            Device.CreateWithSwapChain(adapter, DriverType.Hardware, DeviceCreationFlags.None, description, out _device, out _swapChain);
+            Device.CreateWithSwapChain(adapter, DriverType.Hardware, DeviceCreationFlags.Debug, description, out _device, out _swapChain);
 
             // create a view of our render target, which is the backbuffer of the swap chain we just created
             _rtt = Resource.FromSwapChain<Texture2D>(_swapChain, 0);
@@ -117,11 +137,13 @@ namespace SCMAPTools
             TimeValue += 0.1f;
             CalculateProjections();
 
-            //Set Shader Camera Parameters
+            ////Set Shader Camera Parameters
             _terrainFx.GetVariableByName("ViewMatrix").AsMatrix().SetMatrix(_viewMatrix);
             _terrainFx.GetVariableByName("ProjMatrix").AsMatrix().SetMatrix(_projectionMatrix);
             _terrainFx.GetVariableByName("CameraPosition").AsVector().Set(new Vector3(_cameraX, _cameraY, _cameraZ));
             _terrainFx.GetVariableByName("CameraDirection").AsVector().Set(new Vector3(_lookatX, 0, _lookatY));
+
+            _device.ClearRenderTargetView(_renderTarget, System.Drawing.Color.Black);
 
             //Generate Normal Texture
             Texture2D normalTexA = RenderNormalMap();
@@ -135,6 +157,8 @@ namespace SCMAPTools
             //Render Water
             RenderWater(terrTex);
 
+            RenderIcons();
+
             //Clean Up
             finalNormalTex.Dispose();
             normalTexA.Dispose();
@@ -144,7 +168,121 @@ namespace SCMAPTools
             _swapChain.Present(0, PresentFlags.None);
         }
 
-        
+        private void RenderIcons()
+        {
+            // todo: put in in screen coords
+            // todo: should my transform be a translation?
+            // todo: can discrepancy with shader be due to my hacks up top?
+            // todo: can other steam be in ori primbatcher?
+            // todo: pixel=>world convert coords?
+
+            _device.ClearAllObjects();
+
+            var sizeofFloat = sizeof(float);
+
+            // todo: just render this with nothing else
+            //Create Vertices
+            var vertexes = 6;
+            var vertexStride = 9*sizeofFloat;
+            DataStream texVertices = new DataStream(vertexes * vertexStride, true, true);
+            float z = 0; // todo: don't know if 1 or 0
+
+            // 16x12
+
+            // todo: dont know if pos should be v3 or v4
+            var xx = 50f;
+            var yy = 100f;
+            var ww = 18;
+            var hh = 12;
+            var t_d = 1;
+            var color = new Vector4(0.2f, 0.2f, 0.8f, 1); // bgra
+
+            //var xx = 0f;
+            //var yy = 0f;
+            //var ww = 0.01f * 16;
+            //var hh = 0.01f * 12;
+            //var ddd = 1;
+            //var color = new Vector4(0.2f, 0.2f, 0.8f, 1); // bgra
+
+            var tl = new Vector3(xx + 0, yy - 0, z);
+            var tr = new Vector3(xx + ww, yy - 0, z);
+            var bl = new Vector3(xx + 0, yy - hh, z);
+            var br = new Vector3(xx + ww, yy - hh, z);
+
+            var t_tl = new Vector2(0, 0);
+            var t_tr = new Vector2(t_d, 0);
+            var t_bl = new Vector2(0, t_d);
+            var t_br = new Vector2(t_d, t_d);
+
+            texVertices.Write(tl);   
+            texVertices.Write(color);
+            texVertices.Write(t_tl); 
+
+            texVertices.Write(tr);   
+            texVertices.Write(color);
+            texVertices.Write(t_tr); 
+
+            texVertices.Write(bl);   
+            texVertices.Write(color);
+            texVertices.Write(t_bl);
+
+            texVertices.Write(bl);
+            texVertices.Write(color);
+            texVertices.Write(t_bl);
+
+            texVertices.Write(tr);
+            texVertices.Write(color);
+            texVertices.Write(t_tr);
+
+            texVertices.Write(br);
+            texVertices.Write(color);
+            texVertices.Write(t_br); 
+
+            texVertices.Position = 0;
+
+            //Vertex Buffer
+            var vertexBufferF = new SlimDX.Direct3D10.Buffer(_device, texVertices, 
+                (int)texVertices.Length, ResourceUsage.Default, 
+                BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None);
+
+
+            EffectTechnique technique = _primBatchFx.GetTechniqueByName("TStrategicIcon");
+            EffectPass pass = technique.GetPassByIndex(0);
+
+            var layoutC = new InputLayout(_device, pass.Description.Signature, new[] {
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
+                new InputElement("COLOR", 0, Format.R32G32B32A32_Float, sizeofFloat*3, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float, sizeofFloat*7, 0)});
+
+            //configure Device
+            _device.OutputMerger.SetTargets(_renderTarget);
+            _device.Rasterizer.SetViewports(_viewport);
+
+            _device.InputAssembler.SetInputLayout(layoutC);
+            _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
+            _device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBufferF, vertexStride, 0));
+
+            // todo: perhaps texture power of 2 problem
+
+            var x = new ShaderResourceView(_device, _stratIcon);
+            _primBatchFx.GetVariableByName("Texture1").AsResource().SetResource(x);
+            _primBatchFx.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(_stratIconCompositeMatrix);
+
+            for (int i = 0; i < technique.Description.PassCount; i++)
+            {
+                pass.Apply();                
+                _device.Draw(vertexes, 0);
+            }
+
+            texVertices.Close();
+            texVertices.Dispose();
+            vertexBufferF.Dispose();
+            layoutC.Dispose();
+            _device.ClearAllObjects();
+
+        }
+
+
         public Image Snapshot()
         {
             MemoryStream ms = new MemoryStream();
@@ -158,18 +296,18 @@ namespace SCMAPTools
 
         private void CalculateProjections()
         {
-            float uX = (float) (Math.Sin(UpAngle)*Math.Cos(UpElevation));
-            float uY = (float) (Math.Sin(UpAngle)*Math.Sin(UpElevation));
-            float uZ = (float) Math.Cos(UpAngle);
+            float uX = (float)(Math.Sin(UpAngle) * Math.Cos(UpElevation));
+            float uY = (float)(Math.Sin(UpAngle) * Math.Sin(UpElevation));
+            float uZ = (float)Math.Cos(UpAngle);
 
             _viewMatrix = Matrix.LookAtRH(new Vector3(_cameraX, _cameraY, _cameraZ), new Vector3(_lookatX, 0, _lookatY), new Vector3(uX, uY, uZ));
-            _projectionMatrix = Matrix.PerspectiveFovRH((float) Math.PI/4.0f, _viewport.Width/_viewport.Height, 0.1f, 80000.0f);
+            _projectionMatrix = Matrix.PerspectiveFovRH((float)Math.PI / 4.0f, _viewport.Width / _viewport.Height, 0.1f, 80000.0f);
         }
 
         private void SetCameraStartPosition()
         {
-            _cameraX = _map.Width/2.0f;
-            _cameraZ = _map.Height/2.0f;
+            _cameraX = _map.Width / 2.0f;
+            _cameraZ = _map.Height / 2.0f;
             _cameraY = GenerateStartYFromMapScale();
             _lookatX = _cameraX;
             _lookatY = _cameraZ;
@@ -243,6 +381,7 @@ namespace SCMAPTools
             ShaderResourceView srvWM = new ShaderResourceView(_device, wm);
             _waterFx.GetVariableByName("UtilityTextureC").AsResource().SetResource(srvWM);
         }
+
         void LoadTerrainAndFrameShaders()
         {
             //Load Shaders
@@ -557,7 +696,7 @@ namespace SCMAPTools
             _device.OutputMerger.SetTargets(_renderTarget);
             _device.Rasterizer.SetViewports(_viewport);
 
-            _device.ClearRenderTargetView(_renderTarget, System.Drawing.Color.Black);
+            //_device.ClearRenderTargetView(_renderTarget, System.Drawing.Color.Black);
 
             _device.InputAssembler.SetInputLayout(terrainLayout);
             _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
@@ -669,7 +808,6 @@ namespace SCMAPTools
 
         public void HandleMouseWheel(Point location, int delta)
         {
-            TimeValue++;
             var oldPos = ScreenToWorld(location);
 
             _cameraY -= delta;

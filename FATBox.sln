@@ -17,7 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Mapping", "FATBox.Ma
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1763F0CC-9230-4D59-822E-C8F663450209}"
 	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
+		GraphicsExperiment1.vsglog = GraphicsExperiment1.vsglog
+		GraphicsExperiment3.vsglog = GraphicsExperiment3.vsglog
+		GraphicsExperiment5.vsglog = GraphicsExperiment5.vsglog
 	EndProjectSection
 EndProject
 Global
@@ -93,8 +95,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
