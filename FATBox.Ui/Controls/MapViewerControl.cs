@@ -137,5 +137,10 @@ namespace FATBox.Ui.Controls
         {
             _mapRenderer.SetMapUnitDisplays(bits);
         }
+
+        public void SetMarkers(MapUnitDisplay[] bits)
+        {
+            _mapRenderer.SetMarkers(bits);
+        }
     }
 }

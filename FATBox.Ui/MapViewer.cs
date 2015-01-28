@@ -23,24 +23,42 @@ namespace FATBox.Ui
             InitializeComponent();
 
             var device = UiData.DirectX9Device;
-            var mapFolders = new MapRepository().GetAllMaps().Where(x => x.Name.Contains("Balv")).Take(1);
+            var mapFolders = new MapRepository().GetAllMaps()
+                .OrderByDescending(x => x.Name.Contains("Balv"))
+                .ThenByDescending(x => x.Name.Contains("joust"))
+                .Take(5);
             foreach (var m in mapFolders)
             {
 
                 var map = new Map();
                 map.Load(m.ScmapPath, device);
 
+                var saveContent = new LuaParser().ParseBalvery(m.SavePath);
                 
                 var l = new List<MapUnitDisplay>();
-
-                var units = new LuaParser().ParseBalvery(m.SavePath);
-                foreach (var u in units)
+                foreach (var u in saveContent.Units)
                 {
                     var bp = UiData.Catalog.Blueprints.First(x => x.BlueprintId == u.type);
-                    l.Add(new MapUnitDisplay { StrategicIconName = bp.StrategicIconName, WorldPosition = u.pos});
+                    l.Add(new MapUnitDisplay { StrategicIconName = bp.StrategicIconName, WorldPosition = u.pos, Color = u.color});
                 }
 
-
+                var markers = new List<MapUnitDisplay>();
+                foreach (var scm in saveContent.Markers)
+                {
+                    var isMass = scm.type == "Mass";
+                    var isHydro = scm.type == "Hydrocarbon";
+                    if (isMass || isHydro)
+                    {
+                        var mud = new MapUnitDisplay
+                        {
+                            StrategicIconName = isHydro ? UiData.Lore.HydroSmallMarkerLocation : UiData.Lore.MassSmallMarkerLocation,
+                            WorldPosition = scm.pos,
+                            Scale = 0.5f
+                        };
+                        markers.Add(mud);
+                    }
+                    //var 
+                }
 
 
                 var mvc = new MapViewerControl();
@@ -49,9 +67,10 @@ namespace FATBox.Ui
                 mvc.Height = 400;
                 mvc.SetMap(map, m);
                 mvc.SetMapUnitDisplays(l.ToArray());
+                mvc.SetMarkers(markers.ToArray());
 
-//                flowLayoutPanel1.Controls.Add(mvc);
-                panel1.Controls.Add(mvc);
+                flowLayoutPanel1.Controls.Add(mvc);
+//                panel1.Controls.Add(mvc);
 
                 _mvcs.Add(mvc);
 

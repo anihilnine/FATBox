@@ -8,6 +8,8 @@ namespace FATBox.Core
     public class Lore
     {
         private Dictionary<string, Faction> _factions;
+        public string MassSmallMarkerLocation = "/env/Common/splats/mass_strategic.dds";
+        public string HydroSmallMarkerLocation = "/env/Common/splats/hydrocarbon_strategic.dds";
 
         public Lore()
         {
@@ -17,6 +19,7 @@ namespace FATBox.Core
                 new Faction { Name = "uef", Color = Color.FromArgb(85,170,255) },
                 new Faction { Name = "cybran", Color = Color.FromArgb(255,80,80) },
                 new Faction { Name = "seraphim", Color = Color.FromArgb(255,190,44) },
+                new Faction { Name = "civilian", Color = Color.FromArgb(222,184,135), WreckageColor = Color.FromArgb(111,92,67) },
             }.ToDictionary(x => x.Name);
         }
 
@@ -30,6 +33,7 @@ namespace FATBox.Core
         {
             public string Name;
             public Color Color;
+            public Color WreckageColor { get; set; }
         }
     }
 }

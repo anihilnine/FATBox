@@ -59,6 +59,8 @@
     <Compile Include="CategoryExpression.cs" />
     <Compile Include="Lore.cs" />
     <Compile Include="Lua\LuaParser.cs" />
+    <Compile Include="Lua\Marker.cs" />
+    <Compile Include="Lua\Unit.cs" />
     <Compile Include="Maps\MapFolder.cs" />
     <Compile Include="Maps\MapLibrary.cs" />
     <Compile Include="Maps\MapRepository.cs" />

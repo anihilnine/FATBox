@@ -100,7 +100,8 @@ namespace FATBox.Mapping.Rendering
             var cell = new Cell
             {
                 Name = name,
-                Rect = new RectangleF(currentRowLeft, currentRowTop, tex.Description.Width, tex.Description.Height)
+                SizePx = new SizeF(tex.Description.Width, tex.Description.Height),
+                RectTx = new RectangleF((float)currentRowLeft / WaffleWidth, (float)currentRowTop / WaffleHeight, (float)tex.Description.Width / WaffleWidth, (float)tex.Description.Height / WaffleHeight)
             };
             Cells.Add(name, cell);
 
@@ -120,16 +121,13 @@ namespace FATBox.Mapping.Rendering
         {
             var dics = xxx.Select(cr =>
             {
-                Cell cell;
-                if (!Cells.TryGetValue(cr.Name, out cell))
-                {
-                    var tex = LoadTexture(cr.Name);
-                    cell = Enrol(cr.Name, tex);
-                }
+                var cell = GetCell(cr.Name);
+                var width = cell.SizePx.Width * cr.Scale;
+                var height = cell.SizePx.Height * cr.Scale;
                 return new DrawInstructionCoord()
                 {
-                    dstRectangle = new RectangleF(cr.Dst, cell.Rect.Size),
-                    textCoords = new RectangleF(cell.Rect.X / WaffleWidth, cell.Rect.Y / WaffleHeight, cell.Rect.Width / WaffleWidth, cell.Rect.Height / WaffleHeight)
+                    dstRectangle = new RectangleF(cr.Dst.X - width/2, cr.Dst.Y - height/2,width, height),
+                    textCoords = new RectangleF(cell.RectTx.X, cell.RectTx.Y, cell.RectTx.Width, cell.RectTx.Height)
                 };
             }).ToArray();
 
@@ -177,17 +175,6 @@ namespace FATBox.Mapping.Rendering
             Draw(instr, renderTarget);
         }
 
-        public class DrawInstruction
-        {
-            public Texture2D texture;
-            public DrawInstructionCoord[] coords;
-        }
-
-        public class DrawInstructionCoord
-        {
-            public RectangleF dstRectangle;
-            public RectangleF textCoords;
-        }
 
         public void Draw(DrawInstruction instr, RenderTargetView renderTargetView)
         {
@@ -269,5 +256,35 @@ namespace FATBox.Mapping.Rendering
             layout.Dispose();
             textureResource.Dispose();
         }
+
+        public Cell GetCell(string name)
+        {
+            Cell cell;
+            if (!Cells.TryGetValue(name, out cell))
+            {
+                var tex = LoadTexture(name);
+                cell = Enrol(name, tex);
+            }
+            return cell;
+        }
+
+        public Texture2D GetTexture()
+        {
+            return (Texture2D) _waffle.Resource;
+        }
+    }
+
+
+    public class DrawInstruction
+    {
+        public Texture2D texture;
+        public DrawInstructionCoord[] coords;
+    }
+
+    public class DrawInstructionCoord
+    {
+        public RectangleF dstRectangle;
+        public RectangleF textCoords;
+        public Color color { get; set; }
     }
 }

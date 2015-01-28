@@ -85,6 +85,7 @@ namespace SCMAPTools
         private bool _rightIsDown;
         private bool _upIsDown;
         private bool _downIsDown;
+        private float _worldXPerPixel;
 
 
         public MapRenderer(Control control, Map mapData, CatalogCache cache)
@@ -119,10 +120,15 @@ namespace SCMAPTools
             //}
         }
 
+        public void SetMarkers(MapUnitDisplay[] bits)
+        {
+            _mapMarkerDisplays = bits;
+        }
+
         private void LoadStratIconStuff()
         {
             _primBatchFx = Effect.FromMemory(_device, Resources.primbatcher_fx, "fx_4_0", ShaderFlags.EnableBackwardsCompatibility, EffectFlags.None);
-            _stratIconCompositeMatrix = Matrix.OrthoOffCenterRH(0, 400, 400, 0, 0, 1)
+            _stratIconCompositeMatrix = Matrix.OrthoOffCenterRH(0, _viewport.Width, _viewport.Height, 0, 0, 1)
                 * Matrix.Translation(0,0, 0);
                 //* Matrix.Translation(-0.5f, -1f, 0);
         }
@@ -155,29 +161,33 @@ namespace SCMAPTools
         }
 
 
+        private void DoZoom()
+        {
+            if (_cameraAdjustAmount == 0) return;
+            var amt = _cameraAdjustAmount/8;
+            _cameraAdjustAmount -= amt;
+            if (Math.Abs(_cameraAdjustAmount) < 1) _cameraAdjustAmount = 0;
+
+            var oldPos = ScreenToWorld(_cameraAdjustPos);
+            _cameraY -= amt;
+            if (_cameraY < 100) _cameraY = 100;
+            CalculateProjections();
+
+            var newPos = ScreenToWorld(_cameraAdjustPos);
+            Console.WriteLine(oldPos + " .. " + newPos);
+
+            var change = Vector3.Subtract(oldPos, newPos);
+            _cameraX += change.X;
+            _cameraZ += change.Z;
+            _lookatX = _cameraX;
+            _lookatY = _cameraZ;
+        }
 
         public void Redraw()
         {
-            if (_leftIsDown)
-            {
-                _lookatX -= 0.1f;
-                _cameraX -= 0.1f;
-            }
-            if (_rightIsDown)
-            {
-                _lookatX += 0.1f;
-                _cameraX += 0.1f;
-            }
-            if (_upIsDown)
-            {
-                _lookatY -= 0.1f;
-                _cameraZ -= 0.1f;
-            }
-            if (_downIsDown)
-            {
-                _lookatY += 0.1f;
-                _cameraZ += 0.1f;
-            }
+            DoZoom();
+
+            DoKeyboard();
 
 
             TimeValue += 0.1f;
@@ -204,9 +214,9 @@ namespace SCMAPTools
             //Render Water
             RenderWater(terrTex);
 
-            RenderIcons();
+            RenderMarkers();
 
-            RenderThings();
+            RenderStrategicIcons();
 
             //Clean Up
             finalNormalTex.Dispose();
@@ -217,150 +227,186 @@ namespace SCMAPTools
             _swapChain.Present(0, PresentFlags.None);
         }
 
-        private void RenderThings()
-        {
-            //_value += 0.1f;
-            //if (_value > 300) _value = -50;
-            //var xxx = new[]
-            //{
-            //    new CellRefrence {Dst = new PointF(0f + _value, 0f), Name = "/textures/ui/common/game/strategicicons/icon_commander_generic_rest.dds"},
-            //    new CellRefrence {Dst = new PointF(0f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
-            //    new CellRefrence {Dst = new PointF(20f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
-            //    new CellRefrence {Dst = new PointF(40f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
-            //    new CellRefrence {Dst = new PointF(60f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
-            //    new CellRefrence {Dst = new PointF(0f + _value, 50f), Name = "/textures/ui/common/faction_icon-sm/cybran_ico.dds"},
-            //    new CellRefrence {Dst = new PointF(0f + _value, 100f), Name = "/textures/engine/waterramp.dds"},
-            //};
 
-            float m = 1.5f;
+        private void DoKeyboard()
+        {
+            float amt = _worldXPerPixel * 2;
+            if (_leftIsDown)
+            {
+                _lookatX -= amt;
+                _cameraX -= amt;
+            }
+            if (_rightIsDown)
+            {
+                _lookatX += amt;
+                _cameraX += amt;
+            }
+            if (_upIsDown)
+            {
+                _lookatY -= amt;
+                _cameraZ -= amt;
+            }
+            if (_downIsDown)
+            {
+                _lookatY += amt;
+                _cameraZ += amt;
+            }
+        }
+
+        private void RenderStrategicIcons()
+        {
             var xxx = _mapUnitDisplays.Select(x => new CellRefrence()
             {
                 Dst = WorldToScreen(x.WorldPosition),
-                Name = "/textures/ui/common/game/strategicicons/" + x.StrategicIconName + "_rest.dds"
+                Name = "/textures/ui/common/game/strategicicons/" + x.StrategicIconName + "_rest.dds",
+                Color = x.Color,
+            }).ToArray();
+
+            DrawCells(_renderTarget, xxx);
+            //_waffle.DrawCells(_renderTarget, xxx);
+        }
+
+
+        private void RenderMarkers()
+        {
+            var xxx = _mapMarkerDisplays.Select(x => new CellRefrence()
+            {
+                Dst = WorldToScreen(x.WorldPosition),
+                Name = x.StrategicIconName,
+                Scale = 0.5f,
             }).ToArray();
 
             _waffle.DrawCells(_renderTarget, xxx);
         }
 
-
-
-        private void RenderIcons()
+        public void DrawCells(RenderTargetView renderTarget, CellRefrence[] xxx)
         {
-            //_value += 0.1f;
-            // todo: put in in screen coords
-            // todo: should my transform be a translation?
-            // todo: can discrepancy with shader be due to my hacks up top?
-            // todo: can other steam be in ori primbatcher?
-            // todo: pixel=>world convert coords?
+            var dics = xxx.Select(cr =>
+            {
+                var cell = _waffle.GetCell(cr.Name);
+                var width = cell.SizePx.Width * cr.Scale;
+                var height = cell.SizePx.Height * cr.Scale;
+                return new DrawInstructionCoord()
+                {
+                    dstRectangle = new RectangleF(cr.Dst.X - width/2, cr.Dst.Y - height/2,width, height),
+                    textCoords = new RectangleF(cell.RectTx.X, cell.RectTx.Y, cell.RectTx.Width, cell.RectTx.Height),
+                    color = cr.Color,
+                };
+            }).ToArray();
+
+            var di = new DrawInstruction()
+            {
+                coords = dics,
+                texture = _waffle.GetTexture(),
+            };
+
+            RenderIcons(di, renderTarget);
+        }
 
 
-
+        private void RenderIcons(DrawInstruction instr, RenderTargetView renderTargetView)
+        {
+            if (instr.coords.Count() == 0) return;
             _device.ClearAllObjects();
-           // _waffle.DrawWaffle(_renderTarget);
 
-            //_device.ClearAllObjects();
+            var sizeofFloat = sizeof(float);
 
-            //foreach (var b in _mapUnitDisplays)
-            //{
-            //    var sizeofFloat = sizeof(float);
+            var vertexes = 6 * instr.coords.Count(); 
+            var vertexStride = 9 * sizeofFloat;
+            DataStream texVertices = new DataStream(vertexes * vertexStride, true, true);
 
-            //    // todo: just render this with nothing else
-            //    //Create Vertices
-            //    var vertexes = 6;
-            //    var vertexStride = 9 * sizeofFloat;
-            //    DataStream texVertices = new DataStream(vertexes * vertexStride, true, true);
-            //    float z = 0; // todo: don't know if 1 or 0
+            foreach (var coord in instr.coords)
+            {
+                var xx = coord.dstRectangle.X;
+                var yy = coord.dstRectangle.Y;
+                var ww = coord.dstRectangle.Width;
+                var hh = coord.dstRectangle.Height;
+                var z = 0;
+                var bl = new Vector3(xx + 0, yy - 0, z); // in pixels
+                var br = new Vector3(xx + ww, yy - 0, z);
+                var tl = new Vector3(xx + 0, yy + hh, z);
+                var tr = new Vector3(xx + ww, yy + hh, z);
 
-            //    // 16x12
+                var t_bl = new Vector2(coord.textCoords.X, coord.textCoords.Y); // in text coords
+                var t_br = new Vector2(coord.textCoords.Right, coord.textCoords.Y);
+                var t_tl = new Vector2(coord.textCoords.X, coord.textCoords.Y + coord.textCoords.Height);
+                var t_tr = new Vector2(coord.textCoords.Right, coord.textCoords.Y + coord.textCoords.Height);
+                var color = ColorToBGRA(coord.color);
 
-            //    // todo: dont know if pos should be v3 or v4
-            //    var xx = b.X + (int)_value;
-            //    var yy = b.Y;
-            //    var ww = b.Texture.Description.Width;
-            //    var hh = b.Texture.Description.Height;
-            //    var t_d = 1f;
-            //    var color = new Vector4(0.4f, 0.2f, 0.8f, 0); // bgra
+                texVertices.Write(tl);
+                texVertices.Write(color);
+                texVertices.Write(t_tl);
 
-            //    var bl = new Vector3(xx + 0, yy - 0, z); // in pixels
-            //    var br = new Vector3(xx + ww, yy - 0, z);
-            //    var tl = new Vector3(xx + 0, yy + hh, z);
-            //    var tr = new Vector3(xx + ww, yy + hh, z);
+                texVertices.Write(tr);
+                texVertices.Write(color);
+                texVertices.Write(t_tr);
 
-            //    var t_bl = new Vector2(0, 0);
-            //    var t_br = new Vector2(t_d, 0);
-            //    var t_tl = new Vector2(0, t_d);
-            //    var t_tr = new Vector2(t_d, t_d);
+                texVertices.Write(bl);
+                texVertices.Write(color);
+                texVertices.Write(t_bl);
 
-            //    texVertices.Write(tl);
-            //    texVertices.Write(color);
-            //    texVertices.Write(t_tl);
+                texVertices.Write(bl);
+                texVertices.Write(color);
+                texVertices.Write(t_bl);
 
-            //    texVertices.Write(tr);
-            //    texVertices.Write(color);
-            //    texVertices.Write(t_tr);
+                texVertices.Write(tr);
+                texVertices.Write(color);
+                texVertices.Write(t_tr);
 
-            //    texVertices.Write(bl);
-            //    texVertices.Write(color);
-            //    texVertices.Write(t_bl);
+                texVertices.Write(br);
+                texVertices.Write(color);
+                texVertices.Write(t_br);
+            }
 
-            //    texVertices.Write(bl);
-            //    texVertices.Write(color);
-            //    texVertices.Write(t_bl);
+            texVertices.Position = 0;
 
-            //    texVertices.Write(tr);
-            //    texVertices.Write(color);
-            //    texVertices.Write(t_tr);
-
-            //    texVertices.Write(br);
-            //    texVertices.Write(color);
-            //    texVertices.Write(t_br);
+            //Vertex Buffer
+            var vertexBufferF = new SlimDX.Direct3D10.Buffer(_device, texVertices,
+                (int)texVertices.Length, ResourceUsage.Default,
+                BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None);
 
 
-            //    texVertices.Position = 0;
+            EffectTechnique technique = _primBatchFx.GetTechniqueByName("TStrategicIcon");
+            EffectPass pass = technique.GetPassByIndex(0);
 
-            //    //Vertex Buffer
-            //    var vertexBufferF = new SlimDX.Direct3D10.Buffer(_device, texVertices,
-            //        (int)texVertices.Length, ResourceUsage.Default,
-            //        BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None);
+            var layoutC = new InputLayout(_device, pass.Description.Signature, new[]
+            {
+                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
+                new InputElement("COLOR", 0, Format.R32G32B32A32_Float, sizeofFloat*3, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float, sizeofFloat*7, 0)
+            });
+
+            //configure Device
+            _device.OutputMerger.SetTargets(renderTargetView);
+            _device.Rasterizer.SetViewports(_viewport);
+
+            _device.InputAssembler.SetInputLayout(layoutC);
+            _device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBufferF, vertexStride, 0));
+
+            // todo: perhaps texture power of 2 problem
+            var x = new ShaderResourceView(_device, instr.texture);
+            _primBatchFx.GetVariableByName("Texture1").AsResource().SetResource(x);
+            _primBatchFx.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(_stratIconCompositeMatrix);
+
+            for (int i = 0; i < technique.Description.PassCount; i++)
+            {
+                pass.Apply();
+                _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleList);
+                _device.Draw(vertexes, 0);
+            }
+
+            texVertices.Close();
+            texVertices.Dispose();
+            vertexBufferF.Dispose();
+            layoutC.Dispose();
+            _device.ClearAllObjects();
 
 
-            //    EffectTechnique technique = _primBatchFx.GetTechniqueByName("TStrategicIcon");
-            //    EffectPass pass = technique.GetPassByIndex(0);
+        }
 
-            //    var layoutC = new InputLayout(_device, pass.Description.Signature, new[]
-            //    {
-            //        new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
-            //        new InputElement("COLOR", 0, Format.R32G32B32A32_Float, sizeofFloat*3, 0),
-            //        new InputElement("TEXCOORD", 0, Format.R32G32_Float, sizeofFloat*7, 0)
-            //    });
-
-            //    //configure Device
-            //    _device.OutputMerger.SetTargets(_renderTarget);
-            //    _device.Rasterizer.SetViewports(_viewport);
-
-            //    _device.InputAssembler.SetInputLayout(layoutC);
-            //    _device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBufferF, vertexStride, 0));
-
-            //    // todo: perhaps texture power of 2 problem
-            //    var x = new ShaderResourceView(_device, b.Texture);
-            //    _primBatchFx.GetVariableByName("Texture1").AsResource().SetResource(x);
-            //    _primBatchFx.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(_stratIconCompositeMatrix);
-
-            //    for (int i = 0; i < technique.Description.PassCount; i++)
-            //    {
-            //        pass.Apply();
-            //        _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
-            //        _device.Draw(vertexes, 0);
-            //    }
-
-            //    texVertices.Close();
-            //    texVertices.Dispose();
-            //    vertexBufferF.Dispose();
-            //    layoutC.Dispose();
-            //    _device.ClearAllObjects();
-
-            //}
-
+        private Vector4 ColorToBGRA(Color color)
+        {
+            return new Vector4(color.B/255f, color.G/255f, color.R/255f, color.A/255f);
         }
 
 
@@ -383,6 +429,10 @@ namespace SCMAPTools
 
             _viewMatrix = Matrix.LookAtRH(new Vector3(_cameraX, _cameraY, _cameraZ), new Vector3(_lookatX, 0, _lookatY), new Vector3(uX, uY, uZ));
             _projectionMatrix = Matrix.PerspectiveFovRH((float)Math.PI / 4.0f, _viewport.Width / _viewport.Height, 0.1f, 80000.0f);
+
+            var x1 = ScreenToWorld(new Point(0, 0));
+            var x2 = ScreenToWorld(new Point(1, 0));
+            _worldXPerPixel = x2.X - x1.X;
         }
 
         private void SetCameraStartPosition()
@@ -889,22 +939,16 @@ namespace SCMAPTools
             vertexBufferW.Dispose();
         }
 
+        private float _cameraAdjustAmount = 0;
+        private Point _cameraAdjustPos;
+        private MapUnitDisplay[] _mapMarkerDisplays = new MapUnitDisplay[0];
+
         public void HandleMouseWheel(Point location, int delta)
         {
-            var oldPos = ScreenToWorld(location);
-
-            _cameraY -= delta;
-            if (_cameraY < 100) _cameraY = 100;
-            CalculateProjections();
-
-            var newPos = ScreenToWorld(location);
-            Console.WriteLine(oldPos + " .. " + newPos);
-
-            var change = Vector3.Subtract(oldPos, newPos);
-            _cameraX += change.X;
-            _cameraZ += change.Z;
-            _lookatX = _cameraX;
-            _lookatY = _cameraZ;
+            _cameraAdjustPos = location;
+            _cameraAdjustAmount += delta;
+            
+    
         }
 
         private Vector3 ScreenToWorld(Point screenPoint)
@@ -942,9 +986,6 @@ namespace SCMAPTools
             return new PointF(position.X, position.Y);
         }
 
-
-
-
         public void SetLeft(bool newVal)
         {
             _leftIsDown = newVal;
@@ -964,5 +1005,7 @@ namespace SCMAPTools
         {
             _downIsDown = newVal;
         }
+
+
     }
 }
