@@ -27,13 +27,14 @@ namespace FATBox.Ui.DataNavigator
             f.Show();
         }
 
-        public static void PopupControl(Control c)
+        public static Form PopupControl(Control c)
         {
             Form f = new Form();
             f.Controls.Add(c);
             f.Width = 800;
             f.Height = 600;
             f.Show();
+            return f;
         }
 
         private void button1_Click(object sender, EventArgs e)

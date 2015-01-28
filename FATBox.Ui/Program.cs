@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using FATBox.Core.Lua;
 using FATBox.Core.ModCatalog;
 using FATBox.Ui.DataNavigator;
 using FATBox.Ui.Renderers;
@@ -28,11 +29,13 @@ namespace FATBox.Ui
             DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
 
 
-            //Application.Run(new MapViewer());
-            //Application.Run(new BlueprintExplorer());
 
-            var mv = new MapViewer();
-            MessagePump.Run(mv, mv.MainLoop);
+            MessagePump.Run(new MapExplorer(), UiData.MainLoop);
+            //Application.Run(new MapExplorer());
+            //Application.Run(new BlueprintExplorer());
+            //LaunchTools.OmniView.OmniControl.Popup(UiData.Catalog.Blueprints);
+
+            //MessagePump.Run(new MapViewer(), UiData.MainLoop);
         }
     }
 }

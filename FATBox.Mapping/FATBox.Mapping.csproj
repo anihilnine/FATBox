@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,9 +53,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Rendering\Cell.cs" />
     <Compile Include="Rendering\MapRenderer.cs" />
+    <Compile Include="Rendering\MapUnitDisplay.cs" />
     <Compile Include="Rendering\MergedModDdsLoader.cs" />
+    <Compile Include="Rendering\CellRefrence.cs" />
+    <Compile Include="Rendering\WaffleMaker.cs" />
     <Compile Include="Rendering\Utilities.cs" />
+    <Compile Include="Save\SaveLuaParser.cs" />
     <Compile Include="Scmap\BinaryReader.cs" />
     <Compile Include="Scmap\BinaryWriter.cs" />
     <Compile Include="Scmap\Decal.cs" />
@@ -102,6 +107,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\basic.fx" />
     <Content Include="Resources\primbatcher.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -73,6 +73,18 @@ void AlphaTestD3D10(float inputAlpha, int alphaFunc, int alphaRef)
 //
 
 
+BlendState AlphaBlend_SrcAlpha_INVSRCALPHA_Write_RGBA
+{
+	BlendEnable[0] = true;
+	RenderTargetWriteMask[0] = 0x0F;
+	SrcBlend = SRC_ALPHA;
+	DestBlend = INV_SRC_ALPHA;
+
+	BlendOp = ADD;
+	SrcBlendAlpha = ONE;
+	DestBlendAlpha = ZERO;
+	BlendOpAlpha = ADD;
+};
 
 BlendState AlphaBlend_SrcAlpha_InvSrcAlpha_Write_RGB
 {
@@ -167,21 +179,17 @@ sampler PointSampler = sampler_state
 struct VS_OUTPUT
 {
     float4 Pos  : POSITION;
-    float4 Color : COLOR0;
     float2 Tex1  : TEXCOORD0;
 };
 
 
-VS_OUTPUT PrimBatcherVS(
+VS_OUTPUT MyVs(
     float3 Pos  : POSITION,
-    float4 Color : COLOR0,
     float2 Tex  : TEXCOORD0 )
 {
     VS_OUTPUT Out;
-    CompatSwizzle(Color);
 
     Out.Pos = mul(float4(Pos,1), CompositeMatrix);
-    Out.Color = Color;
     Out.Tex1 = Tex;
 
     return Out;
@@ -189,25 +197,21 @@ VS_OUTPUT PrimBatcherVS(
 
 
 
-float4 StrategicIconPS(
+float4 MyPs(
     float4 Pos : POSITION,
-    float4 Diff : COLOR0,
     float2 Tex1  : TEXCOORD0) : COLOR
 {
 
 	float4 color = tex2D(PointSampler, Tex1);
-	float3 d = (color.rgb - float3(0.5, 0.5, 0.5)) * (color.rgb - float3(0.5, 0.5, 0.5));
-    if( dot(d, float3(1,1,1)) < (0.25) )
-        color.rgb = Diff.rgb;
     return color;
 }
 
 
-technique TStrategicIcon
+technique TMyTechnique
 {
     pass P0
     {
-        AlphaState( AlphaBlend_SrcAlpha_InvSrcAlpha_Write_RGB )
+		AlphaState(AlphaBlend_SrcAlpha_INVSRCALPHA_Write_RGBA)
         DepthState( Depth_Disable )
         RasterizerState( Rasterizer_Cull_None )
 
@@ -217,7 +221,7 @@ technique TStrategicIcon
         AlphaFunc = Greater;
 #endif
 
-        VertexShader = compile vs_1_1 PrimBatcherVS();
-        PixelShader = compile ps_2_0 StrategicIconPS();
+        VertexShader = compile vs_1_1 MyVs();
+        PixelShader = compile ps_2_0 MyPs();
     }
 }

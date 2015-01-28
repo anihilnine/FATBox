@@ -9,6 +9,8 @@ using SlimDX.Direct3D10;
 using System.IO;
 using System.IO.Compression;
 using SlimDX;
+using SlimDX.Direct3D9;
+using Device = SlimDX.Direct3D10.Device;
 
 namespace SCMAPTools
 {

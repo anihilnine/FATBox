@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using FATBox.Core.CatalogReading;
+using FATBox.Mapping.Rendering;
 using SlimDX.Direct3D10;
 using SlimDX.D3DCompiler;
 using SlimDX;
@@ -55,7 +57,7 @@ namespace SCMAPTools
         ShaderResourceView _textureMapA;
         ShaderResourceView _finalNormalMap;
 
-
+        private float _value = 0;
         //Camera Data
         float _cameraX; //X Position
         float _cameraY; //Y position (This is the vertical height axis in FA)
@@ -76,8 +78,13 @@ namespace SCMAPTools
 
 
         private Effect _primBatchFx;
-        private Texture2D _stratIcon;
         Matrix _stratIconCompositeMatrix;
+        private MapUnitDisplay[] _mapUnitDisplays = new MapUnitDisplay[0];
+        private WaffleMaker _waffle;
+        private bool _leftIsDown;
+        private bool _rightIsDown;
+        private bool _upIsDown;
+        private bool _downIsDown;
 
 
         public MapRenderer(Control control, Map mapData, CatalogCache cache)
@@ -93,17 +100,31 @@ namespace SCMAPTools
             LoadTerrainAndFrameShaders();
             LoadWaterShader();
             LoadStratIconStuff();
+           
+            _waffle = new WaffleMaker(_device, _viewport, _stratIconCompositeMatrix, _mergedModDdsLoader);
 
             TimeValue = 0;
 
             SetCameraStartPosition();
         }
 
+
+        public void SetMapUnitDisplays(MapUnitDisplay[] bits)
+        {
+            _mapUnitDisplays = bits;
+
+            //foreach (var bit in bits)
+            //{
+            //    bit.Load(_mergedModDdsLoader);
+            //}
+        }
+
         private void LoadStratIconStuff()
         {
             _primBatchFx = Effect.FromMemory(_device, Resources.primbatcher_fx, "fx_4_0", ShaderFlags.EnableBackwardsCompatibility, EffectFlags.None);
-            _stratIcon = _mergedModDdsLoader.LoadTexture("/textures/ui/common/game/strategicicons/icon_bot3_armored_rest.dds");
-            _stratIconCompositeMatrix = Matrix.OrthoLH(_viewport.Width, _viewport.Height, 0, 1) * Matrix.Translation(-1f, -1f, 0);
+            _stratIconCompositeMatrix = Matrix.OrthoOffCenterRH(0, 400, 400, 0, 0, 1)
+                * Matrix.Translation(0,0, 0);
+                //* Matrix.Translation(-0.5f, -1f, 0);
         }
 
 
@@ -117,7 +138,7 @@ namespace SCMAPTools
                 IsWindowed = true,
                 ModeDescription = new ModeDescription(0, 0, new Rational(60, 1), Format.R8G8B8A8_UNorm),
                 SampleDescription = new SampleDescription(1, 0),
-                Flags = SwapChainFlags.None,
+                Flags = SwapChainFlags.AllowModeSwitch,
                 SwapEffect = SwapEffect.Discard
             };
 
@@ -130,12 +151,38 @@ namespace SCMAPTools
             // create a view of our render target, which is the backbuffer of the swap chain we just created
             _rtt = Resource.FromSwapChain<Texture2D>(_swapChain, 0);
             _renderTarget = new RenderTargetView(_device, _rtt);
+
         }
+
+
 
         public void Redraw()
         {
+            if (_leftIsDown)
+            {
+                _lookatX -= 0.1f;
+                _cameraX -= 0.1f;
+            }
+            if (_rightIsDown)
+            {
+                _lookatX += 0.1f;
+                _cameraX += 0.1f;
+            }
+            if (_upIsDown)
+            {
+                _lookatY -= 0.1f;
+                _cameraZ -= 0.1f;
+            }
+            if (_downIsDown)
+            {
+                _lookatY += 0.1f;
+                _cameraZ += 0.1f;
+            }
+
+
             TimeValue += 0.1f;
             CalculateProjections();
+
 
             ////Set Shader Camera Parameters
             _terrainFx.GetVariableByName("ViewMatrix").AsMatrix().SetMatrix(_viewMatrix);
@@ -159,6 +206,8 @@ namespace SCMAPTools
 
             RenderIcons();
 
+            RenderThings();
+
             //Clean Up
             finalNormalTex.Dispose();
             normalTexA.Dispose();
@@ -168,117 +217,149 @@ namespace SCMAPTools
             _swapChain.Present(0, PresentFlags.None);
         }
 
+        private void RenderThings()
+        {
+            //_value += 0.1f;
+            //if (_value > 300) _value = -50;
+            //var xxx = new[]
+            //{
+            //    new CellRefrence {Dst = new PointF(0f + _value, 0f), Name = "/textures/ui/common/game/strategicicons/icon_commander_generic_rest.dds"},
+            //    new CellRefrence {Dst = new PointF(0f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
+            //    new CellRefrence {Dst = new PointF(20f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
+            //    new CellRefrence {Dst = new PointF(40f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
+            //    new CellRefrence {Dst = new PointF(60f + _value, 10f), Name = "/textures/ui/common/game/strategicicons/icon_fighter1_antiair_rest.dds"},
+            //    new CellRefrence {Dst = new PointF(0f + _value, 50f), Name = "/textures/ui/common/faction_icon-sm/cybran_ico.dds"},
+            //    new CellRefrence {Dst = new PointF(0f + _value, 100f), Name = "/textures/engine/waterramp.dds"},
+            //};
+
+            float m = 1.5f;
+            var xxx = _mapUnitDisplays.Select(x => new CellRefrence()
+            {
+                Dst = WorldToScreen(x.WorldPosition),
+                Name = "/textures/ui/common/game/strategicicons/" + x.StrategicIconName + "_rest.dds"
+            }).ToArray();
+
+            _waffle.DrawCells(_renderTarget, xxx);
+        }
+
+
+
         private void RenderIcons()
         {
+            //_value += 0.1f;
             // todo: put in in screen coords
             // todo: should my transform be a translation?
             // todo: can discrepancy with shader be due to my hacks up top?
             // todo: can other steam be in ori primbatcher?
             // todo: pixel=>world convert coords?
 
+
+
             _device.ClearAllObjects();
+           // _waffle.DrawWaffle(_renderTarget);
 
-            var sizeofFloat = sizeof(float);
+            //_device.ClearAllObjects();
 
-            // todo: just render this with nothing else
-            //Create Vertices
-            var vertexes = 6;
-            var vertexStride = 9*sizeofFloat;
-            DataStream texVertices = new DataStream(vertexes * vertexStride, true, true);
-            float z = 0; // todo: don't know if 1 or 0
+            //foreach (var b in _mapUnitDisplays)
+            //{
+            //    var sizeofFloat = sizeof(float);
 
-            // 16x12
+            //    // todo: just render this with nothing else
+            //    //Create Vertices
+            //    var vertexes = 6;
+            //    var vertexStride = 9 * sizeofFloat;
+            //    DataStream texVertices = new DataStream(vertexes * vertexStride, true, true);
+            //    float z = 0; // todo: don't know if 1 or 0
 
-            // todo: dont know if pos should be v3 or v4
-            var xx = 50f;
-            var yy = 100f;
-            var ww = 18;
-            var hh = 12;
-            var t_d = 1;
-            var color = new Vector4(0.2f, 0.2f, 0.8f, 1); // bgra
+            //    // 16x12
 
-            //var xx = 0f;
-            //var yy = 0f;
-            //var ww = 0.01f * 16;
-            //var hh = 0.01f * 12;
-            //var ddd = 1;
-            //var color = new Vector4(0.2f, 0.2f, 0.8f, 1); // bgra
+            //    // todo: dont know if pos should be v3 or v4
+            //    var xx = b.X + (int)_value;
+            //    var yy = b.Y;
+            //    var ww = b.Texture.Description.Width;
+            //    var hh = b.Texture.Description.Height;
+            //    var t_d = 1f;
+            //    var color = new Vector4(0.4f, 0.2f, 0.8f, 0); // bgra
 
-            var tl = new Vector3(xx + 0, yy - 0, z);
-            var tr = new Vector3(xx + ww, yy - 0, z);
-            var bl = new Vector3(xx + 0, yy - hh, z);
-            var br = new Vector3(xx + ww, yy - hh, z);
+            //    var bl = new Vector3(xx + 0, yy - 0, z); // in pixels
+            //    var br = new Vector3(xx + ww, yy - 0, z);
+            //    var tl = new Vector3(xx + 0, yy + hh, z);
+            //    var tr = new Vector3(xx + ww, yy + hh, z);
 
-            var t_tl = new Vector2(0, 0);
-            var t_tr = new Vector2(t_d, 0);
-            var t_bl = new Vector2(0, t_d);
-            var t_br = new Vector2(t_d, t_d);
+            //    var t_bl = new Vector2(0, 0);
+            //    var t_br = new Vector2(t_d, 0);
+            //    var t_tl = new Vector2(0, t_d);
+            //    var t_tr = new Vector2(t_d, t_d);
 
-            texVertices.Write(tl);   
-            texVertices.Write(color);
-            texVertices.Write(t_tl); 
+            //    texVertices.Write(tl);
+            //    texVertices.Write(color);
+            //    texVertices.Write(t_tl);
 
-            texVertices.Write(tr);   
-            texVertices.Write(color);
-            texVertices.Write(t_tr); 
+            //    texVertices.Write(tr);
+            //    texVertices.Write(color);
+            //    texVertices.Write(t_tr);
 
-            texVertices.Write(bl);   
-            texVertices.Write(color);
-            texVertices.Write(t_bl);
+            //    texVertices.Write(bl);
+            //    texVertices.Write(color);
+            //    texVertices.Write(t_bl);
 
-            texVertices.Write(bl);
-            texVertices.Write(color);
-            texVertices.Write(t_bl);
+            //    texVertices.Write(bl);
+            //    texVertices.Write(color);
+            //    texVertices.Write(t_bl);
 
-            texVertices.Write(tr);
-            texVertices.Write(color);
-            texVertices.Write(t_tr);
+            //    texVertices.Write(tr);
+            //    texVertices.Write(color);
+            //    texVertices.Write(t_tr);
 
-            texVertices.Write(br);
-            texVertices.Write(color);
-            texVertices.Write(t_br); 
-
-            texVertices.Position = 0;
-
-            //Vertex Buffer
-            var vertexBufferF = new SlimDX.Direct3D10.Buffer(_device, texVertices, 
-                (int)texVertices.Length, ResourceUsage.Default, 
-                BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None);
+            //    texVertices.Write(br);
+            //    texVertices.Write(color);
+            //    texVertices.Write(t_br);
 
 
-            EffectTechnique technique = _primBatchFx.GetTechniqueByName("TStrategicIcon");
-            EffectPass pass = technique.GetPassByIndex(0);
+            //    texVertices.Position = 0;
 
-            var layoutC = new InputLayout(_device, pass.Description.Signature, new[] {
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
-                new InputElement("COLOR", 0, Format.R32G32B32A32_Float, sizeofFloat*3, 0),
-                new InputElement("TEXCOORD", 0, Format.R32G32_Float, sizeofFloat*7, 0)});
+            //    //Vertex Buffer
+            //    var vertexBufferF = new SlimDX.Direct3D10.Buffer(_device, texVertices,
+            //        (int)texVertices.Length, ResourceUsage.Default,
+            //        BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None);
 
-            //configure Device
-            _device.OutputMerger.SetTargets(_renderTarget);
-            _device.Rasterizer.SetViewports(_viewport);
 
-            _device.InputAssembler.SetInputLayout(layoutC);
-            _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
-            _device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBufferF, vertexStride, 0));
+            //    EffectTechnique technique = _primBatchFx.GetTechniqueByName("TStrategicIcon");
+            //    EffectPass pass = technique.GetPassByIndex(0);
 
-            // todo: perhaps texture power of 2 problem
+            //    var layoutC = new InputLayout(_device, pass.Description.Signature, new[]
+            //    {
+            //        new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0),
+            //        new InputElement("COLOR", 0, Format.R32G32B32A32_Float, sizeofFloat*3, 0),
+            //        new InputElement("TEXCOORD", 0, Format.R32G32_Float, sizeofFloat*7, 0)
+            //    });
 
-            var x = new ShaderResourceView(_device, _stratIcon);
-            _primBatchFx.GetVariableByName("Texture1").AsResource().SetResource(x);
-            _primBatchFx.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(_stratIconCompositeMatrix);
+            //    //configure Device
+            //    _device.OutputMerger.SetTargets(_renderTarget);
+            //    _device.Rasterizer.SetViewports(_viewport);
 
-            for (int i = 0; i < technique.Description.PassCount; i++)
-            {
-                pass.Apply();                
-                _device.Draw(vertexes, 0);
-            }
+            //    _device.InputAssembler.SetInputLayout(layoutC);
+            //    _device.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBufferF, vertexStride, 0));
 
-            texVertices.Close();
-            texVertices.Dispose();
-            vertexBufferF.Dispose();
-            layoutC.Dispose();
-            _device.ClearAllObjects();
+            //    // todo: perhaps texture power of 2 problem
+            //    var x = new ShaderResourceView(_device, b.Texture);
+            //    _primBatchFx.GetVariableByName("Texture1").AsResource().SetResource(x);
+            //    _primBatchFx.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(_stratIconCompositeMatrix);
+
+            //    for (int i = 0; i < technique.Description.PassCount; i++)
+            //    {
+            //        pass.Apply();
+            //        _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleStrip);
+            //        _device.Draw(vertexes, 0);
+            //    }
+
+            //    texVertices.Close();
+            //    texVertices.Dispose();
+            //    vertexBufferF.Dispose();
+            //    layoutC.Dispose();
+            //    _device.ClearAllObjects();
+
+            //}
 
         }
 
@@ -734,6 +815,8 @@ namespace SCMAPTools
                 pass.Apply();
                 _device.Draw((int)_vertices.Length / 16, 0);
             }
+            
+
 
             terrRenderTarget.Dispose();
             terrainLayout.Dispose();
@@ -852,5 +935,34 @@ namespace SCMAPTools
             return transformedRay;
         }
 
+
+        private PointF WorldToScreen(Vector3 worldPosition)
+        {
+            Vector3 position = Vector3.Project(worldPosition, _viewport.X, _viewport.Y, _viewport.Width, _viewport.Height, _viewport.MinZ, _viewport.MaxZ, Matrix.Identity * _viewMatrix * _projectionMatrix);
+            return new PointF(position.X, position.Y);
+        }
+
+
+
+
+        public void SetLeft(bool newVal)
+        {
+            _leftIsDown = newVal;
+        }
+
+        public void SetRight(bool newVal)
+        {
+            _rightIsDown = newVal;
+        }
+
+        public void SetUp(bool newVal)
+        {
+            _upIsDown = newVal;
+        }
+
+        public void SetDown(bool newVal)
+        {
+            _downIsDown = newVal;
+        }
     }
 }

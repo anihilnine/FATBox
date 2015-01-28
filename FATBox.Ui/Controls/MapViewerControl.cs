@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FATBox.Core;
 using SCMAPTools;
 
 namespace FATBox.Ui.Controls
@@ -19,9 +20,81 @@ namespace FATBox.Ui.Controls
         public MapViewerControl()
         {
             InitializeComponent();
+
+            UiData.Tick += UiDataOnTick;
         }
 
-        public void SetMap(Map map)
+        
+        private void UiDataOnTick(object sender, EventArgs eventArgs)
+        {
+            Redraw();
+        }
+
+        public void WireForm(Form form)
+        {
+            form.KeyPreview = true;
+            form.KeyDown += OnKeyDown;
+            form.KeyUp += OnKeyUp;
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (!Focused) return;
+
+            var newVal = false;
+            if (e.KeyCode == Keys.A)
+            {
+                _mapRenderer.SetLeft(newVal);
+                e.Handled = true;
+            }            
+            if (e.KeyCode == Keys.D)
+            {
+                _mapRenderer.SetRight(newVal);
+                e.Handled = true;
+            }        
+            if (e.KeyCode == Keys.W)
+            {
+                _mapRenderer.SetUp(newVal);
+                e.Handled = true;
+            }  
+            if (e.KeyCode == Keys.S)
+            {
+                _mapRenderer.SetDown(newVal);
+                e.Handled = true;
+            }
+
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!Focused) return;
+
+            var newVal = true;
+            if (e.KeyCode == Keys.A)
+            {
+                _mapRenderer.SetLeft(newVal);
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                _mapRenderer.SetRight(newVal);
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.W)
+            {
+                _mapRenderer.SetUp(newVal);
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.S)
+            {
+                _mapRenderer.SetDown(newVal);
+                e.Handled = true;
+            }
+        }
+
+
+
+        public void SetMap(Map map, MapFolder mapFolder)
         {
             _mapRenderer = new MapRenderer(this, map, UiData.Cache);
 
@@ -38,6 +111,7 @@ namespace FATBox.Ui.Controls
             if (_suppress) return;
             _suppress = true;
             _mapRenderer.HandleMouseWheel(e.Location, e.Delta);
+            
             Redraw();
             
             _suppress = false;
@@ -52,6 +126,16 @@ namespace FATBox.Ui.Controls
         {
             base.Focus();
             base.OnMouseEnter(e);
+        }
+
+        public void DoTest()
+        {
+           // _mapRenderer.DoTest();
+        }
+
+        public void SetMapUnitDisplays(MapUnitDisplay[] bits)
+        {
+            _mapRenderer.SetMapUnitDisplays(bits);
         }
     }
 }

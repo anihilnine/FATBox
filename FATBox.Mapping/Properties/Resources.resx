@@ -139,4 +139,7 @@
   <data name="primbatcher_fx" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\primbatcher.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="basic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\basic.fx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

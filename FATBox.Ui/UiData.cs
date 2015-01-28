@@ -35,5 +35,13 @@ namespace FATBox.Ui
             PP.BackBufferFormat = Format.X8R8G8B8;
             return new Device(new Direct3D(), 0, DeviceType.Hardware, new IntPtr(0), CreateFlags.HardwareVertexProcessing, PP);
         }
+
+        public static event EventHandler Tick;
+
+        public static void MainLoop()
+        {
+            if (Tick != null)
+                Tick(null, null);
+        }
     }
 }

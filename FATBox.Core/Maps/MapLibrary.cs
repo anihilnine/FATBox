@@ -20,10 +20,10 @@ namespace FATBox.Core
         {
             if (!Exists) return new MapFolder[0];
 
-            var maps = System.IO.Directory.GetFiles(Path, "*.scmap", SearchOption.AllDirectories);
+            var maps = System.IO.Directory.GetFiles(Path, "*_scenario.lua", SearchOption.AllDirectories);
 
             return maps
-                .Select(scmapPath => new MapFolder(scmapPath))
+                .Select(scenarioPath => new MapFolder(scenarioPath))
                 .ToArray();
         }
 
