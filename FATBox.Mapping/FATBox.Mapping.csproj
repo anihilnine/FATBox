@@ -60,7 +60,6 @@
     <Compile Include="Rendering\CellRefrence.cs" />
     <Compile Include="Rendering\WaffleMaker.cs" />
     <Compile Include="Rendering\Utilities.cs" />
-    <Compile Include="Save\SaveLuaParser.cs" />
     <Compile Include="Scmap\BinaryReader.cs" />
     <Compile Include="Scmap\BinaryWriter.cs" />
     <Compile Include="Scmap\Decal.cs" />
@@ -109,6 +108,9 @@
   <ItemGroup>
     <Content Include="Resources\basic.fx" />
     <Content Include="Resources\primbatcher.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Save\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

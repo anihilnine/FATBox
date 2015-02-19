@@ -32,16 +32,15 @@ namespace FATBox.Initialization
 
         private void RunBlueprintDumper()
         {
-            var logFilename = @"E:\projects\fa\logtest\log.txt";
+            var logFilename = Initializer.WorkingFolder + @"\lastlog.txt";
             var reader = new LogReader(logFilename);
             reader.DeleteLogIfExists();
 
             var blueprintLogReader = new BlueprintDumpLogReader(reader);
 
-            var path = textBox1.Text.TrimEnd('\\');
-            var file = path + @"\FATBox.Lua\init_FATBox.lua";
+            var file = Initializer.WorkingFolder + @"\FATBox.Lua\init_FATBox.lua";
             var contents = System.IO.File.ReadAllText(file);
-            var modPath = (path + @"\FATBox.Lua\BlueprintDump").Replace("\\", "\\\\");
+            var modPath = (Initializer.WorkingFolder + @"\FATBox.Lua\BlueprintDump").Replace("\\", "\\\\");
             contents = contents.Replace("%modFolder%", modPath);
             System.IO.File.WriteAllText(@"C:\ProgramData\FAForever\bin\init_FATBox.lua", contents);
             var args = @"/init init_FATBox.lua /nobugreport /EnableDiskWatch /map SCMP_016 /log " + logFilename;
@@ -52,7 +51,7 @@ namespace FATBox.Initialization
             p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             p.Start();
 
-            var jsonPath = path + @"\blueprints.json";
+            var jsonPath = Initializer.WorkingFolder + @"\blueprints.json";
             if (System.IO.File.Exists(jsonPath))
                 System.IO.File.Delete(jsonPath);
 

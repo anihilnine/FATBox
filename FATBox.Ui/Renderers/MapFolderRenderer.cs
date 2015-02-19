@@ -40,7 +40,7 @@ namespace FATBox.Ui.Renderers
 
             var l = new List<MapUnitDisplay>();
 
-            var saveContent = new LuaParser().ParseBalvery(_value.SavePath);
+            var saveContent = new LuaParser(UiData.Cache).ParseBalvery(_value.SavePath);
             foreach (var u in saveContent.Units)
             {
                 var bp = UiData.Catalog.Blueprints.First(x => x.BlueprintId == u.type);

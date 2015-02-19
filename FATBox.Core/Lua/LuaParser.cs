@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FATBox.Core.CatalogReading;
 using SharpLua;
 using SlimDX;
 
@@ -10,12 +11,21 @@ namespace FATBox.Core.Lua
 {
     public class LuaParser
     {
+        private readonly CatalogCache _cache;
+
+        public LuaParser(CatalogCache cache)
+        {
+            _cache = cache;
+        }
+
         public SaveContent ParseBalvery(string savePath)
         {
             var civilian = new Lore().GetFaction("civilian");
 
             var result = new SaveContent();
-            var dataContent = System.IO.File.ReadAllText(@"E:\projects\fa\unzippedmods\fa\mohodata\lua\dataInit.lua");
+
+            var f = _cache.GetCachedFilename("/lua/dataInit.lua");
+            var dataContent = System.IO.File.ReadAllText(f);
             var saveContent = System.IO.File.ReadAllText(savePath);
             var content = dataContent + "\r\n" + saveContent;
 

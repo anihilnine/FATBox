@@ -37,7 +37,7 @@ namespace FATBox.Ui
                 var map = new Map();
                 map.Load(m.ScmapPath, device);
 
-                var saveContent = new LuaParser().ParseBalvery(m.SavePath);
+                var saveContent = new LuaParser(UiData.Cache).ParseBalvery(m.SavePath);
                 
                 var l = new List<MapUnitDisplay>();
                 foreach (var u in saveContent.Units)
