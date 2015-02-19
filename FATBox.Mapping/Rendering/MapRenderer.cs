@@ -171,7 +171,6 @@ namespace FATBox.Mapping.Rendering
             CalculateProjections();
 
             var newPos = ScreenToWorld(_cameraAdjustPos);
-            Console.WriteLine(oldPos + " .. " + newPos);
 
             var change = Vector3.Subtract(oldPos, newPos);
             _cameraX += change.X;

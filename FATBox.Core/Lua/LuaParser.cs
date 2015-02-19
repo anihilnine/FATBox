@@ -22,8 +22,7 @@ namespace FATBox.Core.Lua
             content = content.Replace("#", "--#"); // why does FA use # as comments?
             content = content + "\r\nreturn Scenario";
             var x = new SharpLua.LuaInterface();
-            var a1 = (LuaTable)x.DoString(content)[0];
-
+            var a1 = (LuaTable)x.DoString(content)[0]; // todo: this can take 10 seconds!            
 
             // armies
             var a2 = (LuaTable)a1["Armies"];

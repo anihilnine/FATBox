@@ -14,7 +14,7 @@ namespace FATBox.Initialization
         {
             InitializeComponent();
 
-            var defaultValue = @"C:\FATBox";
+            var defaultValue = @"C:\FATBox.Working";
             textBox1.Text = Initializer.WorkingFolder ?? defaultValue;
         }
 
@@ -25,7 +25,6 @@ namespace FATBox.Initialization
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
             SetupWorkingDirectory();
 
             RunBlueprintDumper();
@@ -112,4 +111,5 @@ namespace FATBox.Initialization
             //}
         }
     }
+
 }
