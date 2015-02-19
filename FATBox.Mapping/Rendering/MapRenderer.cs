@@ -164,7 +164,7 @@ namespace SCMAPTools
         private void DoZoom()
         {
             if (_cameraAdjustAmount == 0) return;
-            var amt = _cameraAdjustAmount/8;
+            var amt = _cameraAdjustAmount/20;
             _cameraAdjustAmount -= amt;
             if (Math.Abs(_cameraAdjustAmount) < 1) _cameraAdjustAmount = 0;
 

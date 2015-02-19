@@ -25,8 +25,10 @@ namespace FATBox.Ui
             var device = UiData.DirectX9Device;
             var mapFolders = new MapRepository().GetAllMaps()
                 .OrderByDescending(x => x.Name.Contains("Balv"))
+                .ThenByDescending(x => x.Name.Contains("Balv"))
                 .ThenByDescending(x => x.Name.Contains("joust"))
-                .Take(5);
+                .Take(1);
+
             foreach (var m in mapFolders)
             {
 

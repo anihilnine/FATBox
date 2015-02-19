@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -18,24 +17,14 @@ namespace FATBox.Core.ModCatalog
 
         public string Type { get { return Source.Split('/')[1]; } }
 
-        [JsonProperty("Description")]
-        public string Description { get; set; }
-
         [JsonProperty("Categories")]
         public IList<string> Categories { get; set; }
 
-        [JsonProperty("BlueprintId")]
-        public string BlueprintId { get; set; }
+        [JsonProperty("AverageDensity")]
+        public double AverageDensity { get; set; }
 
         [JsonProperty("Source")]
         public string Source { get; set; }
-
-
-
-
-
-        [JsonProperty("AverageDensity")]
-        public double AverageDensity { get; set; }
 
         [JsonProperty("SelectionMeshScaleY")]
         public int SelectionMeshScaleY { get; set; }
@@ -78,6 +67,9 @@ namespace FATBox.Core.ModCatalog
 
         [JsonProperty("SelectionMeshScaleX")]
         public double SelectionMeshScaleX { get; set; }
+
+        [JsonProperty("Description")]
+        public string Description { get; set; }
 
         [JsonProperty("SelectionYOffset")]
         public double SelectionYOffset { get; set; }
@@ -147,6 +139,9 @@ namespace FATBox.Core.ModCatalog
 
         [JsonProperty("SelectionSizeY")]
         public int SelectionSizeY { get; set; }
+
+        [JsonProperty("BlueprintId")]
+        public string BlueprintId { get; set; }
 
         [JsonProperty("Display")]
         public Display Display { get; set; }
@@ -261,7 +256,6 @@ namespace FATBox.Core.ModCatalog
 
         [JsonProperty("WatchBone")]
         public int? WatchBone { get; set; }
-
     }
 
 }

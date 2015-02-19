@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Ui", "FATBox.Ui\FATBox.Ui.csproj", "{8F52A812-8BB6-45F2-BA90-2603ECD407F6}"
 EndProject
@@ -21,6 +21,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		GraphicsExperiment3.vsglog = GraphicsExperiment3.vsglog
 		GraphicsExperiment5.vsglog = GraphicsExperiment5.vsglog
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Sandpit", "FATBox.Sandpit\FATBox.Sandpit.csproj", "{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Initializer", "FATBox.Initializer\FATBox.Initializer.csproj", "{1402C773-FD8E-42D9-A624-2518F341E4A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Lua", "FATBox.Lua\FATBox.Lua.csproj", "{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +98,36 @@ Global
 		{587788F5-4602-4ADF-87AB-1E567103EED8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{587788F5-4602-4ADF-87AB-1E567103EED8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{587788F5-4602-4ADF-87AB-1E567103EED8}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}.Release|x86.ActiveCfg = Release|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1402C773-FD8E-42D9-A624-2518F341E4A5}.Release|x86.ActiveCfg = Release|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

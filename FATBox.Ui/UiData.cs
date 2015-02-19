@@ -13,7 +13,8 @@ namespace FATBox.Ui
 
         static UiData()
         {
-            var f = @"..\..\..\content\blueprints.json";
+            //var f = @"..\..\..\content\blueprints.json";
+            var f = @"c:\fatbox\blueprints.json";
             var str = System.IO.File.ReadAllText(f);
             Catalog = JsonConvert.DeserializeObject<Catalog>(str); // todo: wrap
             Cache = new CatalogCache(Catalog);

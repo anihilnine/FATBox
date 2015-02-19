@@ -1,0 +1,1 @@
+doscript '/dumpBlueprints.lua'
