@@ -180,6 +180,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FATBox.Initialization\FATBox.Initialization.csproj">
+      <Project>{1402C773-FD8E-42D9-A624-2518F341E4A5}</Project>
+      <Name>FATBox.Initialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FATBox.Util\FATBox.Util.csproj">
       <Project>{61B9DEA4-2E0C-4955-8301-F14B7190467C}</Project>
       <Name>FATBox.Util</Name>

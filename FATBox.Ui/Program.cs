@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using FATBox.Core.Lua;
 using FATBox.Core.ModCatalog;
+using FATBox.Initialization;
 using FATBox.Ui.DataNavigator;
 using FATBox.Ui.Renderers;
 using SlimDX.Windows;
@@ -21,6 +22,8 @@ namespace FATBox.Ui
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            Initializer.EnsureInitialized();
+
             // TODO: move
             DataNavigatorRenderers.Register(typeof(UnitRenderer));
             DataNavigatorRenderers.Register(typeof(StrategicIconRenderer));
@@ -30,12 +33,12 @@ namespace FATBox.Ui
 
 
 
-            //MessagePump.Run(new MapExplorer(), UiData.MainLoop);
+            MessagePump.Run(new MapExplorer(), UiData.MainLoop);
             //Application.Run(new MapExplorer());
             //Application.Run(new BlueprintExplorer());
             //LaunchTools.OmniView.OmniControl.Popup(UiData.Catalog.Blueprints);
 
-            MessagePump.Run(new MapViewer(), UiData.MainLoop);
+            //MessagePump.Run(new MapViewer(), UiData.MainLoop);
         }
     }
 }

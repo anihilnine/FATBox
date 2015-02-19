@@ -52,7 +52,7 @@ namespace FATBox.Core.ModCatalog
         public bool NeedUnpack { get; set; }
 
         [JsonProperty("GuardScanRadius")]
-        public int GuardScanRadius { get; set; }
+        public double GuardScanRadius { get; set; }
 
         [JsonProperty("TargetBones")]
         public IList<string> TargetBones { get; set; }

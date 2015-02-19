@@ -1,31 +1,28 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using FATBox.Core.CatalogReading;
-using FATBox.Mapping.Rendering;
-using SlimDX.Direct3D10;
-using SlimDX.D3DCompiler;
+using FATBox.Mapping.Scmap;
 using SlimDX;
-using SlimDX.Direct3D9;
+using SlimDX.D3DCompiler;
+using SlimDX.Direct3D10;
 using SlimDX.DXGI;
 using Device = SlimDX.Direct3D10.Device;
-using Resource = SlimDX.Direct3D10.Resource;
-using Resources = FATBox.Mapping.Properties.Resources;
-using System.IO;
-using System.Drawing;
 using Effect = SlimDX.Direct3D10.Effect;
 using Format = SlimDX.DXGI.Format;
 using ImageFileFormat = SlimDX.Direct3D10.ImageFileFormat;
 using PresentFlags = SlimDX.DXGI.PresentFlags;
+using Resource = SlimDX.Direct3D10.Resource;
+using Resources = FATBox.Mapping.Properties.Resources;
 using ShaderFlags = SlimDX.D3DCompiler.ShaderFlags;
-using Sprite = SlimDX.Direct3D10.Sprite;
-using SpriteFlags = SlimDX.Direct3D10.SpriteFlags;
 using SwapChain = SlimDX.DXGI.SwapChain;
 using SwapEffect = SlimDX.DXGI.SwapEffect;
 using Usage = SlimDX.DXGI.Usage;
 using Viewport = SlimDX.Direct3D10.Viewport;
 
-namespace SCMAPTools
+namespace FATBox.Mapping.Rendering
 {
     public class MapRenderer
     {

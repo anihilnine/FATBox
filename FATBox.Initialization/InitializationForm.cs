@@ -1,26 +1,21 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using FATBox.Initializer.Properties;
-using Microsoft.Win32;
+using FATBox.Initialization.Properties;
 
-namespace FATBox.Initializer
+namespace FATBox.Initialization
 {
-    public partial class Form1 : Form
+    
+
+    public partial class InitializationForm : Form
     {
-        public Form1()
+        public InitializationForm()
         {
             InitializeComponent();
 
             var defaultValue = @"C:\FATBox";
-            textBox1.Text = (string)Registry.GetValue(@"HKEY_CURRENT_USER\FATBox", "WorkingPath", null) ?? defaultValue;
+            textBox1.Text = Initializer.WorkingFolder ?? defaultValue;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -55,6 +50,7 @@ namespace FATBox.Initializer
             p.StartInfo = new ProcessStartInfo(
                 @"C:\ProgramData\FAForever\bin\ForgedAlliance.exe",
                 args);
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             p.Start();
 
             var jsonPath = path + @"\blueprints.json";
@@ -89,7 +85,6 @@ namespace FATBox.Initializer
             }
         }
 
-
         private void SetupWorkingDirectory()
         {
             //try
@@ -109,23 +104,12 @@ namespace FATBox.Initializer
                 System.IO.Compression.ZipFile.ExtractToDirectory(path + @"\FATBox.Lua.zip", path + @"\FATBox.Lua");
                 System.IO.File.Delete(path + @"\FATBox.Lua.zip");
 
-                Registry.SetValue(@"HKEY_CURRENT_USER\FATBox", "WorkingPath", path);
+                Initializer.WorkingFolder = path;
             //}
             //catch (Exception ex)
             //{
             //    MessageBox.Show(ex.ToString());
             //}
-        }
-    }
-
-    public static class Wait
-    {
-        public static void Until(Func<bool> a)
-        {
-            while (!a())
-            {
-                System.Threading.Thread.Sleep(100);
-            }
         }
     }
 }

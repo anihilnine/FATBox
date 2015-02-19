@@ -6,62 +6,65 @@
 // ***************************************************************************************
 
 
-public class Layer
+namespace FATBox.Mapping.Scmap
 {
+    public class Layer
+    {
 
-    public string PathTexture { get; set; }
-    public string PathNormalmap { get; set; }
-    public float ScaleTexture { get; set; }
+        public string PathTexture { get; set; }
+        public string PathNormalmap { get; set; }
+        public float ScaleTexture { get; set; }
 
-    public float ScaleNormalmap { get; set; }
-    public Layer()
-    {
-        this.PathTexture = "";
-        this.PathNormalmap = "";
-        this.ScaleTexture = 1f;
-        this.ScaleNormalmap = 1f;
-    }
+        public float ScaleNormalmap { get; set; }
+        public Layer()
+        {
+            this.PathTexture = "";
+            this.PathNormalmap = "";
+            this.ScaleTexture = 1f;
+            this.ScaleNormalmap = 1f;
+        }
 
-    public void Load(BinaryReader Stream)
-    {
-        PathTexture = Stream.ReadStringNull();
-        PathNormalmap = Stream.ReadStringNull();
-        ScaleTexture = Stream.ReadSingle();
-        ScaleNormalmap = Stream.ReadSingle();
-    }
-    public void LoadAlbedo(BinaryReader Stream)
-    {
-        PathTexture = Stream.ReadStringNull();
-        ScaleTexture = Stream.ReadSingle();
-    }
-    public void LoadNormal(BinaryReader Stream)
-    {
-        PathNormalmap = Stream.ReadStringNull();
-        ScaleNormalmap = Stream.ReadSingle();
-    }
+        public void Load(BinaryReader Stream)
+        {
+            PathTexture = Stream.ReadStringNull();
+            PathNormalmap = Stream.ReadStringNull();
+            ScaleTexture = Stream.ReadSingle();
+            ScaleNormalmap = Stream.ReadSingle();
+        }
+        public void LoadAlbedo(BinaryReader Stream)
+        {
+            PathTexture = Stream.ReadStringNull();
+            ScaleTexture = Stream.ReadSingle();
+        }
+        public void LoadNormal(BinaryReader Stream)
+        {
+            PathNormalmap = Stream.ReadStringNull();
+            ScaleNormalmap = Stream.ReadSingle();
+        }
 
-    public void Save(BinaryWriter Stream)
-    {
-        Stream.Write(PathTexture, true);
-        Stream.Write(PathNormalmap, true);
-        Stream.Write(ScaleTexture);
-        Stream.Write(ScaleNormalmap);
-    }
-    public void SaveAlbedo(BinaryWriter Stream)
-    {
-        string Path = PathTexture.Replace("\\", "/");
-        if (!string.IsNullOrEmpty(Path) & !Path.StartsWith("/"))
-            Path = "/" + Path;
-        Stream.Write(Path, true);
-        Stream.Write(ScaleTexture);
-    }
-    public void SaveNormal(BinaryWriter Stream)
-    {
-        string Path = PathNormalmap.Replace("\\", "/");
-        if (!string.IsNullOrEmpty(Path) & !Path.StartsWith("/"))
-            Path = "/" + Path;
-        Stream.Write(Path, true);
-        Stream.Write(ScaleNormalmap);
-    }
+        public void Save(BinaryWriter Stream)
+        {
+            Stream.Write(PathTexture, true);
+            Stream.Write(PathNormalmap, true);
+            Stream.Write(ScaleTexture);
+            Stream.Write(ScaleNormalmap);
+        }
+        public void SaveAlbedo(BinaryWriter Stream)
+        {
+            string Path = PathTexture.Replace("\\", "/");
+            if (!string.IsNullOrEmpty(Path) & !Path.StartsWith("/"))
+                Path = "/" + Path;
+            Stream.Write(Path, true);
+            Stream.Write(ScaleTexture);
+        }
+        public void SaveNormal(BinaryWriter Stream)
+        {
+            string Path = PathNormalmap.Replace("\\", "/");
+            if (!string.IsNullOrEmpty(Path) & !Path.StartsWith("/"))
+                Path = "/" + Path;
+            Stream.Write(Path, true);
+            Stream.Write(ScaleNormalmap);
+        }
 
+    }
 }

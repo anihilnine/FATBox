@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace SCMAPTools
+namespace FATBox.Mapping.Rendering
 {
     public class CellRefrence
     {

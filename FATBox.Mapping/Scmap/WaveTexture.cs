@@ -7,23 +7,25 @@
 
 
 using SlimDX;
-using System.IO;
 
-public class WaveTexture
+namespace FATBox.Mapping.Scmap
 {
-    public string TexPath{ get; set; }
-    public Vector2 NormalMovement{ get; set; }
-
-    public float NormalRepeat{ get; set; }
-    public void Load(BinaryReader Stream)
+    public class WaveTexture
     {
-        NormalMovement = Stream.ReadVector2();
-        TexPath = Stream.ReadStringNull();
-    }
+        public string TexPath{ get; set; }
+        public Vector2 NormalMovement{ get; set; }
 
-    public void Save(BinaryWriter Stream)
-    {
-        Stream.Write(NormalMovement);
-        Stream.Write(TexPath, true);
+        public float NormalRepeat{ get; set; }
+        public void Load(BinaryReader Stream)
+        {
+            NormalMovement = Stream.ReadVector2();
+            TexPath = Stream.ReadStringNull();
+        }
+
+        public void Save(BinaryWriter Stream)
+        {
+            Stream.Write(NormalMovement);
+            Stream.Write(TexPath, true);
+        }
     }
 }

@@ -6,34 +6,37 @@
 // ***************************************************************************************
 
 
-public class IntegerGroup
+namespace FATBox.Mapping.Scmap
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-
-    public int[] Data { get; set; }
-
-    public IntegerGroup()
+    public class IntegerGroup
     {
-        Data = new int[0];
-    }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
-    public void Load(BinaryReader Stream)
-    {
-        Id = Stream.ReadInt32();
-        Name = Stream.ReadStringNull();
-        int Length = Stream.ReadInt32();
-        Data = Stream.ReadInt32Array(Length);
-    }
+        public int[] Data { get; set; }
 
-    public void Save(BinaryWriter Stream)
-    {
-        Stream.Write(Id);
-        if (string.IsNullOrEmpty(Name))
-            Name = "Group_" + Id;
-        Stream.Write(Name, true);
-        Stream.Write(Data.Length);
-        Stream.Write(Data);
-    }
+        public IntegerGroup()
+        {
+            Data = new int[0];
+        }
 
+        public void Load(BinaryReader Stream)
+        {
+            Id = Stream.ReadInt32();
+            Name = Stream.ReadStringNull();
+            int Length = Stream.ReadInt32();
+            Data = Stream.ReadInt32Array(Length);
+        }
+
+        public void Save(BinaryWriter Stream)
+        {
+            Stream.Write(Id);
+            if (string.IsNullOrEmpty(Name))
+                Name = "Group_" + Id;
+            Stream.Write(Name, true);
+            Stream.Write(Data.Length);
+            Stream.Write(Data);
+        }
+
+    }
 }

@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using FATBox.Core.CatalogReading;
-using SlimDX.Direct3D10;
-using System.IO;
-using System.IO.Compression;
+﻿using FATBox.Core.CatalogReading;
 using SlimDX;
-using SlimDX.Direct3D9;
+using SlimDX.Direct3D10;
 using Device = SlimDX.Direct3D10.Device;
 
-namespace SCMAPTools
+namespace FATBox.Mapping.Rendering
 {
     public class MergedModDdsLoader
     {

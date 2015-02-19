@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using FATBox.Core;
+using FATBox.Core.Maps;
 using FATBox.Util;
 using FATBox.Util.Extensions;
 using SlimDX.Direct3D9;

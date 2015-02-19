@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.Lua;
+using FATBox.Core.Maps;
 using FATBox.Core.ModCatalog;
+using FATBox.Mapping.Rendering;
+using FATBox.Mapping.Scmap;
 using FATBox.Ui.Controls;
-using SCMAPTools;
 
 namespace FATBox.Ui
 {

@@ -1,6 +1,6 @@
-﻿namespace FATBox.Initializer
+﻿namespace FATBox.Initialization
 {
-    partial class Form1
+    partial class InitializationForm
     {
         /// <summary>
         /// Required designer variable.

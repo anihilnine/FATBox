@@ -8,56 +8,59 @@
 
 using SlimDX;
 
-public class BinaryWriter : System.IO.BinaryWriter
+namespace FATBox.Mapping.Scmap
 {
-    private const byte NullByte = 0;
-    public BinaryWriter(System.IO.Stream Stream)
-        : base(Stream)
+    public class BinaryWriter : System.IO.BinaryWriter
     {
-    }
-
-    public void Write(Vector2 value)
-    {
-        this.Write(value.X);
-        this.Write(value.Y);
-    }
-
-    public void Write(Vector3 value)
-    {
-        this.Write(value.X);
-        this.Write(value.Y);
-        this.Write(value.Z);
-    }
-
-    public void Write(Vector4 value)
-    {
-        this.Write(value.X);
-        this.Write(value.Y);
-        this.Write(value.Z);
-        this.Write(value.W);
-    }
-
-    public void Write(string value, bool NullTerminated)
-    {
-        this.Write(System.Text.Encoding.ASCII.GetBytes(value));
-        if (NullTerminated)
-            this.Write(NullByte);
-    }
-
-    public void Write(short[] value)
-    {
-        for (int i = 0; i <= value.Length - 1; i++)
+        private const byte NullByte = 0;
+        public BinaryWriter(System.IO.Stream Stream)
+            : base(Stream)
         {
-            this.Write(value[i]);
         }
-    }
 
-    public void Write(int[] value)
-    {
-        for (int i = 0; i <= value.Length - 1; i++)
+        public void Write(Vector2 value)
         {
-            this.Write(value[i]);
+            this.Write(value.X);
+            this.Write(value.Y);
         }
-    }
 
+        public void Write(Vector3 value)
+        {
+            this.Write(value.X);
+            this.Write(value.Y);
+            this.Write(value.Z);
+        }
+
+        public void Write(Vector4 value)
+        {
+            this.Write(value.X);
+            this.Write(value.Y);
+            this.Write(value.Z);
+            this.Write(value.W);
+        }
+
+        public void Write(string value, bool NullTerminated)
+        {
+            this.Write(System.Text.Encoding.ASCII.GetBytes(value));
+            if (NullTerminated)
+                this.Write(NullByte);
+        }
+
+        public void Write(short[] value)
+        {
+            for (int i = 0; i <= value.Length - 1; i++)
+            {
+                this.Write(value[i]);
+            }
+        }
+
+        public void Write(int[] value)
+        {
+            for (int i = 0; i <= value.Length - 1; i++)
+            {
+                this.Write(value[i]);
+            }
+        }
+
+    }
 }

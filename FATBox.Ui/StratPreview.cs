@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using FATBox.Core;
 using FATBox.Core.ModCatalog;
+using FATBox.Mapping.Scmap;
 using FATBox.Util.Extensions;
 using SlimDX;
 

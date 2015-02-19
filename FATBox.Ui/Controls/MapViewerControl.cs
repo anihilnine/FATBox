@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FATBox.Core;
-using SCMAPTools;
+using FATBox.Core.Maps;
+using FATBox.Mapping.Rendering;
+using FATBox.Mapping.Scmap;
 
 namespace FATBox.Ui.Controls
 {

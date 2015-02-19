@@ -2,7 +2,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace FATBox.Core
+namespace FATBox.Core.Maps
 {
     public class MapFolder
     {

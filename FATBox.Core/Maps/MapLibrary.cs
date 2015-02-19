@@ -1,7 +1,8 @@
 using System.IO;
 using System.Linq;
+using FATBox.Util;
 
-namespace FATBox.Core
+namespace FATBox.Core.Maps
 {
     public class MapLibrary
     {

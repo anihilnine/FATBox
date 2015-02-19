@@ -2,6 +2,7 @@ using System;
 using FATBox.Core;
 using FATBox.Core.CatalogReading;
 using FATBox.Core.ModCatalog;
+using FATBox.Initialization;
 using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 using SlimDX.Direct3D9;
@@ -14,7 +15,7 @@ namespace FATBox.Ui
         static UiData()
         {
             //var f = @"..\..\..\content\blueprints.json";
-            var f = @"c:\fatbox\blueprints.json";
+            var f = Initializer.WorkingFolder + @"\blueprints.json";
             var str = System.IO.File.ReadAllText(f);
             Catalog = JsonConvert.DeserializeObject<Catalog>(str); // todo: wrap
             Cache = new CatalogCache(Catalog);

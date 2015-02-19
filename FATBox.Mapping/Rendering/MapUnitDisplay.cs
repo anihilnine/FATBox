@@ -1,8 +1,6 @@
 using SlimDX;
-using SlimDX.Direct3D10;
-using SlimDX.Direct3D9;
 
-namespace SCMAPTools
+namespace FATBox.Mapping.Rendering
 {
     public class MapUnitDisplay
     {

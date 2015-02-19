@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FATBox.Core.ModCatalog;
 
-namespace FATBox.Ui
+namespace FATBox.Core
 {
     public class CategoryExpression
     {

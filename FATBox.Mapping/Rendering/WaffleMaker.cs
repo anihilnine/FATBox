@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using FATBox.Core.CatalogReading;
-using SCMAPTools;
 using SlimDX.Direct3D10;
 using SlimDX.D3DCompiler;
 using SlimDX;

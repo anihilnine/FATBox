@@ -1,4 +1,5 @@
 ﻿using System;
+using FATBox.Initialization;
 using Xamasoft.JsonClassGenerator;
 
 namespace FATBox.CatalogGenerator
@@ -12,7 +13,7 @@ namespace FATBox.CatalogGenerator
         static void Main()
         {
             var gen = new JsonClassGenerator();
-            var f = @"c:\FATBox\blueprints.json";
+            var f = Initializer.WorkingFolder + @"\blueprints.json";
             gen.Example = System.IO.File.ReadAllText(f);
             gen.ExplicitDeserialization = false;
             gen.Namespace = "FATBox.Core.ModCatalog";

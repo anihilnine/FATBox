@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Sandpit", "FATBox.Sandpit\FATBox.Sandpit.csproj", "{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Initializer", "FATBox.Initializer\FATBox.Initializer.csproj", "{1402C773-FD8E-42D9-A624-2518F341E4A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Initialization", "FATBox.Initialization\FATBox.Initialization.csproj", "{1402C773-FD8E-42D9-A624-2518F341E4A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Lua", "FATBox.Lua\FATBox.Lua.csproj", "{A47C0EDF-E4F9-4C7E-839B-4BC03412D629}"
 EndProject

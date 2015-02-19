@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using FATBox.Core.ModCatalog;
+using FATBox.Initialization;
 using FATBox.Util;
 
 namespace FATBox.Core.CatalogReading
@@ -10,7 +11,6 @@ namespace FATBox.Core.CatalogReading
     public class CatalogCache
     {
         private CatalogReader _loader;
-        private string _baseFolder = @"e:\junk\FATBoxCache\";
 
         public CatalogCache(Catalog catalog)
         {
@@ -30,7 +30,7 @@ namespace FATBox.Core.CatalogReading
         {
 
             if (string.IsNullOrEmpty(modFilename)) return null;
-            var cacheFilename = Path.Combine(_baseFolder, modFilename.Replace("/", "\\").TrimStart('\\'));
+            var cacheFilename = Path.Combine(Initializer.WorkingFolder + @"\FACache", modFilename.Replace("/", "\\").TrimStart('\\'));
             var cacheFolder = Path.GetDirectoryName(cacheFilename);
             if (!Directory.Exists(cacheFolder))
                 Directory.CreateDirectory(cacheFolder);
