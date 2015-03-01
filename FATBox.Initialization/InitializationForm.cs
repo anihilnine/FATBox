@@ -27,7 +27,7 @@ namespace FATBox.Initialization
         {
             SetupWorkingDirectory();
 
-            RunBlueprintDumper();
+            RunBlueprintDumper(); 
         }
 
         private void RunBlueprintDumper()

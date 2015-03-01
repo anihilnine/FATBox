@@ -33,9 +33,9 @@ namespace FATBox.Ui
 
 
 
-            MessagePump.Run(new MapExplorer(), UiData.MainLoop);
+            //MessagePump.Run(new MapExplorer(), UiData.MainLoop);
             //Application.Run(new MapExplorer());
-            //Application.Run(new BlueprintExplorer());
+            Application.Run(new BlueprintExplorer());
             //LaunchTools.OmniView.OmniControl.Popup(UiData.Catalog.Blueprints);
 
             //MessagePump.Run(new MapViewer(), UiData.MainLoop);

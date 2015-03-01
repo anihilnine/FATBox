@@ -18,6 +18,38 @@ namespace FATBox.Ui
             InitializeComponent();
 
             SetData(UiData.Catalog.Blueprints);
+
+            var projectiles = UiData.Catalog.Blueprints
+                .Where(x => x.Type == "projectiles" && x.Economy != null && (x.Economy.BuildCostEnergy > 0 || x.Economy.BuildCostMass > 0))
+                .ToList();
+
+            var bwp = UiData.Catalog.Blueprints
+                .Where(x => x.Weapon != null)
+                .SelectMany(blueprint => blueprint.Weapon.Select(weapon => new {blueprint, weapon}))
+                .Join(projectiles, x => x.weapon.ProjectileId, x => x.BlueprintId, (x, p) => new {unit = x.blueprint, x.weapon, projectile = p})
+                .Select(x => new
+                {
+                    StrategicIcon = x.unit.StrategicIconName,
+                    UnitName = Localizer.Localize(x.unit.General.UnitName),
+                    x.unit.General.FactionName,
+                    x.unit.General.TechLevel,
+                    UnitDescription = Localizer.Localize(x.unit.Description),
+
+                    UnitBuildRate = x.unit.Economy.BuildRate,
+
+                    WeaponName = x.weapon.DisplayName,
+                    ProjectileMass = x.projectile.Economy.BuildCostMass,
+                    ProjectileEnergy = x.projectile.Economy.BuildCostEnergy,
+                    ProjectileBuildTime = x.projectile.Economy.BuildTime,
+
+                    //x.unit,
+                    //x.projectile,
+                    //x.weapon
+                })
+                .OrderByDescending(x => x.ProjectileMass)
+                .ToArray();
+
+            dataNavigator.SetObject(null, bwp, true);
         }
 
         private void SetData(IEnumerable<Blueprint> blueprints)
