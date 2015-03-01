@@ -70,7 +70,7 @@ namespace FATBox.Ui.Controls
             gra.FillRectangle(brush, rect);
             gra.DrawString(map.Name, Font, Brushes.White, rect);
 
-            gra.DrawRectangle(Pens.Black, 0, 0, 99, 99);
+            //gra.DrawRectangle(Pens.Black, 0, 0, 99, 99);
             gra.Dispose();
             return dst;
         }
@@ -93,6 +93,11 @@ namespace FATBox.Ui.Controls
         protected override void OnEnter(EventArgs e)
         {
             base.Parent.Focus();
+        }
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            base.OnDoubleClick(e);
         }
 
     }

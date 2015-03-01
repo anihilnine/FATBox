@@ -56,7 +56,7 @@ namespace FATBox.Ui
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            LaunchMap(new MapRepository().GetAllMaps().First());
+            LaunchMap(new MapRepository().GetAllMaps().First(x => x.Name.Contains("Balv")));
         }
     }
 }

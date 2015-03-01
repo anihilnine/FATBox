@@ -42,6 +42,7 @@ namespace FATBox.Mapping.Rendering
         Matrix _projectionMatrix;
 
         //Map Information
+        private readonly Control _control;
         readonly Map _map;
         private readonly CatalogCache _cache;
         readonly float _mapScale;
@@ -89,6 +90,7 @@ namespace FATBox.Mapping.Rendering
         {
             CreateDeviceAndSwapChain(control);
 
+            _control = control;
             _map = mapData;
             _cache = cache;
             _mergedModDdsLoader = new MergedModDdsLoader(cache, _device);
@@ -104,6 +106,13 @@ namespace FATBox.Mapping.Rendering
             TimeValue = 0;
 
             SetCameraStartPosition();
+
+            control.Resize += ControlOnResize;
+        }
+
+        private void ControlOnResize(object sender, EventArgs eventArgs)
+        {
+            ResetViewPortDimensions();
         }
 
 
@@ -130,6 +139,22 @@ namespace FATBox.Mapping.Rendering
                 //* Matrix.Translation(-0.5f, -1f, 0);
         }
 
+        public void ResetViewPortDimensions()
+        {
+            _viewport = new Viewport(0, 0, _control.Width, _control.Height);
+            
+            _rtt.Dispose();
+            _renderTarget.Dispose();
+            _swapChain.ResizeBuffers(1, 0, 0, Format.R8G8B8A8_UNorm, SwapChainFlags.AllowModeSwitch);
+            _rtt = Resource.FromSwapChain<Texture2D>(_swapChain, 0);
+            _renderTarget = new RenderTargetView(_device, _rtt);
+
+            LoadStratIconStuff();
+            CalculateProjections();
+            _waffle.ViewPort = _viewport;
+            _waffle.CompositeMatrix = _stratIconCompositeMatrix;
+        }
+
 
         public void CreateDeviceAndSwapChain(System.Windows.Forms.Control control)
         {
@@ -144,6 +169,7 @@ namespace FATBox.Mapping.Rendering
                 Flags = SwapChainFlags.AllowModeSwitch,
                 SwapEffect = SwapEffect.Discard
             };
+            
 
             _viewport = new Viewport(0, 0, control.Width, control.Height);
 
@@ -200,14 +226,17 @@ namespace FATBox.Mapping.Rendering
 
             //Generate Normal Texture
             Texture2D normalTexA = RenderNormalMap();
+            Write("normalTex", normalTexA);
 
             //Final Normal Map Shader
             Texture2D finalNormalTex = RenderFinalNormalMap(normalTexA);
+            Write("finalNormalTex", finalNormalTex);
 
             //Render Terrain
             Texture2D terrTex = RenderTerrain(finalNormalTex);
+            Write("terrTex", terrTex);
 
-            //Render Water
+            ////Render Water
             RenderWater(terrTex);
 
             RenderMarkers();
@@ -221,6 +250,18 @@ namespace FATBox.Mapping.Rendering
             //_renderTarget.Dispose();
 
             _swapChain.Present(0, PresentFlags.None);
+        }
+
+        private void Write(string normaltex, Texture2D normalTexA)
+        {
+            return;
+            MemoryStream ms = new MemoryStream();
+            Texture2D.SaveTextureToFile(normalTexA, ImageFileFormat.Dds, "e:\\junk\\" + normaltex + ".dds");
+            Texture2D.ToStream(normalTexA, ImageFileFormat.Png, ms);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            Bitmap bm = new Bitmap(ms);
+            bm.Save("e:\\junk\\" + normaltex + ".png");
         }
 
 
@@ -424,7 +465,8 @@ namespace FATBox.Mapping.Rendering
             float uZ = (float)Math.Cos(UpAngle);
 
             _viewMatrix = Matrix.LookAtRH(new Vector3(_cameraX, _cameraY, _cameraZ), new Vector3(_lookatX, 0, _lookatY), new Vector3(uX, uY, uZ));
-            _projectionMatrix = Matrix.PerspectiveFovRH((float)Math.PI / 4.0f, _viewport.Width / _viewport.Height, 0.1f, 80000.0f);
+            var aspect = (float)_viewport.Width / (float)_viewport.Height;
+            _projectionMatrix = Matrix.PerspectiveFovRH((float)Math.PI / 4.0f, aspect, 0.1f, 80000.0f);
 
             var x1 = ScreenToWorld(new Point(0, 0));
             var x2 = ScreenToWorld(new Point(1, 0));
@@ -648,6 +690,7 @@ namespace FATBox.Mapping.Rendering
             _device.ClearAllObjects();
 
             _vertices.Position = 0;
+
 
             Texture2DDescription textureDesc = new Texture2DDescription();
             textureDesc.Width = _viewport.Width;

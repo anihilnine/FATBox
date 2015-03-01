@@ -32,19 +32,19 @@ namespace FATBox.Mapping.Rendering
     {
         Device _device;
         private Effect _effect;
-        Viewport _viewport;
-        private readonly Matrix _compositeMatrix;
+        public Viewport ViewPort;
+        public Matrix CompositeMatrix;
         private readonly MergedModDdsLoader _mergedModDdsLoader;
         private RenderTargetView _waffle;
         private int WaffleWidth = 256;
         private int WaffleHeight = 256;
         private Dictionary<string, Cell> Cells = new Dictionary<string, Cell>();
 
-        public WaffleMaker(Device device, Viewport viewport, Matrix compositeMatrix, MergedModDdsLoader mergedModDdsLoader)
+        public WaffleMaker(Device device, Viewport viewPort, Matrix compositeMatrix, MergedModDdsLoader mergedModDdsLoader)
         {
             _device = device;
-            _viewport = viewport;
-            _compositeMatrix = compositeMatrix;
+            ViewPort = viewPort;
+            CompositeMatrix = compositeMatrix;
             _mergedModDdsLoader = mergedModDdsLoader;
 
             _effect = Effect.FromMemory(_device, Resources.basic, "fx_4_0", ShaderFlags.EnableBackwardsCompatibility, EffectFlags.None);
@@ -230,7 +230,7 @@ namespace FATBox.Mapping.Rendering
 
             var textureResource = new ShaderResourceView(_device, instr.texture);
             _effect.GetVariableByName("Texture1").AsResource().SetResource(textureResource);
-            _effect.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(_compositeMatrix);
+            _effect.GetVariableByName("CompositeMatrix").AsMatrix().SetMatrix(CompositeMatrix);
 
             EffectTechnique technique = _effect.GetTechniqueByName("TMyTechnique");
             EffectPass pass = technique.GetPassByIndex(0);
@@ -243,7 +243,7 @@ namespace FATBox.Mapping.Rendering
                 });
 
             _device.OutputMerger.SetTargets(renderTargetView);
-            _device.Rasterizer.SetViewports(_viewport);
+            _device.Rasterizer.SetViewports(ViewPort);
 
             _device.InputAssembler.SetInputLayout(layout);
             _device.InputAssembler.SetPrimitiveTopology(PrimitiveTopology.TriangleList);

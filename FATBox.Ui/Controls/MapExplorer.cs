@@ -9,7 +9,6 @@ namespace FATBox.Ui.Controls
     public partial class MapExplorer : UserControl
     {
         MapFolder[] _maps;
-        private MapFolder _selectedMap;
         private MapThumbnail _selectedThumbnail;
 
         public MapExplorer()
@@ -45,33 +44,41 @@ namespace FATBox.Ui.Controls
                 mt.Padding = new Padding(0);
                 mt.SetMap(m);
                 mt.Click += MtOnClick;
+                mt.DoubleClick += MtOnDoubleClick;
                 flowLayoutPanel1.Controls.Add(mt);
             }
             
         }
 
-        private void MtOnClick(object sender, EventArgs eventArgs)
+        private void MtOnDoubleClick(object sender, EventArgs eventArgs)
         {
-            if (_selectedThumbnail != null) _selectedThumbnail.Selected = false;
-            var mapThumbnail = (MapThumbnail) sender;
-            _selectedThumbnail = mapThumbnail;
-            SetSelectedMap(mapThumbnail.Map);
-            _selectedThumbnail.Selected = true;
+            SetSelectedMap((MapThumbnail)sender);
+            OpenButton_Click(null, null);
         }
 
-        private void SetSelectedMap(MapFolder map)
+        private void MtOnClick(object sender, EventArgs eventArgs)
         {
-            _selectedMap = map;
+            SetSelectedMap((MapThumbnail) sender);
+        }
 
-            if (map == null)
+        private void SetSelectedMap(MapThumbnail mapThumbnail)
+        {
+            if (_selectedThumbnail != null) 
+                _selectedThumbnail.Selected = false;
+
+            _selectedThumbnail = mapThumbnail;
+
+            if (_selectedThumbnail == null)
             {
                 SelectedMapPanel.Visible = false;
             }
             else
             {
                 SelectedMapPanel.Visible = true;
-                label1.Text = _selectedMap.Name;
+                label1.Text = _selectedThumbnail.Map.Name;
+                _selectedThumbnail.Selected = true;
             }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -81,7 +88,7 @@ namespace FATBox.Ui.Controls
 
         private void OpenButton_Click(object sender, EventArgs e)
         {
-            UiData.MainForm.LaunchMap(_selectedMap);
+            UiData.MainForm.LaunchMap(_selectedThumbnail.Map);
         }
 
         private void WindowsExplorerButton_Click(object sender, EventArgs e)
