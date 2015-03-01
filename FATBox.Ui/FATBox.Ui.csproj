@@ -59,7 +59,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BlueprintGridRow.cs" />
+    <Compile Include="Controls\BlueprintGridRow.cs" />
+    <Compile Include="Controls\MapThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MapThumbnail.Designer.cs">
+      <DependentUpon>MapThumbnail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MapViewerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -76,17 +82,17 @@
       <DependentUpon>DataNavigator.cs</DependentUpon>
     </Compile>
     <Compile Include="DataNavigator\DataNavigatorRenderers.cs" />
-    <Compile Include="MapExplorer.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MapExplorer.Designer.cs">
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MapExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MapExplorer.Designer.cs">
       <DependentUpon>MapExplorer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MapViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MapViewer.Designer.cs">
-      <DependentUpon>MapViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Renderers\DdsRenderer.cs">
       <SubType>UserControl</SubType>
@@ -112,10 +118,10 @@
     <Compile Include="Renderers\StrategicIconRenderer.Designer.cs">
       <DependentUpon>StrategicIconRenderer.cs</DependentUpon>
     </Compile>
-    <Compile Include="BlueprintExplorer.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Controls\BlueprintExplorer.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BlueprintExplorer.Designer.cs">
+    <Compile Include="Controls\BlueprintExplorer.Designer.cs">
       <DependentUpon>BlueprintExplorer.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -126,16 +132,19 @@
     <Compile Include="Renderers\UnitRenderer.Designer.cs">
       <DependentUpon>UnitRenderer.cs</DependentUpon>
     </Compile>
-    <Compile Include="StratPreview.cs" />
+    <Compile Include="Renderers\StratPreview.cs" />
     <Compile Include="UiData.cs" />
+    <EmbeddedResource Include="Controls\MapThumbnail.resx">
+      <DependentUpon>MapThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
       <DependentUpon>DataNavigator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MapExplorer.resx">
-      <DependentUpon>MapExplorer.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MapViewer.resx">
-      <DependentUpon>MapViewer.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\MapExplorer.resx">
+      <DependentUpon>MapExplorer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Renderers\DdsRenderer.resx">
       <DependentUpon>DdsRenderer.cs</DependentUpon>
@@ -149,7 +158,7 @@
     <EmbeddedResource Include="Renderers\StrategicIconRenderer.resx">
       <DependentUpon>StrategicIconRenderer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BlueprintExplorer.resx">
+    <EmbeddedResource Include="Controls\BlueprintExplorer.resx">
       <DependentUpon>BlueprintExplorer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

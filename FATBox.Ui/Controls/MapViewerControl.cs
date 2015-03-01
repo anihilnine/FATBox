@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FATBox.Core;
+using FATBox.Core.Lua;
 using FATBox.Core.Maps;
 using FATBox.Mapping.Rendering;
 using FATBox.Mapping.Scmap;
@@ -23,7 +24,6 @@ namespace FATBox.Ui.Controls
         {
             InitializeComponent();
 
-            UiData.Tick += UiDataOnTick;
         }
 
         
@@ -96,11 +96,45 @@ namespace FATBox.Ui.Controls
 
 
 
-        public void SetMap(Map map, MapFolder mapFolder)
+        public void SetMap(MapFolder m)
         {
-            _mapRenderer = new MapRenderer(this, map, UiData.Cache);
 
-            Redraw();
+            var device = UiData.DirectX9Device;
+            var map = new Map();
+            map.Load(m.ScmapPath, device);
+
+            var saveContent = UiData.LuaParser.ParseMapSaveFile(m.SavePath);
+
+            var l = new List<MapUnitDisplay>();
+            foreach (var u in saveContent.Units)
+            {
+                var bp = UiData.Catalog.Blueprints.First(x => x.BlueprintId == u.type);
+                l.Add(new MapUnitDisplay { StrategicIconName = bp.StrategicIconName, WorldPosition = u.pos, Color = u.color });
+            }
+
+            var markers = new List<MapUnitDisplay>();
+            foreach (var scm in saveContent.Markers)
+            {
+                var isMass = scm.type == "Mass";
+                var isHydro = scm.type == "Hydrocarbon";
+                if (isMass || isHydro)
+                {
+                    var mud = new MapUnitDisplay
+                    {
+                        StrategicIconName = isHydro ? UiData.Lore.HydroSmallMarkerLocation : UiData.Lore.MassSmallMarkerLocation,
+                        WorldPosition = scm.pos,
+                        Scale = 0.5f
+                    };
+                    markers.Add(mud);
+                }
+            }
+
+            _mapRenderer = new MapRenderer(this, map, UiData.Cache);
+            _mapRenderer.SetMapUnitDisplays(l.ToArray());
+            _mapRenderer.SetMarkers(markers.ToArray());
+
+            UiData.Tick += UiDataOnTick;
+
         }
 
         public void Redraw()
@@ -130,19 +164,5 @@ namespace FATBox.Ui.Controls
             base.OnMouseEnter(e);
         }
 
-        public void DoTest()
-        {
-           // _mapRenderer.DoTest();
-        }
-
-        public void SetMapUnitDisplays(MapUnitDisplay[] bits)
-        {
-            _mapRenderer.SetMapUnitDisplays(bits);
-        }
-
-        public void SetMarkers(MapUnitDisplay[] bits)
-        {
-            _mapRenderer.SetMarkers(bits);
-        }
     }
 }

@@ -31,14 +31,7 @@ namespace FATBox.Ui
             DataNavigatorRenderers.Register(typeof(DdsRenderer));
             DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
 
-
-
-            //MessagePump.Run(new MapExplorer(), UiData.MainLoop);
-            //Application.Run(new MapExplorer());
-            Application.Run(new BlueprintExplorer());
-            //LaunchTools.OmniView.OmniControl.Popup(UiData.Catalog.Blueprints);
-
-            //MessagePump.Run(new MapViewer(), UiData.MainLoop);
+            MessagePump.Run(new MainForm(), UiData.MainLoop);
         }
     }
 }

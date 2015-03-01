@@ -7,7 +7,7 @@ using FATBox.Mapping.Scmap;
 using FATBox.Util.Extensions;
 using SlimDX;
 
-namespace FATBox.Ui
+namespace FATBox.Ui.Renderers
 {
     public class StratPreview
     {

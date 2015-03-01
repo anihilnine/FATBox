@@ -1,6 +1,7 @@
 using System;
 using FATBox.Core;
 using FATBox.Core.CatalogReading;
+using FATBox.Core.Lua;
 using FATBox.Core.ModCatalog;
 using FATBox.Initialization;
 using Microsoft.Win32.SafeHandles;
@@ -11,18 +12,26 @@ namespace FATBox.Ui
 {
     public static class UiData
     {
-
         static UiData()
         {
-            //var f = @"..\..\..\content\blueprints.json";
             var f = Initializer.WorkingFolder + @"\blueprints.json";
             var str = System.IO.File.ReadAllText(f);
             Catalog = JsonConvert.DeserializeObject<Catalog>(str); // todo: wrap
             Cache = new CatalogCache(Catalog);
             Lore = new Lore();
             StrategicIconFactionifier = new StrategicIconFactionifier(Lore);
+            LuaParser = new LuaParser(Cache);
             DirectX9Device = CreateDevice();
         }
+
+        public static void Initialize(MainForm mainForm)
+        {
+            MainForm = mainForm;
+        }
+
+        public static MainForm MainForm { get; set; }
+
+        public static LuaParser LuaParser { get; set; }
 
         public static Device DirectX9Device { get; set; }
 
@@ -45,5 +54,7 @@ namespace FATBox.Ui
             if (Tick != null)
                 Tick(null, null);
         }
+
+ 
     }
 }

@@ -25,33 +25,11 @@ namespace FATBox.Ui.Renderers
         public MapFolderRenderer()
         {
             InitializeComponent();
-            Dock = DockStyle.Fill;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var mpc = new MapViewerControl();
-            mpc.Dock = DockStyle.Fill;
-            //mpc.Width = mpc.Height = 400;
-            var f = DataNavigator.DataNavigator.PopupControl(mpc);
-            f.Width = 600;
-            f.Height = 600;
-            mpc.WireForm(f);
-
-            var l = new List<MapUnitDisplay>();
-
-            var saveContent = new LuaParser(UiData.Cache).ParseBalvery(_value.SavePath);
-            foreach (var u in saveContent.Units)
-            {
-                var bp = UiData.Catalog.Blueprints.First(x => x.BlueprintId == u.type);
-                l.Add(new MapUnitDisplay { StrategicIconName = bp.StrategicIconName, WorldPosition = u.pos, Color = u.color });
-            }
-
-
-            mpc.SetMap(_map, _value);
-            mpc.SetMapUnitDisplays(l.ToArray());
-
-            mpc.Redraw();
+            UiData.MainForm.LaunchMap(_value);
         }
 
         public override bool SetObject(string propertyName, MapFolder value)

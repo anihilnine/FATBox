@@ -2,7 +2,7 @@ using System.Drawing;
 using FATBox.Core;
 using FATBox.Core.ModCatalog;
 
-namespace FATBox.Ui
+namespace FATBox.Ui.Controls
 {
     internal class BlueprintGridRow
     {

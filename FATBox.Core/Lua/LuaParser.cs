@@ -18,7 +18,7 @@ namespace FATBox.Core.Lua
             _cache = cache;
         }
 
-        public SaveContent ParseBalvery(string savePath)
+        public SaveContent ParseMapSaveFile(string savePath)
         {
             var civilian = new Lore().GetFaction("civilian");
 
