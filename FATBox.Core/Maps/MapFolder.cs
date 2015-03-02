@@ -1,14 +1,20 @@
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using FATBox.Core.Lua;
+using SlimDX.DirectSound;
 
 namespace FATBox.Core.Maps
 {
     public class MapFolder
     {
+        private readonly LuaParser _luaParser;
+
         private Image _image;
-        public MapFolder(string scenarioPath)
+        public MapFolder(string scenarioPath, LuaParser luaParser)
         {
+            _luaParser = luaParser;
             Name = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(scenarioPath));
             ScenarioPath = scenarioPath;
             ScmapPath = scenarioPath.Replace("_scenario.lua", ".scmap"); // todo: load this from scenario file
@@ -35,37 +41,85 @@ namespace FATBox.Core.Maps
 
         public string ScenarioPath { get; set; }
 
+        private ScenarioContent _scenarioContent;
+
+        public ScenarioContent ScenarioContent
+        {
+            get
+            {
+                if (_scenarioContent == null)
+                {
+                    try
+                    {
+                        _scenarioContent = _luaParser.ParseMapScenarioFile(ScenarioPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        _scenarioContent = new ScenarioContent() {Name = "Error parsing scenario file"};
+                    }
+                }
+                return _scenarioContent;
+            }
+        }
+
+
         public string Name { get; set; }
         public string Type { get; set; }
         public bool IsNormalMultiplayer { get; set; }
 
-        public Image Image
+        public Image SmallestImage
         {
             get
             {
                 if (_image == null)
                 {
-                    var path = System.IO.Path.GetDirectoryName(ScmapPath);
-                    var pattern = Name + "*.png";
-                    var files = System.IO.Directory.GetFiles(path, pattern, SearchOption.AllDirectories);
-                    if (files.Any())
+                    var path = SmallestImagePath;
+                    if (path != null)
                     {
-                        var fileInfos = files
-                            .Select(file => new FileInfo(file));
-
-                        var smallestFile = fileInfos
-                            .OrderBy(x => x.Length)
-                            .First();
-
-                        _image = Image.FromFile(smallestFile.FullName);
+                        _image = Image.FromFile(path);
                     }
-
                 }
                 return _image;
             }
         }
 
         public string ScmapPath { get; set; }
+        public string LargestImagePath
+        {
+            get
+            {
+                if (!ImageFileInfos.Any()) return null;
+                var info = ImageFileInfos.OrderByDescending(x => x.Length).First();
+                return info.FullName;
+            }
+        }
 
+        public string SmallestImagePath
+        {
+            get
+            {
+                if (!ImageFileInfos.Any()) return null;
+                var info = ImageFileInfos.OrderBy(x => x.Length).First();
+                return info.FullName;
+            }
+        }
+
+        private FileInfo[] _imageFileInfos;
+        public FileInfo[] ImageFileInfos
+        {
+            get
+            {
+                if (_imageFileInfos == null)
+                {
+                    var path = System.IO.Path.GetDirectoryName(ScmapPath);
+                    var pattern = Name + "*.png";
+                    var files = System.IO.Directory.GetFiles(path, pattern, SearchOption.AllDirectories);
+                    _imageFileInfos = files
+                        .Select(file => new FileInfo(file))
+                        .ToArray();
+                }
+                return _imageFileInfos;
+            }
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,12 +23,7 @@ namespace FATBox.Core.Lua
 
             var result = new SaveContent();
 
-            var f = _cache.GetCachedFilename("/lua/dataInit.lua");
-            var dataContent = System.IO.File.ReadAllText(f);
-            var saveContent = System.IO.File.ReadAllText(savePath);
-            var content = dataContent + "\r\n" + saveContent;
-
-            content = content.Replace("#", "--#"); // why does FA use # as comments?
+            var content = FormatLua(savePath);
             content = content + "\r\nreturn Scenario";
             var x = new SharpLua.LuaInterface();
             var a1 = (LuaTable)x.DoString(content)[0]; // todo: this can take 10 seconds!            
@@ -83,11 +77,30 @@ namespace FATBox.Core.Lua
         {
             return new Vector3((float)(double)t[1], (float)(double)t[2], (float)(double)t[3]);
         }
-    }
 
-    public class SaveContent
-    {
-        public List<Unit> Units = new List<Unit>();
-        public List<Marker> Markers = new List<Marker>();
+        private string FormatLua(string filename)
+        {
+            var f = _cache.GetCachedFilename("/lua/dataInit.lua");
+            var dataContent = System.IO.File.ReadAllText(f);
+            var saveContent = System.IO.File.ReadAllText(filename);
+            var content = dataContent + "\r\n" + saveContent;
+
+            content = content.Replace("#", "--#"); // why does FA use # as comments?
+
+            return content;
+        }
+
+        public ScenarioContent ParseMapScenarioFile(string scenarioPath)
+        {
+            var content = FormatLua(scenarioPath)
+                            + " return ScenarioInfo;";
+
+            var x = new SharpLua.LuaInterface();
+            var a1 = (LuaTable) x.DoString(content)[0]; // todo: this can take 10 seconds!    
+            var scenario = new ScenarioContent();
+            scenario.Name = (string) a1["name"];
+            scenario.Description = (string) a1["description"];
+            return scenario;
+        }
     }
 }

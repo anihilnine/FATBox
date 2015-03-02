@@ -6,9 +6,11 @@ using System.Data;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FATBox.Core.Lua;
 using FATBox.Core.Maps;
 
 namespace FATBox.Ui.Controls
@@ -29,7 +31,7 @@ namespace FATBox.Ui.Controls
         {
             Map = map;
 
-            var src = map.Image;
+            var src = map.SmallestImage;
 
             if (src == null)
             {
@@ -64,11 +66,12 @@ namespace FATBox.Ui.Controls
 
 
             gra.DrawImage(src, 0, 0, 100, 100);
-            var size = gra.MeasureString(map.Name, Font, 100);
+            var text = Map.ScenarioContent.Name;
+            var size = gra.MeasureString(text, Styles.Font, 100);
             var rect = new RectangleF(0, 100 - size.Height, 100, size.Height);
             var brush = new SolidBrush(Color.FromArgb(200, Color.Black));
             gra.FillRectangle(brush, rect);
-            gra.DrawString(map.Name, Font, Brushes.White, rect);
+            gra.DrawString(text, Styles.Font, Brushes.White, rect);
 
             //gra.DrawRectangle(Pens.Black, 0, 0, 99, 99);
             gra.Dispose();
@@ -100,5 +103,15 @@ namespace FATBox.Ui.Controls
             base.OnDoubleClick(e);
         }
 
+    }
+
+    public static class Styles
+    {
+        public static Font Font;
+
+        static Styles()
+        {
+            Font = new Font("Tahoma", 8, FontStyle.Bold);
+        }
     }
 }

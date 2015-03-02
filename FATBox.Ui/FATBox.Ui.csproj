@@ -72,6 +72,12 @@
     <Compile Include="Controls\MapViewerControl.Designer.cs">
       <DependentUpon>MapViewerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ThinkingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ThinkingForm.Designer.cs">
+      <DependentUpon>ThinkingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataNavigator\BaseRenderer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -133,9 +139,13 @@
       <DependentUpon>UnitRenderer.cs</DependentUpon>
     </Compile>
     <Compile Include="Renderers\StratPreview.cs" />
+    <Compile Include="Thought.cs" />
     <Compile Include="UiData.cs" />
     <EmbeddedResource Include="Controls\MapThumbnail.resx">
       <DependentUpon>MapThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ThinkingForm.resx">
+      <DependentUpon>ThinkingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
       <DependentUpon>DataNavigator.cs</DependentUpon>

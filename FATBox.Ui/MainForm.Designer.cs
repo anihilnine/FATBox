@@ -32,101 +32,106 @@ namespace FATBox.Ui
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.mapExplorer1 = new FATBox.Ui.Controls.MapExplorer();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.blueprintExplorer1 = new FATBox.Ui.Controls.BlueprintExplorer();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.CloseTabLink = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Location = new System.Drawing.Point(20, 20);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(805, 546);
+            this.tabControl1.Size = new System.Drawing.Size(765, 506);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button3);
+            this.tabPage3.Controls.Add(this.button2);
+            this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.button1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(797, 520);
+            this.tabPage3.Size = new System.Drawing.Size(757, 480);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Intro";
+            this.tabPage3.Text = "Home";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // button3
             // 
-            this.tabPage1.Controls.Add(this.mapExplorer1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(797, 520);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Maps";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.button3.Location = new System.Drawing.Point(16, 73);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(105, 23);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "Blueprint Browser";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
-            // mapExplorer1
+            // button2
             // 
-            this.mapExplorer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapExplorer1.Location = new System.Drawing.Point(3, 3);
-            this.mapExplorer1.Name = "mapExplorer1";
-            this.mapExplorer1.Size = new System.Drawing.Size(791, 514);
-            this.mapExplorer1.TabIndex = 3;
-            this.mapExplorer1.Load += new System.EventHandler(this.mapExplorer1_Load);
+            this.button2.Location = new System.Drawing.Point(16, 44);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(105, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Map Browser";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
-            // tabPage2
+            // label1
             // 
-            this.tabPage2.Controls.Add(this.blueprintExplorer1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(797, 520);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Blueprints";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // blueprintExplorer1
-            // 
-            this.blueprintExplorer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.blueprintExplorer1.Location = new System.Drawing.Point(3, 3);
-            this.blueprintExplorer1.Name = "blueprintExplorer1";
-            this.blueprintExplorer1.Size = new System.Drawing.Size(791, 514);
-            this.blueprintExplorer1.TabIndex = 0;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(105, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Welcome to FATBox";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(8, 14);
+            this.button1.Location = new System.Drawing.Point(16, 443);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(147, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
+            this.button1.Text = "Debug - Launch map";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // CloseTabLink
+            // 
+            this.CloseTabLink.AutoSize = true;
+            this.CloseTabLink.ForeColor = System.Drawing.Color.Gray;
+            this.CloseTabLink.LinkColor = System.Drawing.Color.Gray;
+            this.CloseTabLink.Location = new System.Drawing.Point(752, 22);
+            this.CloseTabLink.Name = "CloseTabLink";
+            this.CloseTabLink.Size = new System.Drawing.Size(33, 13);
+            this.CloseTabLink.TabIndex = 1;
+            this.CloseTabLink.TabStop = true;
+            this.CloseTabLink.Text = "Close";
+            this.CloseTabLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CloseTabLink_LinkClicked);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 546);
+            this.Controls.Add(this.CloseTabLink);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
+            this.Padding = new System.Windows.Forms.Padding(20);
             this.Text = "FATBox UI";
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -134,10 +139,10 @@ namespace FATBox.Ui
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private MapExplorer mapExplorer1;
-        private BlueprintExplorer blueprintExplorer1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.LinkLabel CloseTabLink;
     }
 }

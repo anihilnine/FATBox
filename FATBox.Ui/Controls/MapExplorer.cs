@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using FATBox.Core;
 using FATBox.Core.Maps;
+using FATBox.Mapping.Scmap;
+using FATBox.Util;
 using FATBox.Util.Extensions;
 
 namespace FATBox.Ui.Controls
@@ -15,14 +18,20 @@ namespace FATBox.Ui.Controls
         {
             InitializeComponent();
 
-            SetSelectedMap(null);
+            using (new Thought())
+            {
+                Go();
+            }
         }
 
         private MapFolder[] Maps
         {
             get
             {
-                if (_maps == null) _maps = new MapRepository().GetAllMaps();
+                if (_maps == null) _maps = new MapRepository(UiData.LuaParser)                    
+                    .GetAllMaps()
+                    .OrderBy(x => x.ScenarioContent.Name)
+                    .ToArray();
                 return _maps;
             }
         }
@@ -33,21 +42,22 @@ namespace FATBox.Ui.Controls
 
             var kw = KeywordTextbox.Text;
 
-            var maps = Maps
-                .Where(x => x.Name.FaultTolerantContains(kw))
-                .ToArray();
+            var thumbnails = Maps
+                .Where(x => x.Name.FaultTolerantContains(kw) || x.ScenarioContent.Name.FaultTolerantContains(kw))
+                .Select(m =>
+                {
+                    var mt = new MapThumbnail();
+                    mt.Margin = new Padding(1);
+                    //mt.Padding = new Padding(0);
+                    mt.SetMap(m);
+                    mt.Click += MtOnClick;
+                    mt.DoubleClick += MtOnDoubleClick;
+                    return mt;
+                }).ToArray();
 
-            foreach (var m in maps)
-            {
-                var mt = new MapThumbnail();
-                mt.Margin = new Padding(0);
-                mt.Padding = new Padding(0);
-                mt.SetMap(m);
-                mt.Click += MtOnClick;
-                mt.DoubleClick += MtOnDoubleClick;
-                flowLayoutPanel1.Controls.Add(mt);
-            }
-            
+            flowLayoutPanel1.Controls.AddRange(thumbnails);
+
+
         }
 
         private void MtOnDoubleClick(object sender, EventArgs eventArgs)
@@ -75,11 +85,29 @@ namespace FATBox.Ui.Controls
             else
             {
                 SelectedMapPanel.Visible = true;
-                label1.Text = _selectedThumbnail.Map.Name;
                 _selectedThumbnail.Selected = true;
-            }
 
+                var css = @"
+                    <style>
+                        html, body { margin:0; padding:0; }
+                        body {xbackground:#a0a0a0;}
+                        * { font-family: segoe ui }
+                        h1 { font-size:16pt; font-family: segoe ui light }
+                    </style> 
+                ";
+                var html = css + 
+                    "<h1>" + HtmlEncoder.Encode(_selectedThumbnail.Map.ScenarioContent.Name) + "</h1>" +
+                    "<p>" + HtmlEncoder.Encode(Localizer.Localize(_selectedThumbnail.Map.ScenarioContent.Description ?? "")) + "</p>" +
+                    "<img src='" + _selectedThumbnail.Map.LargestImagePath + "'>" +
+                    "<p>" + _selectedThumbnail.Map.Name + "</p>" +
+                    "<p>" + _selectedThumbnail.Map.Type + "</p>"
+                    ;
+
+                webBrowser1.DocumentText = html;
+            }
+             
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -93,12 +121,36 @@ namespace FATBox.Ui.Controls
 
         private void WindowsExplorerButton_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start("explorer.exe", "/select,\"" + _selectedThumbnail.Map.ScenarioPath + "\"");
         }
 
         private void LaunchGameButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            var map = _selectedThumbnail.Map;
+            var scmap = new Map();
+            scmap.Load(map.ScmapPath, UiData.DirectX9Device);
+            var d = new
+            {
+                Save = System.IO.File.ReadAllText(map.SavePath),
+                Scenario = System.IO.File.ReadAllText(map.ScenarioPath),
+                Script = System.IO.File.ReadAllText(map.ScriptPath),
+                ScMap = scmap,
+            };
+
+            var c = new DataNavigator.DataNavigator();
+            c.Text = map.ScenarioContent.Name + " [Data]";
+            c.SetObject(null, d, true);
+            UiData.MainForm.NewTab(c);
         }
     }
 }

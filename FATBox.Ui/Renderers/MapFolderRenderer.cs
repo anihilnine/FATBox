@@ -29,7 +29,6 @@ namespace FATBox.Ui.Renderers
 
         private void button1_Click(object sender, EventArgs e)
         {
-            UiData.MainForm.LaunchMap(_value);
         }
 
         public override bool SetObject(string propertyName, MapFolder value)

@@ -151,7 +151,7 @@ namespace FATBox.Ui.DataNavigator
                 return new Label() { Text = "null", Dock = DockStyle.Fill };
             }
 
-            var defaultControl = new Label() { Text = o.GetType().Name, Dock = DockStyle.Fill };
+            var defaultControl = new TextBox() { Text = o.GetType().Name, Dock = DockStyle.Fill, Multiline = true, ScrollBars = ScrollBars.Both};
 
             if (allowRenderers)
             {

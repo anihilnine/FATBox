@@ -1,4 +1,6 @@
 using System;
+using System.Drawing;
+using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.CatalogReading;
 using FATBox.Core.Lua;
@@ -12,6 +14,8 @@ namespace FATBox.Ui
 {
     public static class UiData
     {
+        private static Form _thinkingForm;
+
         static UiData()
         {
             var f = Initializer.WorkingFolder + @"\blueprints.json";
@@ -55,6 +59,6 @@ namespace FATBox.Ui
                 Tick(null, null);
         }
 
- 
+
     }
 }

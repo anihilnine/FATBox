@@ -98,6 +98,7 @@ namespace FATBox.Ui.Controls
 
         public void SetMap(MapFolder m)
         {
+            Text = m.ScenarioContent.Name + " [View]";
 
             var device = UiData.DirectX9Device;
             var map = new Map();
