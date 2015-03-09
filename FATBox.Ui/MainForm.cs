@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FATBox.Core;
 using FATBox.Core.Maps;
 using FATBox.Ui.Controls;
 
@@ -79,8 +80,8 @@ namespace FATBox.Ui
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            NewTab(new BlueprintExplorer() { Text = "Blueprints" });
 
+                NewTab(new BlueprintExplorer() {Text = "Blueprints"});
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -96,6 +97,14 @@ namespace FATBox.Ui
         private void CloseTabLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {            
+            using (new Thought())
+            {
+                NewTab( new UnitExplorer(true));
+            }
         }
     }
 }

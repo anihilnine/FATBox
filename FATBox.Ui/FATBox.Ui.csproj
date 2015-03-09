@@ -60,6 +60,47 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\BlueprintGridRow.cs" />
+    <Compile Include="Controls\UnitExplorerControls\Descriptioncontrol.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\Descriptioncontrol.Designer.cs">
+      <DependentUpon>Descriptioncontrol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\FactionGroupControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\FactionGroupControl.Designer.cs">
+      <DependentUpon>FactionGroupControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\GroupControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\GroupControl.Designer.cs">
+      <DependentUpon>GroupControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\TechGroupControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\TechGroupControl.Designer.cs">
+      <DependentUpon>TechGroupControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\TransparentControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\UnitControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\UnitControl.Designer.cs">
+      <DependentUpon>UnitControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\UnitDescriptionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorerControls\UnitDescriptionControl.Designer.cs">
+      <DependentUpon>UnitDescriptionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UnitStuff\DescriptionGroup.cs" />
+    <Compile Include="UnitStuff\FactionGroup.cs" />
     <Compile Include="Controls\MapThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -78,6 +119,15 @@
     <Compile Include="Controls\ThinkingForm.Designer.cs">
       <DependentUpon>ThinkingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UnitStuff\TechGroup.cs" />
+    <Compile Include="UnitStuff\UnitBlueprintWrapper.cs" />
+    <Compile Include="Controls\UnitExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UnitExplorer.Designer.cs">
+      <DependentUpon>UnitExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UnitStuff\UnitGroup.cs" />
     <Compile Include="DataNavigator\BaseRenderer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -146,6 +196,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ThinkingForm.resx">
       <DependentUpon>ThinkingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorer.resx">
+      <DependentUpon>UnitExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorerControls\Descriptioncontrol.resx">
+      <DependentUpon>Descriptioncontrol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorerControls\FactionGroupControl.resx">
+      <DependentUpon>FactionGroupControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorerControls\GroupControl.resx">
+      <DependentUpon>GroupControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorerControls\TechGroupControl.resx">
+      <DependentUpon>TechGroupControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorerControls\UnitControl.resx">
+      <DependentUpon>UnitControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UnitExplorerControls\UnitDescriptionControl.resx">
+      <DependentUpon>UnitDescriptionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
       <DependentUpon>DataNavigator.cs</DependentUpon>

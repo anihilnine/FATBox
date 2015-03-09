@@ -37,6 +37,7 @@ namespace FATBox.Ui
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.CloseTabLink = new System.Windows.Forms.LinkLabel();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.SuspendLayout();
@@ -54,6 +55,7 @@ namespace FATBox.Ui
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button4);
             this.tabPage3.Controls.Add(this.button3);
             this.tabPage3.Controls.Add(this.button2);
             this.tabPage3.Controls.Add(this.label1);
@@ -106,6 +108,7 @@ namespace FATBox.Ui
             // 
             // CloseTabLink
             // 
+            this.CloseTabLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseTabLink.AutoSize = true;
             this.CloseTabLink.ForeColor = System.Drawing.Color.Gray;
             this.CloseTabLink.LinkColor = System.Drawing.Color.Gray;
@@ -116,6 +119,16 @@ namespace FATBox.Ui
             this.CloseTabLink.TabStop = true;
             this.CloseTabLink.Text = "Close";
             this.CloseTabLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CloseTabLink_LinkClicked);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(16, 102);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(105, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Unit DB";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // MainForm
             // 
@@ -144,5 +157,6 @@ namespace FATBox.Ui
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.LinkLabel CloseTabLink;
+        private System.Windows.Forms.Button button4;
     }
 }

@@ -175,7 +175,7 @@ namespace FATBox.Mapping.Rendering
 
             var f = new Factory();
             var adapter = f.GetAdapter(0);
-            Device.CreateWithSwapChain(adapter, DriverType.Hardware, DeviceCreationFlags.Debug, description, out _device, out _swapChain);
+            Device.CreateWithSwapChain(adapter, DriverType.Hardware, DeviceCreationFlags.None, description, out _device, out _swapChain);
 
             // create a view of our render target, which is the backbuffer of the swap chain we just created
             _rtt = Resource.FromSwapChain<Texture2D>(_swapChain, 0);

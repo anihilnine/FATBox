@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataNavigator = new FATBox.Ui.DataNavigator.DataNavigator();
+            this.dataNavigator = new DataNavigator.DataNavigator();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.splitter1 = new System.Windows.Forms.Splitter();

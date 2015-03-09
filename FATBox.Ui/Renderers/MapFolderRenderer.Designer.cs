@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataNavigator1 = new FATBox.Ui.DataNavigator.DataNavigator();
+            this.dataNavigator1 = new DataNavigator.DataNavigator();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
