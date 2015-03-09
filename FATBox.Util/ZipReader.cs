@@ -7,14 +7,26 @@ namespace FATBox.Util
 {
 	public class ZipReader : IDisposable
 	{
-		private ZipFile _zip;
+	    private readonly string _filename;
+	    private ZipFile _zip;
 
 		public ZipReader(string filename)
 		{
-			_zip = ZipFile.Read(filename);
-			_zip.FlattenFoldersOnExtract = true;
+		    _filename = filename;
 		}
 
+	    private ZipFile Zip
+	    {
+	        get
+	        {
+	            if (_zip == null)
+                {
+                    _zip = ZipFile.Read(_filename);
+                    _zip.FlattenFoldersOnExtract = true;
+	            }
+	            return _zip;
+	        }
+	    }
         //public string[] Filenames
         //{
         //    get
@@ -32,7 +44,8 @@ namespace FATBox.Util
 
         public void Dispose()
         {
-            _zip.Dispose();
+            if (_zip != null)
+                _zip.Dispose();
         }
 
 
@@ -55,7 +68,7 @@ namespace FATBox.Util
 
 		public bool ExtractTo(string sourceFilename, string folder)
 		{
-			var file = _zip[sourceFilename];
+			var file = Zip[sourceFilename];
 			if (file == null) return false;
 			file.Extract(folder, ExtractExistingFileAction.OverwriteSilently);
 			return true;
