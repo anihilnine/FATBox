@@ -99,6 +99,9 @@
     <Compile Include="Controls\UnitExplorerControls\UnitDescriptionControl.Designer.cs">
       <DependentUpon>UnitDescriptionControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="HexEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UnitStuff\DescriptionGroup.cs" />
     <Compile Include="UnitStuff\FactionGroup.cs" />
     <Compile Include="Controls\MapThumbnail.cs">
@@ -220,6 +223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
       <DependentUpon>DataNavigator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HexEditor.resx">
+      <DependentUpon>HexEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

@@ -92,6 +92,11 @@ namespace FATBox.Core.CatalogReading
         }
 
 
-
+        public string GetCachedFileContents(string modFilename)
+        {
+            var filename = GetCachedFilename(modFilename);
+            var content = System.IO.File.ReadAllText(filename);
+            return content;
+        }
     }
 }
