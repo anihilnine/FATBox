@@ -32,7 +32,7 @@
             this.pBoxFaction = new System.Windows.Forms.PictureBox();
             this.labelName = new System.Windows.Forms.Label();
             this.labelFaction = new System.Windows.Forms.Label();
-            this.dataNavigator1 = new FATBox.Ui.DataNavigator.DataNavigator();
+            this.dataNavigator1 = new DataNavigator.DataNavigator();
             this.labelDescription = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pboxIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBoxFaction)).BeginInit();
