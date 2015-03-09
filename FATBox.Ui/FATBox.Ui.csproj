@@ -102,6 +102,12 @@
     <Compile Include="HexEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Renderers\ScmRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Renderers\ScmRenderer.Designer.cs">
+      <DependentUpon>ScmRenderer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UnitStuff\DescriptionGroup.cs" />
     <Compile Include="UnitStuff\FactionGroup.cs" />
     <Compile Include="Controls\MapThumbnail.cs">
@@ -241,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Renderers\MapFolderRenderer.resx">
       <DependentUpon>MapFolderRenderer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Renderers\ScmRenderer.resx">
+      <DependentUpon>ScmRenderer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Renderers\StrategicIconRenderer.resx">
       <DependentUpon>StrategicIconRenderer.cs</DependentUpon>

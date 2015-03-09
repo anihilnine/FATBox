@@ -24,16 +24,18 @@ namespace FATBox.Ui
 
             Initializer.EnsureInitialized();
 
-            Application.Run(new HexEditor());
+            new HexEditor().ShowDialog();
+            return;
 
             //// TODO: move
-            //DataNavigatorRenderers.Register(typeof(UnitRenderer));
-            //DataNavigatorRenderers.Register(typeof(StrategicIconRenderer));
-            //DataNavigatorRenderers.Register(typeof(ImageRenderer));
-            //DataNavigatorRenderers.Register(typeof(DdsRenderer));
-            //DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
+            DataNavigatorRenderers.Register(typeof(UnitRenderer));
+            DataNavigatorRenderers.Register(typeof(StrategicIconRenderer));
+            DataNavigatorRenderers.Register(typeof(ImageRenderer));
+            DataNavigatorRenderers.Register(typeof(DdsRenderer));
+            DataNavigatorRenderers.Register(typeof(ScmRenderer));
+            DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
 
-            //MessagePump.Run(new MainForm(), UiData.MainLoop);
+            MessagePump.Run(new MainForm(), UiData.MainLoop);
         }
     }
 }
