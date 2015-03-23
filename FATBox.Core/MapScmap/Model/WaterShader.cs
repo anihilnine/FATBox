@@ -10,7 +10,7 @@ using System;
 using FATBox.Util.IO;
 using SlimDX;
 
-namespace FATBox.Mapping.Scmap
+namespace FATBox.Core.MapScmap.Model
 {
     public class WaterShader
     {

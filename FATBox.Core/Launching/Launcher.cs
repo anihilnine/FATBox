@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FATBox.Core.Launching.Model;
 
-namespace FATBox.Core
+namespace FATBox.Core.Launching
 {
     public class Launcher
     {

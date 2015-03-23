@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace FATBox.Ui.Controls.UnitExplorerControls
+namespace FATBox.Ui.Controls.Util
 {
     //http://stackoverflow.com/questions/1161280/parent-control-mouse-enter-leave-events-with-child-controls
     public class TransparentControl : Control

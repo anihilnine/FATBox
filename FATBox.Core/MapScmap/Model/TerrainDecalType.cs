@@ -6,7 +6,7 @@
 // ***************************************************************************************
 
 
-namespace FATBox.Mapping.Scmap
+namespace FATBox.Core.MapScmap.Model
 {
     public enum TerrainDecalType:int
     {

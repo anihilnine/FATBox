@@ -60,15 +60,6 @@
     <Compile Include="Rendering\CellRefrence.cs" />
     <Compile Include="Rendering\WaffleMaker.cs" />
     <Compile Include="Rendering\Utilities.cs" />
-    <Compile Include="Scmap\Decal.cs" />
-    <Compile Include="Scmap\DecalGroup.cs" />
-    <Compile Include="Scmap\Layer.cs" />
-    <Compile Include="Scmap\Map.cs" />
-    <Compile Include="Scmap\Prop.cs" />
-    <Compile Include="Scmap\TerrainDecalType.cs" />
-    <Compile Include="Scmap\WaterShader.cs" />
-    <Compile Include="Scmap\WaveGenerator.cs" />
-    <Compile Include="Scmap\WaveTexture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

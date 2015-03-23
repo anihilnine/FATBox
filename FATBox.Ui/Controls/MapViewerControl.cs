@@ -11,8 +11,8 @@ using FATBox.Core;
 using FATBox.Core.Lua;
 using FATBox.Core.Maps;
 using FATBox.Core.MapSaveLua;
+using FATBox.Core.MapScmap;
 using FATBox.Mapping.Rendering;
-using FATBox.Mapping.Scmap;
 
 namespace FATBox.Ui.Controls
 {
@@ -102,7 +102,7 @@ namespace FATBox.Ui.Controls
             Text = m.ScenarioContent.Name + " [View]";
 
             var device = UiData.DirectX9Device;
-            var map = new Map();
+            var map = new ScmapContent();
             map.Load(m.ScmapPath, device);
 
             var saveContent = new MapSaveLuaParser(UiData.Cache).ParseMapSaveFile(m.SavePath);

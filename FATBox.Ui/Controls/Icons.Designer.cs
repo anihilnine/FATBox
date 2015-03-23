@@ -1,4 +1,4 @@
-﻿namespace FATBox.Ui
+﻿namespace FATBox.Ui.Controls
 {
     partial class Icons
     {

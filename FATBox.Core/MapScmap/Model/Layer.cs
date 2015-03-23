@@ -8,7 +8,7 @@
 
 using FATBox.Util.IO;
 
-namespace FATBox.Mapping.Scmap
+namespace FATBox.Core.MapScmap.Model
 {
     public class Layer
     {

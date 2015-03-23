@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using FATBox.Core.CatalogReading;
-using FATBox.Mapping.Scmap;
+using FATBox.Core.MapScmap;
 using SlimDX;
 using SlimDX.D3DCompiler;
 using SlimDX.Direct3D10;
@@ -43,7 +43,7 @@ namespace FATBox.Mapping.Rendering
 
         //Map Information
         private readonly Control _control;
-        readonly Map _map;
+        readonly ScmapContent _scmapContent;
         private readonly CatalogCache _cache;
         readonly float _mapScale;
         DataStream _vertices;
@@ -86,16 +86,16 @@ namespace FATBox.Mapping.Rendering
         private float _worldXPerPixel;
 
 
-        public MapRenderer(Control control, Map mapData, CatalogCache cache)
+        public MapRenderer(Control control, ScmapContent scmapContentData, CatalogCache cache)
         {
             CreateDeviceAndSwapChain(control);
 
             _control = control;
-            _map = mapData;
+            _scmapContent = scmapContentData;
             _cache = cache;
             _mergedModDdsLoader = new MergedModDdsLoader(cache, _device);
 
-            _mapScale = Math.Max(_map.Width, _map.Height);
+            _mapScale = Math.Max(_scmapContent.Width, _scmapContent.Height);
             CreateVertexData();
             LoadTerrainAndFrameShaders();
             LoadWaterShader();
@@ -475,8 +475,8 @@ namespace FATBox.Mapping.Rendering
 
         private void SetCameraStartPosition()
         {
-            _cameraX = _map.Width / 2.0f;
-            _cameraZ = _map.Height / 2.0f;
+            _cameraX = _scmapContent.Width / 2.0f;
+            _cameraZ = _scmapContent.Height / 2.0f;
             _cameraY = GenerateStartYFromMapScale();
             _lookatX = _cameraX;
             _lookatY = _cameraZ;
@@ -508,20 +508,20 @@ namespace FATBox.Mapping.Rendering
         {
             _waterFx = Effect.FromMemory(_device, Resources.water_fx, "fx_4_0", ShaderFlags.EnableBackwardsCompatibility, EffectFlags.None);
 
-            _waterFx.GetVariableByName("SunDirection").AsVector().Set(_map.Water.SunDirection);
-            _waterFx.GetVariableByName("SunColor").AsVector().Set(_map.Water.SunColor);
-            _waterFx.GetVariableByName("SunShininess").AsScalar().Set(_map.Water.SunShininess);
+            _waterFx.GetVariableByName("SunDirection").AsVector().Set(_scmapContent.Water.SunDirection);
+            _waterFx.GetVariableByName("SunColor").AsVector().Set(_scmapContent.Water.SunColor);
+            _waterFx.GetVariableByName("SunShininess").AsScalar().Set(_scmapContent.Water.SunShininess);
 
             _waterFx.GetVariableByName("ViewportScaleOffset").AsVector().Set(new Vector4(0.5f, -0.5f, 0.5f, 0.5f));
 
-            _waterFx.GetVariableByName("refractionScale").AsScalar().Set(_map.Water.RefractionScale);
-            _waterFx.GetVariableByName("skyreflectionAmount").AsScalar().Set(_map.Water.SkyReflection);
-            _waterFx.GetVariableByName("unitreflectionAmount").AsScalar().Set(_map.Water.UnitReflection);
+            _waterFx.GetVariableByName("refractionScale").AsScalar().Set(_scmapContent.Water.RefractionScale);
+            _waterFx.GetVariableByName("skyreflectionAmount").AsScalar().Set(_scmapContent.Water.SkyReflection);
+            _waterFx.GetVariableByName("unitreflectionAmount").AsScalar().Set(_scmapContent.Water.UnitReflection);
 
-            _waterFx.GetVariableByName("waterColor").AsVector().Set(_map.Water.SurfaceColor);
-            _waterFx.GetVariableByName("waterLerp").AsVector().Set(_map.Water.ColorLerp);
+            _waterFx.GetVariableByName("waterColor").AsVector().Set(_scmapContent.Water.SurfaceColor);
+            _waterFx.GetVariableByName("waterLerp").AsVector().Set(_scmapContent.Water.ColorLerp);
 
-            _waterFx.GetVariableByName("WaterElevation").AsScalar().Set(_map.Water.Elevation);
+            _waterFx.GetVariableByName("WaterElevation").AsScalar().Set(_scmapContent.Water.Elevation);
 
             _waterFx.GetVariableByName("waveCrestColor").AsVector().Set(new Vector3(1.0f, 1.0f, 1.0f));
             _waterFx.GetVariableByName("waveCrestThreshold").AsScalar().Set(1.0f);
@@ -531,13 +531,13 @@ namespace FATBox.Mapping.Rendering
                 string mName = "normal" + (i + 1).ToString() + "Movement";
                 string tName = "NormalMap" + (i).ToString();
 
-                Texture2D tmp = _mergedModDdsLoader.LoadTexture(_map.Water.WaveTextures[i].TexPath);
+                Texture2D tmp = _mergedModDdsLoader.LoadTexture(_scmapContent.Water.WaveTextures[i].TexPath);
                 ShaderResourceView srv = new ShaderResourceView(_device, tmp);
                 _waterFx.GetVariableByName(tName).AsResource().SetResource(srv);
-                _waterFx.GetVariableByName(mName).AsVector().Set(_map.Water.WaveTextures[i].NormalMovement);
+                _waterFx.GetVariableByName(mName).AsVector().Set(_scmapContent.Water.WaveTextures[i].NormalMovement);
             }
 
-            ShaderResourceView skyCube = _mergedModDdsLoader.LoadTextureCube(_map.TexPathSkyCubemap);
+            ShaderResourceView skyCube = _mergedModDdsLoader.LoadTextureCube(_scmapContent.TexPathSkyCubemap);
             _waterFx.GetVariableByName("SkyMap").AsResource().SetResource(skyCube);
 
             //Water Fresnel Sampler
@@ -546,7 +546,7 @@ namespace FATBox.Mapping.Rendering
             _waterFx.GetVariableByName("FresnelLookup").AsResource().SetResource(srvFresnel);
 
             //WaterMap
-            Texture2D wm = _mergedModDdsLoader.LoadTexture(_map.WatermapTex);
+            Texture2D wm = _mergedModDdsLoader.LoadTexture(_scmapContent.WatermapTex);
             ShaderResourceView srvWM = new ShaderResourceView(_device, wm);
             _waterFx.GetVariableByName("UtilityTextureC").AsResource().SetResource(srvWM);
         }
@@ -568,11 +568,11 @@ namespace FATBox.Mapping.Rendering
                 string nameA = sName + "Texture";
                 string nameT = sName + "Tile";
 
-                float tile = Utilities.TranslateTextureTileValue(_map.Layers[i].ScaleTexture);
+                float tile = Utilities.TranslateTextureTileValue(_scmapContent.Layers[i].ScaleTexture);
 
-                if (_map.Layers[i].PathTexture.Length > 0)
+                if (_scmapContent.Layers[i].PathTexture.Length > 0)
                 {
-                    Texture2D tmp = _mergedModDdsLoader.LoadTexture(_map.Layers[i].PathTexture);
+                    Texture2D tmp = _mergedModDdsLoader.LoadTexture(_scmapContent.Layers[i].PathTexture);
                     ShaderResourceView srv = new ShaderResourceView(_device, tmp);
                     _terrainFx.GetVariableByName(nameA).AsResource().SetResource(srv);
                     _terrainFx.GetVariableByName(nameT).AsVector().Set(new Vector4(tile, tile, 0.0f, 1.0f / tile));
@@ -589,41 +589,41 @@ namespace FATBox.Mapping.Rendering
                 string nameA = sName + "Texture";
                 string nameT = sName + "Tile";
 
-                float tile = Utilities.TranslateTextureTileValue(_map.Layers[i].ScaleNormalmap);
+                float tile = Utilities.TranslateTextureTileValue(_scmapContent.Layers[i].ScaleNormalmap);
 
 
-                if (_map.Layers[i].PathNormalmap.Length > 0)
+                if (_scmapContent.Layers[i].PathNormalmap.Length > 0)
                 {
-                    Texture2D tmp2 = _mergedModDdsLoader.LoadTexture(_map.Layers[i].PathNormalmap);
+                    Texture2D tmp2 = _mergedModDdsLoader.LoadTexture(_scmapContent.Layers[i].PathNormalmap);
                     ShaderResourceView srv = new ShaderResourceView(_device, tmp2);
                     _terrainFx.GetVariableByName(nameA).AsResource().SetResource(srv);
                     _terrainFx.GetVariableByName(nameT).AsVector().Set(new Vector4(tile, tile, 0.0f, 1.0f / tile));
                 }
             }
 
-            _terrainFx.GetVariableByName("HeightScale").AsScalar().Set(_map.HeightScale);
+            _terrainFx.GetVariableByName("HeightScale").AsScalar().Set(_scmapContent.HeightScale);
             float ts = 1.0f / _mapScale;
             _terrainFx.GetVariableByName("TerrainScale").AsVector().Set(new Vector4(ts, ts, 0.0f, 1.0f));
 
             //Texture Data
-            Texture2D tm1 = _mergedModDdsLoader.LoadTexture(_map.TexturemapTex);
+            Texture2D tm1 = _mergedModDdsLoader.LoadTexture(_scmapContent.TexturemapTex);
             _textureMapA = new ShaderResourceView(_device, tm1);
             _terrainFx.GetVariableByName("UtilityTextureA").AsResource().SetResource(_textureMapA);
 
-            Texture2D tm2 = _mergedModDdsLoader.LoadTexture(_map.TexturemapTex2);
+            Texture2D tm2 = _mergedModDdsLoader.LoadTexture(_scmapContent.TexturemapTex2);
             ShaderResourceView srvB = new ShaderResourceView(_device, tm2);
             _terrainFx.GetVariableByName("UtilityTextureB").AsResource().SetResource(srvB);
 
-            Texture2D wm = _mergedModDdsLoader.LoadTexture(_map.WatermapTex);
+            Texture2D wm = _mergedModDdsLoader.LoadTexture(_scmapContent.WatermapTex);
             ShaderResourceView srvC = new ShaderResourceView(_device, wm);
             _terrainFx.GetVariableByName("UtilityTextureC").AsResource().SetResource(srvC);
 
-            Texture2D nm = _mergedModDdsLoader.LoadTexture(_map.NormalmapTex);
+            Texture2D nm = _mergedModDdsLoader.LoadTexture(_scmapContent.NormalmapTex);
             _normalMap = new ShaderResourceView(_device, nm);
             _terrainFx.GetVariableByName("NormalTexture").AsResource().SetResource(_normalMap);
 
             //WaterRamp
-            Texture2D wr = _mergedModDdsLoader.LoadTexture(_map.Water.TexPathWaterRamp);
+            Texture2D wr = _mergedModDdsLoader.LoadTexture(_scmapContent.Water.TexPathWaterRamp);
             ShaderResourceView srvWR = new ShaderResourceView(_device, wr);
             _terrainFx.GetVariableByName("WaterRamp").AsResource().SetResource(srvWR);
 
@@ -633,19 +633,19 @@ namespace FATBox.Mapping.Rendering
             _terrainFx.GetVariableByName("ShadowTexture").AsResource().SetResource(srvSS);
 
             //Lighting
-            _terrainFx.GetVariableByName("SunDirection").AsVector().Set(_map.SunDirection);
-            _terrainFx.GetVariableByName("LightingMultiplier").AsScalar().Set(_map.LightingMultiplier);
-            _terrainFx.GetVariableByName("SunAmbience").AsVector().Set(_map.SunAmbience);
-            _terrainFx.GetVariableByName("SunColor").AsVector().Set(_map.SunColor);
-            _terrainFx.GetVariableByName("SpecularColor").AsVector().Set(_map.SpecularColor);
+            _terrainFx.GetVariableByName("SunDirection").AsVector().Set(_scmapContent.SunDirection);
+            _terrainFx.GetVariableByName("LightingMultiplier").AsScalar().Set(_scmapContent.LightingMultiplier);
+            _terrainFx.GetVariableByName("SunAmbience").AsVector().Set(_scmapContent.SunAmbience);
+            _terrainFx.GetVariableByName("SunColor").AsVector().Set(_scmapContent.SunColor);
+            _terrainFx.GetVariableByName("SpecularColor").AsVector().Set(_scmapContent.SpecularColor);
             _terrainFx.GetVariableByName("ShadowsEnabled").AsScalar().Set(0);
-            _terrainFx.GetVariableByName("ShadowFillColor").AsVector().Set(_map.ShadowFillColor);
+            _terrainFx.GetVariableByName("ShadowFillColor").AsVector().Set(_scmapContent.ShadowFillColor);
             _terrainFx.GetVariableByName("ShadowMatrix").AsMatrix().SetMatrix(new Matrix());
 
             //Water
-            _terrainFx.GetVariableByName("WaterElevation").AsScalar().Set(_map.Water.Elevation);
-            _terrainFx.GetVariableByName("WaterElevationDeep").AsScalar().Set(_map.Water.ElevationDeep);
-            _terrainFx.GetVariableByName("WaterElevationAbyss").AsScalar().Set(_map.Water.ElevationAbyss);
+            _terrainFx.GetVariableByName("WaterElevation").AsScalar().Set(_scmapContent.Water.Elevation);
+            _terrainFx.GetVariableByName("WaterElevationDeep").AsScalar().Set(_scmapContent.Water.ElevationDeep);
+            _terrainFx.GetVariableByName("WaterElevationAbyss").AsScalar().Set(_scmapContent.Water.ElevationAbyss);
 
             //Viewport Settings
             _terrainFx.GetVariableByName("ViewportScale").AsVector().Set(new Vector2(0.5f, -0.5f));
@@ -668,17 +668,17 @@ namespace FATBox.Mapping.Rendering
         {
             float w = 1.0f;
             //Create Vertices
-            _vertices = new DataStream(((_map.Width + 1) * (_map.Height + 1) - 1) * 16 * 2, true, true);
-            for (int x = 0; x < _map.Width; x++)
+            _vertices = new DataStream(((_scmapContent.Width + 1) * (_scmapContent.Height + 1) - 1) * 16 * 2, true, true);
+            for (int x = 0; x < _scmapContent.Width; x++)
             {
-                for (int z = 0; z <= _map.Height; z++)
+                for (int z = 0; z <= _scmapContent.Height; z++)
                 {
-                    var height = _map.GetHeight(x, z);
+                    var height = _scmapContent.GetHeight(x, z);
                     _vertices.Write(new Vector4(x, height, z, w));
-                    _vertices.Write(new Vector4(x + 1, _map.GetHeight(x + 1, z), z, w));
+                    _vertices.Write(new Vector4(x + 1, _scmapContent.GetHeight(x + 1, z), z, w));
                 }
-                _vertices.Write(new Vector4(x + 1, _map.GetHeight(x + 1, _map.Height), _map.Height, w));
-                _vertices.Write(new Vector4(x + 1, _map.GetHeight(x + 1, 0), 0, w));
+                _vertices.Write(new Vector4(x + 1, _scmapContent.GetHeight(x + 1, _scmapContent.Height), _scmapContent.Height, w));
+                _vertices.Write(new Vector4(x + 1, _scmapContent.GetHeight(x + 1, 0), 0, w));
             }
 
             _vertices.Position = 0;
@@ -856,7 +856,7 @@ namespace FATBox.Mapping.Rendering
             _terrainFx.GetVariableByName("UtilityTextureA").AsResource().SetResource(_textureMapA);
             _terrainFx.GetVariableByName("NormalTexture").AsResource().SetResource(_finalNormalMap);
 
-            EffectTechnique technique = _terrainFx.GetTechniqueByName(_map.TerrainShader);
+            EffectTechnique technique = _terrainFx.GetTechniqueByName(_scmapContent.TerrainShader);
             EffectPass pass = technique.GetPassByIndex(0);
 
             var terrainLayout = new InputLayout(_device, pass.Description.Signature, new[] {
@@ -920,18 +920,18 @@ namespace FATBox.Mapping.Rendering
         {
             //Create Vertices
             DataStream texVertices = new DataStream(6 * 20, true, true);
-            texVertices.Write(new Vector3(0.0f, _map.Water.Elevation, 0.0f));
+            texVertices.Write(new Vector3(0.0f, _scmapContent.Water.Elevation, 0.0f));
             texVertices.Write(new Vector2(0, 0));
-            texVertices.Write(new Vector3(0.0f, _map.Water.Elevation, _map.Height));
+            texVertices.Write(new Vector3(0.0f, _scmapContent.Water.Elevation, _scmapContent.Height));
             texVertices.Write(new Vector2(0, 1));
-            texVertices.Write(new Vector3(_map.Width, _map.Water.Elevation, 0.0f));
+            texVertices.Write(new Vector3(_scmapContent.Width, _scmapContent.Water.Elevation, 0.0f));
             texVertices.Write(new Vector2(1, 0));
 
-            texVertices.Write(new Vector3(0.0f, _map.Water.Elevation, _map.Height));
+            texVertices.Write(new Vector3(0.0f, _scmapContent.Water.Elevation, _scmapContent.Height));
             texVertices.Write(new Vector2(0, 1));
-            texVertices.Write(new Vector3(_map.Width, _map.Water.Elevation, _map.Height));
+            texVertices.Write(new Vector3(_scmapContent.Width, _scmapContent.Water.Elevation, _scmapContent.Height));
             texVertices.Write(new Vector2(1, 1));
-            texVertices.Write(new Vector3(_map.Width, _map.Water.Elevation, 0.0f));
+            texVertices.Write(new Vector3(_scmapContent.Width, _scmapContent.Water.Elevation, 0.0f));
             texVertices.Write(new Vector2(1, 0));
 
             texVertices.Position = 0;

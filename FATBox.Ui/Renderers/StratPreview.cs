@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using FATBox.Core;
+using FATBox.Core.MapScmap;
 using FATBox.Core.ModCatalog;
-using FATBox.Mapping.Scmap;
 using FATBox.Util.Extensions;
 using SlimDX;
 
@@ -23,9 +23,9 @@ namespace FATBox.Ui.Renderers
                 .ToDictionary(x => x.Source);
         }
 
-        public Image GetImage(Map map)
+        public Image GetImage(ScmapContent scmapContent)
         {
-            var props = map.Props
+            var props = scmapContent.Props
                 .Select(x => new
                 {
                     x.Position,

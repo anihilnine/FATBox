@@ -10,8 +10,8 @@ using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.Lua;
 using FATBox.Core.Maps;
+using FATBox.Core.MapScmap;
 using FATBox.Mapping.Rendering;
-using FATBox.Mapping.Scmap;
 using FATBox.Ui.Controls;
 using FATBox.Ui.DataNavigator;
 
@@ -19,7 +19,7 @@ namespace FATBox.Ui.Renderers
 {
     public partial class MapFolderRenderer : BaseRenderer<MapFolder>
     {
-        Map _map;
+        ScmapContent _scmapContent;
         private MapFolder _value;
 
         public MapFolderRenderer()
@@ -34,11 +34,11 @@ namespace FATBox.Ui.Renderers
         public override bool SetObject(string propertyName, MapFolder value)
         {
             _value = value;
-            _map = new Map();
-            _map.Load(value.ScmapPath, UiData.DirectX9Device);
-            var stratPvw = new StratPreview(UiData.Catalog.Blueprints).GetImage(_map);
+            _scmapContent = new ScmapContent();
+            _scmapContent.Load(value.ScmapPath, UiData.DirectX9Device);
+            var stratPvw = new StratPreview(UiData.Catalog.Blueprints).GetImage(_scmapContent);
 
-            var data = new { scmap = _map, stratPvw };
+            var data = new { scmap = _scmapContent, stratPvw };
             dataNavigator1.SetObject(propertyName, data, false);
 
             return true;

@@ -1,4 +1,6 @@
-﻿namespace FATBox.Ui.Controls.UnitExplorerControls
+﻿using FATBox.Ui.Controls.Util;
+
+namespace FATBox.Ui.Controls.UnitExplorerControls
 {
     partial class UnitControl
     {
@@ -33,7 +35,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.transparentControl1 = new FATBox.Ui.Controls.UnitExplorerControls.TransparentControl();
+            this.transparentControl1 = new TransparentControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();

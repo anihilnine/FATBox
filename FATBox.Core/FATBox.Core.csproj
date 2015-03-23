@@ -72,6 +72,15 @@
     <Compile Include="Maps\MapFolder.cs" />
     <Compile Include="Maps\MapLibrary.cs" />
     <Compile Include="Maps\MapRepository.cs" />
+    <Compile Include="MapScmap\Model\Decal.cs" />
+    <Compile Include="MapScmap\Model\DecalGroup.cs" />
+    <Compile Include="MapScmap\Model\Layer.cs" />
+    <Compile Include="MapScmap\ScmapContent.cs" />
+    <Compile Include="MapScmap\Model\Prop.cs" />
+    <Compile Include="MapScmap\Model\TerrainDecalType.cs" />
+    <Compile Include="MapScmap\Model\WaterShader.cs" />
+    <Compile Include="MapScmap\Model\WaveGenerator.cs" />
+    <Compile Include="MapScmap\Model\WaveTexture.cs" />
     <Compile Include="Scm\Model\ScmContent.cs" />
     <Compile Include="Scm\ScmLoader.cs" />
     <Compile Include="Scm\Model\ScmVertex.cs" />

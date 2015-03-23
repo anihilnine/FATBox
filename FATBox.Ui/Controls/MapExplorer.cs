@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Windows.Forms;
 using FATBox.Core;
+using FATBox.Core.Launching;
 using FATBox.Core.Maps;
-using FATBox.Mapping.Scmap;
+using FATBox.Core.MapScmap;
 using FATBox.Util;
 using FATBox.Util.Extensions;
 
@@ -146,7 +147,7 @@ namespace FATBox.Ui.Controls
         private void button1_Click_1(object sender, EventArgs e)
         {
             var map = _selectedThumbnail.Map;
-            var scmap = new Map();
+            var scmap = new ScmapContent();
             scmap.Load(map.ScmapPath, UiData.DirectX9Device);
             var d = new
             {

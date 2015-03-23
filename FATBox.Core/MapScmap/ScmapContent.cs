@@ -9,14 +9,17 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using FATBox.Core.MapScmap.Model;
 using FATBox.Util.IO;
 using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace FATBox.Mapping.Scmap
+namespace FATBox.Core.MapScmap
 {
-    public class Map
+
+    public class ScmapContent
     {
+        // todo: split behaviour/model
 
         // Map
         private const int MAP_MAGIC = 0x1a70614d;
@@ -99,7 +102,7 @@ namespace FATBox.Mapping.Scmap
         public Color MinimapLandEndColor{ get; set; }
         public Color MinimapContourColor{ get; set; } //Not sure about this one
 
-        public Map()
+        public ScmapContent()
         {
             WaterDepthBiasMask = new byte[0];
             Props = new List<Prop>();

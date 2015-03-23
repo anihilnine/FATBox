@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace FATBox.Core
+namespace FATBox.Core.Launching.Model
 {
     public class LaunchArgs
     {
