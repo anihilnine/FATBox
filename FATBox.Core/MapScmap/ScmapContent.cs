@@ -444,6 +444,21 @@ namespace FATBox.Core.MapScmap
                     _with1.ReadInt16();
                 //always 0
 
+                
+                if (VersionMinor == 60)
+                {
+                    X9Pos = fs.Position;
+
+                    X10 = _with1.ReadBytes(64);
+                    X11A = _with1.ReadStringNull();
+                    X11B = _with1.ReadStringNull();
+                    X12 = _with1.ReadByte();
+                    X13 = _with1.ReadBytes((int)(X12)*40);
+                    X14 = _with1.ReadBytes(22);
+                    X15 = _with1.ReadStringNull();
+                    X16 = _with1.ReadBytes(88);
+                }
+
                 int PropCount = _with1.ReadInt32();
                 for (int i = 0; i <= PropCount - 1; i++)
                 {
@@ -481,6 +496,25 @@ namespace FATBox.Core.MapScmap
 
             return true;
         }
+
+        public byte[] X16 { get; set; }
+
+        public string X15 { get; set; }
+
+        public byte[] X14 { get; set; }
+
+        public byte[] X13 { get; set; }
+
+        public int X12 { get; set; }
+
+        public string X11B { get; set; }
+
+        public string X11A { get; set; }
+
+        public byte[] X10 { get; set; }
+
+        public long X9Pos { get; set; }
+
         public void SaveMapInformation(string Filename, int randomSeed)
         {
             System.IO.StreamWriter fs = new System.IO.StreamWriter(Filename, false);

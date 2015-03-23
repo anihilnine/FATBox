@@ -38,6 +38,7 @@ namespace FATBox.Core.MapSaveLua
                     {
                         var a8 = (LuaTable)a7[k7];
 
+                        // todo: parsing unit groups crashes here... eg sentry point
                         var unit = new Unit()
                         {
                             type = (string)a8["type"],
