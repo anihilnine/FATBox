@@ -13,12 +13,16 @@ namespace FATBox.Initialization
 
     public partial class InitializationForm : Form
     {
+        private Launcher _launcher;
+
         public InitializationForm()
         {
             InitializeComponent();
 
             var defaultValue = @"C:\FATBox.Working";
             textBox1.Text = CatalogInitializer.WorkingFolder ?? defaultValue;
+
+            _launcher = new Launcher();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -35,8 +39,10 @@ namespace FATBox.Initialization
 
         private void RunBlueprintDumper()
         {
-            var logFilename = CatalogInitializer.WorkingFolder + @"\lastlog.txt";
-            var reader = new LogReader(logFilename);
+            var args = _launcher.CreateDefaultArgs();
+            args.WindowStyle = ProcessWindowStyle.Minimized;
+
+            var reader = new LogReader(args.LogFilename);
             reader.DeleteLogIfExists();
 
             var blueprintLogReader = new BlueprintDumpLogReader(reader);
@@ -46,13 +52,9 @@ namespace FATBox.Initialization
             var modPath = (CatalogInitializer.WorkingFolder + @"\FATBox.Lua\BlueprintDump").Replace("\\", "\\\\");
             contents = contents.Replace("%modFolder%", modPath);
             System.IO.File.WriteAllText(@"C:\ProgramData\FAForever\bin\init_FATBox.lua", contents);
-            var args = @"/init init_FATBox.lua /nobugreport /EnableDiskWatch /map SCMP_016 /log " + logFilename;
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo(
-                @"C:\ProgramData\FAForever\bin\ForgedAlliance.exe",
-                args);
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-            p.Start();
+
+            args.InitFilename = "init_FATBox.lua";
+            _launcher.Launch(args);
 
             var jsonPath = CatalogInitializer.WorkingFolder + @"\blueprints.json";
             if (System.IO.File.Exists(jsonPath))
@@ -69,28 +71,22 @@ namespace FATBox.Initialization
                         progressBar1.Visible = true;
                         progressBar1.Maximum = blueprintLogReader.Expected;
                         progressBar1.Value = blueprintLogReader.Current;
+                        Application.DoEvents();
                     }
                 }
             }
 
-            KillProcess();
+            _launcher.KillProcess();
             Close();
         }
 
-        private void KillProcess()
-        {
-            foreach (var process in Process.GetProcessesByName("forgedalliance"))
-            {
-                process.Kill();
-                process.WaitForExit();
-            }
-        }
+
 
         private void SetupWorkingDirectory()
         {
             //try
             //{
-                KillProcess();
+            _launcher.KillProcess();
 
                 var path = textBox1.Text.TrimEnd('\\');
 

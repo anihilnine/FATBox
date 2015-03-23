@@ -99,10 +99,10 @@
     <Compile Include="Controls\UnitExplorerControls\UnitDescriptionControl.Designer.cs">
       <DependentUpon>UnitDescriptionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Icons.cs">
+    <Compile Include="Controls\Icons.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Icons.Designer.cs">
+    <Compile Include="Controls\Icons.Designer.cs">
       <DependentUpon>Icons.cs</DependentUpon>
     </Compile>
     <Compile Include="Renderers\ByteArrayRenderer.cs">
@@ -231,7 +231,7 @@
     <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
       <DependentUpon>DataNavigator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Icons.resx">
+    <EmbeddedResource Include="Controls\Icons.resx">
       <DependentUpon>Icons.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">

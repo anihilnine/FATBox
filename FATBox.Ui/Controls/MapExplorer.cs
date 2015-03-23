@@ -132,7 +132,10 @@ namespace FATBox.Ui.Controls
 
         private void LaunchGameButton_Click(object sender, EventArgs e)
         {
-
+            var launcher = new Launcher();
+            var args = launcher.CreateDefaultArgs();
+            args.MapFoldername = _selectedThumbnail.Map.Name;
+            launcher.Launch(args);
         }
 
         private void label1_Click(object sender, EventArgs e)

@@ -58,6 +58,8 @@
     <Compile Include="CatalogReading\IModReader.cs" />
     <Compile Include="CategoryExpression.cs" />
     <Compile Include="CatalogInitializer.cs" />
+    <Compile Include="Launching\Model\LaunchArgs.cs" />
+    <Compile Include="Launching\Launcher.cs" />
     <Compile Include="Log\LogReader.cs" />
     <Compile Include="Lore.cs" />
     <Compile Include="Lua\BaseLuaParser.cs" />
