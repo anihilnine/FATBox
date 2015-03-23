@@ -135,7 +135,7 @@ namespace FATBox.Ui.Controls
         {
             var launcher = new Launcher();
             var args = launcher.CreateDefaultArgs();
-            args.MapFoldername = _selectedThumbnail.Map.Name;
+            args.MapFoldername = _selectedThumbnail.Map.LaunchPath;
             launcher.Launch(args);
         }
 

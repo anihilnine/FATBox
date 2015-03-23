@@ -17,15 +17,23 @@ namespace FATBox.Core.Maps
         public MapFolder(string scenarioPath, MapScenarioLuaParser mapScenarioLuaParser)
         {
             _mapScenarioLuaParser = mapScenarioLuaParser;
-            Name = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(scenarioPath));
+            var x = scenarioPath.Replace("_scenario.lua", "");
+            Name = System.IO.Path.GetFileName(x);
+            FolderPath = System.IO.Path.GetDirectoryName(x);
+            LaunchPath = "/maps/" + System.IO.Path.GetFileName(FolderPath) + "/" + Name + "_scenario.lua";
             ScenarioPath = scenarioPath;
-            ScmapPath = scenarioPath.Replace("_scenario.lua", ".scmap"); // todo: load this from scenario file
-            ScriptPath = scenarioPath.Replace("_scenario.lua", "_script.lua"); // todo: load this from scenario file
-            SavePath = scenarioPath.Replace("_scenario.lua", "_save.lua"); // todo: load this from scenario file
+            // todo: load this from scenario file
+            ScmapPath = FolderPath + "\\" + Name + ".scmap";
+            ScriptPath = FolderPath + "\\" + Name + "_script.lua";
+            SavePath = FolderPath + "\\" + Name + "_save.lua"; 
             Type = CalculateType();
             // todo: hmmm should this be in Lore?
             IsNormalMultiplayer = Type != "OLD FAF Custom" && Type != "Official SC Campaign";
         }
+
+        public string LaunchPath { get; set; }
+
+        public string FolderPath { get; set; }
 
         private string CalculateType()
         {
