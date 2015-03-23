@@ -4,17 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using FATBox.Core.CatalogReading;
 using SharpLua;
-using SlimDX;
 
 namespace FATBox.Core.Lua
 {
-    public class LuaParser
+    public class MapSaveLuaParser : BaseLuaParser
     {
-        private readonly CatalogCache _cache;
-
-        public LuaParser(CatalogCache cache)
+        public MapSaveLuaParser(CatalogCache cache) : base(cache)
         {
-            _cache = cache;
         }
 
         public SaveContent ParseMapSaveFile(string savePath)
@@ -37,7 +33,7 @@ namespace FATBox.Core.Lua
                 var a5 = (LuaTable)a4["Units"];
                 foreach (var k5 in a5.Keys)
                 {
-                    var color = (string) k5 == "WRECKAGE" ? civilian.WreckageColor : civilian.Color;
+                    var color = (string)k5 == "WRECKAGE" ? civilian.WreckageColor : civilian.Color;
                     var a6 = (LuaTable)a5[k5];
                     var a7 = (LuaTable)a6["Units"];
                     foreach (var k7 in a7.Keys)
@@ -46,8 +42,8 @@ namespace FATBox.Core.Lua
 
                         var unit = new Unit()
                         {
-                            type = (string) a8["type"],
-                            pos = ParseVector((LuaTable) a8["Position"]),
+                            type = (string)a8["type"],
+                            pos = ParseVector((LuaTable)a8["Position"]),
                             color = color
                         };
                         result.Units.Add(unit);
@@ -64,43 +60,13 @@ namespace FATBox.Core.Lua
                 var b5 = (LuaTable)b4[l4];
                 var marker = new Marker
                 {
-                    type = (string) b5["type"],
-                    pos = ParseVector((LuaTable) b5["position"]),
+                    type = (string)b5["type"],
+                    pos = ParseVector((LuaTable)b5["position"]),
                 };
                 result.Markers.Add(marker);
             }
 
             return result;
-        }
-
-        private Vector3 ParseVector(LuaTable t)
-        {
-            return new Vector3((float)(double)t[1], (float)(double)t[2], (float)(double)t[3]);
-        }
-
-        private string FormatLua(string filename)
-        {
-            var f = _cache.GetCachedFilename("/lua/dataInit.lua");
-            var dataContent = System.IO.File.ReadAllText(f);
-            var saveContent = System.IO.File.ReadAllText(filename);
-            var content = dataContent + "\r\n" + saveContent;
-
-            content = content.Replace("#", "--#"); // why does FA use # as comments?
-
-            return content;
-        }
-
-        public ScenarioContent ParseMapScenarioFile(string scenarioPath)
-        {
-            var content = FormatLua(scenarioPath)
-                            + " return ScenarioInfo;";
-
-            var x = new SharpLua.LuaInterface();
-            var a1 = (LuaTable) x.DoString(content)[0]; // todo: this can take 10 seconds!    
-            var scenario = new ScenarioContent();
-            scenario.Name = (string) a1["name"];
-            scenario.Description = (string) a1["description"];
-            return scenario;
         }
     }
 }

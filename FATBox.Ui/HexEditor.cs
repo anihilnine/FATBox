@@ -81,7 +81,7 @@ namespace FATBox.Ui
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var map = new MapRepository(UiData.LuaParser).GetAllMaps().First(x => x.Name.Contains("Balv"));
+            var map = new MapRepository(UiData.MapScenarioLuaParser).GetAllMaps().First(x => x.Name.Contains("Balv"));
             var scmap = new Map();
             scmap.Load(map.ScmapPath, UiData.DirectX9Device);
             var p = scmap.Props.First(x => x.BlueprintPath == "/env/evergreen/props/rocks/rockpile02_prop.bp");

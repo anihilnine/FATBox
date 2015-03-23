@@ -29,7 +29,7 @@ namespace FATBox.Ui.Controls
         {
             get
             {
-                if (_maps == null) _maps = new MapRepository(UiData.LuaParser)                    
+                if (_maps == null) _maps = new MapRepository(UiData.MapScenarioLuaParser)                    
                     .GetAllMaps()
                     .OrderBy(x =>
                     {

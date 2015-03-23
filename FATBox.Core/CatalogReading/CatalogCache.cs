@@ -30,7 +30,7 @@ namespace FATBox.Core.CatalogReading
         {
 
             if (string.IsNullOrEmpty(modFilename)) return null;
-            var cacheFilename = Path.Combine(Initializer.WorkingFolder + @"\FACache", modFilename.Replace("/", "\\").TrimStart('\\'));
+            var cacheFilename = Path.Combine(CatalogInitializer.WorkingFolder + @"\FACache", modFilename.Replace("/", "\\").TrimStart('\\'));
             var cacheFolder = Path.GetDirectoryName(cacheFilename);
             if (!Directory.Exists(cacheFolder))
                 Directory.CreateDirectory(cacheFolder);

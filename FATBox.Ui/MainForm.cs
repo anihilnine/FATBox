@@ -74,7 +74,7 @@ namespace FATBox.Ui
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            LaunchMap(new MapRepository(UiData.LuaParser).GetAllMaps().First(x => x.Name.Contains("Balv")));
+            LaunchMap(new MapRepository(UiData.MapScenarioLuaParser).GetAllMaps().First(x => x.Name.Contains("Balv")));
         }
 
         private void button2_Click_1(object sender, EventArgs e)

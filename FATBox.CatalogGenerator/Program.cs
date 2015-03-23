@@ -13,7 +13,7 @@ namespace FATBox.CatalogGenerator
         static void Main()
         {
             var gen = new JsonClassGenerator();
-            var f = Initializer.WorkingFolder + @"\blueprints.json";
+            var f = CatalogInitializer.WorkingFolder + @"\blueprints.json";
             gen.Example = System.IO.File.ReadAllText(f);
             gen.ExplicitDeserialization = false;
             gen.Namespace = "FATBox.Core.ModCatalog";

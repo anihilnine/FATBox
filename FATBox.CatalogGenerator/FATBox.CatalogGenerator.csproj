@@ -117,6 +117,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FATBox.Core\FATBox.Core.csproj">
+      <Project>{0E075CF2-EDBD-42C2-AFE3-11ABFC0214FB}</Project>
+      <Name>FATBox.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FATBox.Initialization\FATBox.Initialization.csproj">
       <Project>{1402c773-fd8e-42d9-a624-2518f341e4a5}</Project>
       <Name>FATBox.Initialization</Name>

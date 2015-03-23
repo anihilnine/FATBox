@@ -9,12 +9,12 @@ namespace FATBox.Core.Maps
 {
     public class MapFolder
     {
-        private readonly LuaParser _luaParser;
+        private readonly MapScenarioLuaParser _mapScenarioLuaParser;
 
         private Image _image;
-        public MapFolder(string scenarioPath, LuaParser luaParser)
+        public MapFolder(string scenarioPath, MapScenarioLuaParser mapScenarioLuaParser)
         {
-            _luaParser = luaParser;
+            _mapScenarioLuaParser = mapScenarioLuaParser;
             Name = System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(scenarioPath));
             ScenarioPath = scenarioPath;
             ScmapPath = scenarioPath.Replace("_scenario.lua", ".scmap"); // todo: load this from scenario file
@@ -51,7 +51,7 @@ namespace FATBox.Core.Maps
                 {
                     try
                     {
-                        _scenarioContent = _luaParser.ParseMapScenarioFile(ScenarioPath);
+                        _scenarioContent = _mapScenarioLuaParser.ParseMapScenarioFile(ScenarioPath);
                     }
                     catch (Exception ex)
                     {

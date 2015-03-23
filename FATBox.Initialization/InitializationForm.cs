@@ -15,7 +15,7 @@ namespace FATBox.Initialization
             InitializeComponent();
 
             var defaultValue = @"C:\FATBox.Working";
-            textBox1.Text = Initializer.WorkingFolder ?? defaultValue;
+            textBox1.Text = CatalogInitializer.WorkingFolder ?? defaultValue;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -32,15 +32,15 @@ namespace FATBox.Initialization
 
         private void RunBlueprintDumper()
         {
-            var logFilename = Initializer.WorkingFolder + @"\lastlog.txt";
+            var logFilename = CatalogInitializer.WorkingFolder + @"\lastlog.txt";
             var reader = new LogReader(logFilename);
             reader.DeleteLogIfExists();
 
             var blueprintLogReader = new BlueprintDumpLogReader(reader);
 
-            var file = Initializer.WorkingFolder + @"\FATBox.Lua\init_FATBox.lua";
+            var file = CatalogInitializer.WorkingFolder + @"\FATBox.Lua\init_FATBox.lua";
             var contents = System.IO.File.ReadAllText(file);
-            var modPath = (Initializer.WorkingFolder + @"\FATBox.Lua\BlueprintDump").Replace("\\", "\\\\");
+            var modPath = (CatalogInitializer.WorkingFolder + @"\FATBox.Lua\BlueprintDump").Replace("\\", "\\\\");
             contents = contents.Replace("%modFolder%", modPath);
             System.IO.File.WriteAllText(@"C:\ProgramData\FAForever\bin\init_FATBox.lua", contents);
             var args = @"/init init_FATBox.lua /nobugreport /EnableDiskWatch /map SCMP_016 /log " + logFilename;
@@ -51,7 +51,7 @@ namespace FATBox.Initialization
             p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             p.Start();
 
-            var jsonPath = Initializer.WorkingFolder + @"\blueprints.json";
+            var jsonPath = CatalogInitializer.WorkingFolder + @"\blueprints.json";
             if (System.IO.File.Exists(jsonPath))
                 System.IO.File.Delete(jsonPath);
 
@@ -102,7 +102,7 @@ namespace FATBox.Initialization
                 System.IO.Compression.ZipFile.ExtractToDirectory(path + @"\FATBox.Lua.zip", path + @"\FATBox.Lua");
                 System.IO.File.Delete(path + @"\FATBox.Lua.zip");
 
-                Initializer.WorkingFolder = path;
+                CatalogInitializer.WorkingFolder = path;
             //}
             //catch (Exception ex)
             //{

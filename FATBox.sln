@@ -16,11 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Mapping", "FATBox.Mapping\FATBox.Mapping.csproj", "{587788F5-4602-4ADF-87AB-1E567103EED8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1763F0CC-9230-4D59-822E-C8F663450209}"
-	ProjectSection(SolutionItems) = preProject
-		GraphicsExperiment1.vsglog = GraphicsExperiment1.vsglog
-		GraphicsExperiment3.vsglog = GraphicsExperiment3.vsglog
-		GraphicsExperiment5.vsglog = GraphicsExperiment5.vsglog
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FATBox.Sandpit", "FATBox.Sandpit\FATBox.Sandpit.csproj", "{EC81F218-082A-4131-8DEA-4DFD2C2DEF03}"
 EndProject

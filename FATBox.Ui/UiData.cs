@@ -18,15 +18,18 @@ namespace FATBox.Ui
 
         static UiData()
         {
-            var f = Initializer.WorkingFolder + @"\blueprints.json";
+            var f = CatalogInitializer.WorkingFolder + @"\blueprints.json";
             var str = System.IO.File.ReadAllText(f);
             Catalog = JsonConvert.DeserializeObject<Catalog>(str); // todo: wrap
             Cache = new CatalogCache(Catalog);
             Lore = new Lore();
             StrategicIconFactionifier = new StrategicIconFactionifier(Lore);
-            LuaParser = new LuaParser(Cache);
+            MapScenarioLuaParser = new MapScenarioLuaParser(Cache);
             DirectX9Device = CreateDevice();
+
         }
+
+        public static MapScenarioLuaParser MapScenarioLuaParser { get; set; }
 
         public static void Initialize(MainForm mainForm)
         {
@@ -35,7 +38,6 @@ namespace FATBox.Ui
 
         public static MainForm MainForm { get; set; }
 
-        public static LuaParser LuaParser { get; set; }
 
         public static Device DirectX9Device { get; set; }
 

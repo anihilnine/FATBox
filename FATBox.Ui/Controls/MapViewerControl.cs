@@ -104,7 +104,7 @@ namespace FATBox.Ui.Controls
             var map = new Map();
             map.Load(m.ScmapPath, device);
 
-            var saveContent = UiData.LuaParser.ParseMapSaveFile(m.SavePath);
+            var saveContent = new MapSaveLuaParser(UiData.Cache).ParseMapSaveFile(m.SavePath);
 
             var l = new List<MapUnitDisplay>();
             foreach (var u in saveContent.Units)

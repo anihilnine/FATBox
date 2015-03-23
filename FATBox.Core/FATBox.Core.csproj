@@ -57,18 +57,22 @@
     <Compile Include="CatalogReading\FolderModReader.cs" />
     <Compile Include="CatalogReading\IModReader.cs" />
     <Compile Include="CategoryExpression.cs" />
+    <Compile Include="CatalogInitializer.cs" />
+    <Compile Include="Log\LogReader.cs" />
     <Compile Include="Lore.cs" />
-    <Compile Include="Lua\LuaParser.cs" />
-    <Compile Include="Lua\Marker.cs" />
-    <Compile Include="Lua\SaveContent.cs" />
-    <Compile Include="Lua\ScenarioContent.cs" />
-    <Compile Include="Lua\Unit.cs" />
+    <Compile Include="Lua\BaseLuaParser.cs" />
+    <Compile Include="MapSaveLua\MapSaveLuaParser.cs" />
+    <Compile Include="MapScenarioLua\MapScenarioLuaParser.cs" />
+    <Compile Include="MapSaveLua\Model\Marker.cs" />
+    <Compile Include="MapSaveLua\Model\SaveContent.cs" />
+    <Compile Include="MapScenarioLua\Model\ScenarioContent.cs" />
+    <Compile Include="MapSaveLua\Model\Unit.cs" />
     <Compile Include="Maps\MapFolder.cs" />
     <Compile Include="Maps\MapLibrary.cs" />
     <Compile Include="Maps\MapRepository.cs" />
-    <Compile Include="Scm\ScmContent.cs" />
+    <Compile Include="Scm\Model\ScmContent.cs" />
     <Compile Include="Scm\ScmLoader.cs" />
-    <Compile Include="Scm\ScmVertex.cs" />
+    <Compile Include="Scm\Model\ScmVertex.cs" />
     <Compile Include="StrategicIconFactionifier.cs" />
     <Compile Include="Localizer.cs" />
     <Compile Include="ModCatalog\Abilities.cs" />
@@ -316,10 +320,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FATBox.Initialization\FATBox.Initialization.csproj">
-      <Project>{1402C773-FD8E-42D9-A624-2518F341E4A5}</Project>
-      <Name>FATBox.Initialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FATBox.Util\FATBox.Util.csproj">
       <Project>{61B9DEA4-2E0C-4955-8301-F14B7190467C}</Project>
       <Name>FATBox.Util</Name>

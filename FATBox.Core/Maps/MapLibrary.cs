@@ -8,11 +8,11 @@ namespace FATBox.Core.Maps
 {
     public class MapLibrary
     {
-        private readonly LuaParser _luaParser;
+        private readonly MapScenarioLuaParser _mapScenarioLuaParser;
 
-        public MapLibrary(string name, string path, LuaParser luaParser)
+        public MapLibrary(string name, string path, MapScenarioLuaParser mapScenarioLuaParser)
         {
-            _luaParser = luaParser;
+            _mapScenarioLuaParser = mapScenarioLuaParser;
             Name = name;
             Path = FileUtil.ExpandEnvironmentVariables(path);
             Exists = System.IO.Directory.Exists(Path);
@@ -29,7 +29,7 @@ namespace FATBox.Core.Maps
             var maps = System.IO.Directory.GetFiles(Path, "*_scenario.lua", SearchOption.AllDirectories);
 
             return maps
-                .Select(scenarioPath => new MapFolder(scenarioPath, _luaParser))
+                .Select(scenarioPath => new MapFolder(scenarioPath, _mapScenarioLuaParser))
                 .ToArray();
         }
 
