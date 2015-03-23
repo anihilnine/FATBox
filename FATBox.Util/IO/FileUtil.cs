@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FATBox.Util
+namespace FATBox.Util.IO
 {
     public static class FileUtil
     {

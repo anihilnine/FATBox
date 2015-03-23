@@ -102,6 +102,10 @@
       <Project>{0E075CF2-EDBD-42C2-AFE3-11ABFC0214FB}</Project>
       <Name>FATBox.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FATBox.Util\FATBox.Util.csproj">
+      <Project>{61b9dea4-2e0c-4955-8301-f14b7190467c}</Project>
+      <Name>FATBox.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\basic.fx" />

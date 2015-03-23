@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using Ionic.Zip;
 
-namespace FATBox.Util
+namespace FATBox.Util.IO
 {
 	public class ZipReader : IDisposable
 	{

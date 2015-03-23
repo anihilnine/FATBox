@@ -1,4 +1,5 @@
 ﻿using FATBox.Util;
+using FATBox.Util.IO;
 
 namespace FATBox.Core.CatalogReading
 {

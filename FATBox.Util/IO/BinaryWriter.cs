@@ -8,7 +8,7 @@
 
 using SlimDX;
 
-namespace FATBox.Core.IO
+namespace FATBox.Util.IO
 {
     public class BinaryWriter : System.IO.BinaryWriter
     {

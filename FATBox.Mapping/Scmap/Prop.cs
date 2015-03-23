@@ -6,7 +6,7 @@
 // ***************************************************************************************
 
 
-using FATBox.Core.IO;
+using FATBox.Util.IO;
 using SlimDX;
 
 namespace FATBox.Mapping.Scmap

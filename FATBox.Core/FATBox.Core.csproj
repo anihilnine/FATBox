@@ -57,8 +57,6 @@
     <Compile Include="CatalogReading\FolderModReader.cs" />
     <Compile Include="CatalogReading\IModReader.cs" />
     <Compile Include="CategoryExpression.cs" />
-    <Compile Include="IO\BinaryReader.cs" />
-    <Compile Include="IO\BinaryWriter.cs" />
     <Compile Include="Lore.cs" />
     <Compile Include="Lua\LuaParser.cs" />
     <Compile Include="Lua\Marker.cs" />

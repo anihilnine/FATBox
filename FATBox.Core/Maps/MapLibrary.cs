@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using FATBox.Core.Lua;
 using FATBox.Util;
+using FATBox.Util.IO;
 
 namespace FATBox.Core.Maps
 {

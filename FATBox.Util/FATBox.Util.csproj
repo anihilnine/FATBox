@@ -50,11 +50,13 @@
   <ItemGroup>
     <Compile Include="DirectXHelper.cs" />
     <Compile Include="Extensions\EnumerableEx.cs" />
-    <Compile Include="FileUtil.cs" />
+    <Compile Include="IO\FileUtil.cs" />
     <Compile Include="HtmlEncoder.cs" />
+    <Compile Include="IO\BinaryReader.cs" />
+    <Compile Include="IO\BinaryWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\StringEx.cs" />
-    <Compile Include="ZipReader.cs" />
+    <Compile Include="IO\ZipReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
