@@ -50,7 +50,6 @@ namespace FATBox.Ui.Controls
 
             var thumbnails = Maps
                 .Where(x => x.Name.FaultTolerantContains(kw) || x.ScenarioContent.Name.FaultTolerantContains(kw))
-                .Where(x => x.Type == "Official FA Multiplayer")
                 .Select(m =>
                 {
                     _thought.SetMessage("Thumb: " + m.ScenarioContent.Name);

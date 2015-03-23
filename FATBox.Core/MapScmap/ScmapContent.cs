@@ -448,7 +448,7 @@ namespace FATBox.Core.MapScmap
                 if (VersionMinor == 60)
                 {
                     X9Pos = fs.Position;
-
+                    // this is skybox, exact details unknown
                     X10 = _with1.ReadBytes(64);
                     X11A = _with1.ReadStringNull();
                     X11B = _with1.ReadStringNull();

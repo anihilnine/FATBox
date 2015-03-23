@@ -674,6 +674,7 @@ namespace FATBox.Mapping.Rendering
                 for (int z = 0; z <= _scmapContent.Height; z++)
                 {
                     var height = _scmapContent.GetHeight(x, z);
+                    // todo: error fix some maps with uneven width/height - goes past end of stream
                     _vertices.Write(new Vector4(x, height, z, w));
                     _vertices.Write(new Vector4(x + 1, _scmapContent.GetHeight(x + 1, z), z, w));
                 }
