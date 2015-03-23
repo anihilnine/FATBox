@@ -24,8 +24,6 @@ namespace FATBox.Ui
 
             Initializer.EnsureInitialized();
 
-            new HexEditor().ShowDialog();
-            return;
 
             //// TODO: move
             DataNavigatorRenderers.Register(typeof(UnitRenderer));
@@ -34,6 +32,10 @@ namespace FATBox.Ui
             DataNavigatorRenderers.Register(typeof(DdsRenderer));
             DataNavigatorRenderers.Register(typeof(ScmRenderer));
             DataNavigatorRenderers.Register(typeof(MapFolderRenderer));
+            DataNavigatorRenderers.Register(typeof(ByteArrayRenderer));
+
+
+            //new Icons().ShowDialog();
 
             MessagePump.Run(new MainForm(), UiData.MainLoop);
         }

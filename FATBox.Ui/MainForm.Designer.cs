@@ -32,12 +32,12 @@ namespace FATBox.Ui
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.CloseTabLink = new System.Windows.Forms.LinkLabel();
-            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.SuspendLayout();
@@ -66,6 +66,16 @@ namespace FATBox.Ui
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Home";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(16, 102);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(105, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Unit DB";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -119,16 +129,6 @@ namespace FATBox.Ui
             this.CloseTabLink.TabStop = true;
             this.CloseTabLink.Text = "Close";
             this.CloseTabLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CloseTabLink_LinkClicked);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(16, 102);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(105, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Unit DB";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // MainForm
             // 

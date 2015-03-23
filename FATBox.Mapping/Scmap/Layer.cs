@@ -6,6 +6,8 @@
 // ***************************************************************************************
 
 
+using FATBox.Core.IO;
+
 namespace FATBox.Mapping.Scmap
 {
     public class Layer

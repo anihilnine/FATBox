@@ -57,6 +57,8 @@
     <Compile Include="CatalogReading\FolderModReader.cs" />
     <Compile Include="CatalogReading\IModReader.cs" />
     <Compile Include="CategoryExpression.cs" />
+    <Compile Include="IO\BinaryReader.cs" />
+    <Compile Include="IO\BinaryWriter.cs" />
     <Compile Include="Lore.cs" />
     <Compile Include="Lua\LuaParser.cs" />
     <Compile Include="Lua\Marker.cs" />
@@ -66,6 +68,9 @@
     <Compile Include="Maps\MapFolder.cs" />
     <Compile Include="Maps\MapLibrary.cs" />
     <Compile Include="Maps\MapRepository.cs" />
+    <Compile Include="Scm\ScmContent.cs" />
+    <Compile Include="Scm\ScmLoader.cs" />
+    <Compile Include="Scm\ScmVertex.cs" />
     <Compile Include="StrategicIconFactionifier.cs" />
     <Compile Include="Localizer.cs" />
     <Compile Include="ModCatalog\Abilities.cs" />
@@ -322,6 +327,7 @@
       <Name>FATBox.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

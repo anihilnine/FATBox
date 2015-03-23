@@ -8,7 +8,7 @@
 
 using SlimDX;
 
-namespace FATBox.Mapping.Scmap
+namespace FATBox.Core.IO
 {
     public class BinaryReader : System.IO.BinaryReader
     {
@@ -96,5 +96,15 @@ namespace FATBox.Mapping.Scmap
             BaseStream.Position += 1;
         }
 
+        public byte[] ReadUntil(int pos)
+        {
+            var remainder = (int)(pos - BaseStream.Position);
+            return ReadBytes(remainder);
+        }        
+        
+        public byte[] ReadUntilEnd()
+        {
+            return ReadUntil((int) BaseStream.Position);
+        }
     }
 }

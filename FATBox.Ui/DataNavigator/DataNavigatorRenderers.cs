@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FATBox.Ui.DataNavigator
 {
     public static class DataNavigatorRenderers
     {
-        private static Dictionary<Type, Type> Types = new Dictionary<Type, Type>();
+        private static Dictionary<Type,List<Type>> Types = new Dictionary<Type, List<Type>>();
  
         public static void Register(Type rendererType)
         {
@@ -15,7 +16,12 @@ namespace FATBox.Ui.DataNavigator
             var renderer = (BaseRenderer) Activator.CreateInstance(rendererType);
             foreach (var t in renderer.SupportedTypes())
             {
-                Types[t] = rendererType;
+                if (!Types.ContainsKey(t))
+                {
+                    Types.Add(t, new List<Type>());
+                }
+
+                Types[t].Add(rendererType);
             }
         }
 
@@ -26,9 +32,9 @@ namespace FATBox.Ui.DataNavigator
             {
                 if (kvp.Key.IsAssignableFrom(objType))
                 {
-                    var rendererType = kvp.Value;
+                    var rendererTypes = kvp.Value;
 
-                    if (rendererType != null)
+                    foreach (var rendererType in rendererTypes)
                     {
                         var renderer = (BaseRenderer) Activator.CreateInstance(rendererType);
                         var ok = renderer.SetObject(propertyName, o);
@@ -36,7 +42,9 @@ namespace FATBox.Ui.DataNavigator
                         {
                             return renderer;
                         }
+
                     }
+
                 }
             }
             

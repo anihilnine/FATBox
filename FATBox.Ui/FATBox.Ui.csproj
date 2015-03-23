@@ -102,6 +102,15 @@
     <Compile Include="HexEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Icons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Icons.Designer.cs">
+      <DependentUpon>Icons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\ByteArrayRenderer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Renderers\ScmRenderer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -233,11 +242,17 @@
     <EmbeddedResource Include="HexEditor.resx">
       <DependentUpon>HexEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Icons.resx">
+      <DependentUpon>Icons.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MapExplorer.resx">
       <DependentUpon>MapExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Renderers\ByteArrayRenderer.resx">
+      <DependentUpon>ByteArrayRenderer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Renderers\DdsRenderer.resx">
       <DependentUpon>DdsRenderer.cs</DependentUpon>

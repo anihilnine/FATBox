@@ -8,16 +8,36 @@ namespace FATBox.Ui
     {
         private ThinkingForm _thinkingForm;
         private bool _cancelled;
+        private string _message;
 
-        public Thought()
+        public Thought(string message)
         {
+            _message = message;
             new Thread(() =>
             {
                 System.Threading.Thread.Sleep(300);
                 if (_cancelled) return;
                 _thinkingForm = new ThinkingForm();
-                _thinkingForm.ShowDialog();
+                _thinkingForm.SetMessage2(_message ?? "Thinking...");
+                _thinkingForm.ShowDialog();                
             }).Start();
+        }
+
+
+        public void SetMessage(string text)
+        {
+            _message = text;
+            if (_thinkingForm != null)
+            {
+                try
+                {
+                    _thinkingForm.SetMessage(text);
+                }
+                catch (Exception)
+                {
+                    // lazy - threading issues sometimes
+                }
+            }
         }
 
         public void Dispose()

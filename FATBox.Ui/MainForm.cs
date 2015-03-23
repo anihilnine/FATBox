@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,9 @@ using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.Maps;
 using FATBox.Ui.Controls;
+using FATBox.Util;
+using SlimDX;
+using SlimDX.Direct3D11;
 
 namespace FATBox.Ui
 {
@@ -44,7 +48,7 @@ namespace FATBox.Ui
 
         public void LaunchMap(MapFolder mapFolder)
         {
-            using (new Thought())
+            using (new Thought("Launching " + mapFolder.ScenarioContent.Name))
             {
                 var mpc = new MapViewerControl();
                 mpc.WireForm(this);
@@ -55,7 +59,7 @@ namespace FATBox.Ui
 
         public void NewTab(Control c)
         {
-            using (new Thought())
+            using (new Thought("Loading tab"))
             {
                 var tab = new TabPage();
                 tab.BackColor = Color.White;
@@ -101,10 +105,12 @@ namespace FATBox.Ui
 
         private void button4_Click(object sender, EventArgs e)
         {            
-            using (new Thought())
+            using (new Thought("Loading units"))
             {
                 NewTab( new UnitExplorer(true));
             }
         }
+
+
     }
 }

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using FATBox.Core.IO;
 using SlimDX;
 using SlimDX.Direct3D9;
 

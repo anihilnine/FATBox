@@ -60,8 +60,6 @@
     <Compile Include="Rendering\CellRefrence.cs" />
     <Compile Include="Rendering\WaffleMaker.cs" />
     <Compile Include="Rendering\Utilities.cs" />
-    <Compile Include="Scmap\BinaryReader.cs" />
-    <Compile Include="Scmap\BinaryWriter.cs" />
     <Compile Include="Scmap\Decal.cs" />
     <Compile Include="Scmap\DecalGroup.cs" />
     <Compile Include="Scmap\Layer.cs" />

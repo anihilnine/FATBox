@@ -13,12 +13,13 @@ namespace FATBox.Ui.Controls
     {
         MapFolder[] _maps;
         private MapThumbnail _selectedThumbnail;
+        private Thought _thought;
 
         public MapExplorer()
         {
             InitializeComponent();
 
-            using (new Thought())
+            using (_thought = new Thought("Loading maps"))
             {
                 Go();
             }
@@ -30,7 +31,11 @@ namespace FATBox.Ui.Controls
             {
                 if (_maps == null) _maps = new MapRepository(UiData.LuaParser)                    
                     .GetAllMaps()
-                    .OrderBy(x => x.ScenarioContent.Name)
+                    .OrderBy(x =>
+                    {
+                        _thought.SetMessage("ScenarioContent: " + x.Name);
+                        return x.ScenarioContent.Name;
+                    })
                     .ToArray();
                 return _maps;
             }
@@ -46,6 +51,7 @@ namespace FATBox.Ui.Controls
                 .Where(x => x.Name.FaultTolerantContains(kw) || x.ScenarioContent.Name.FaultTolerantContains(kw))
                 .Select(m =>
                 {
+                    _thought.SetMessage("Thumb: " + m.ScenarioContent.Name);
                     var mt = new MapThumbnail();
                     mt.Margin = new Padding(1);
                     //mt.Padding = new Padding(0);
