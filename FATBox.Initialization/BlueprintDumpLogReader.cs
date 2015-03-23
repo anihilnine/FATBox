@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FATBox.Core.Log;
 
 namespace FATBox.Initialization
 {

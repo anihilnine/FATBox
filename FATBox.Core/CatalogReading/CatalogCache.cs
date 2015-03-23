@@ -3,7 +3,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using FATBox.Core.ModCatalog;
-using FATBox.Initialization;
 using FATBox.Util;
 
 namespace FATBox.Core.CatalogReading

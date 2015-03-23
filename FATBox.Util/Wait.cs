@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FATBox.Initialization
+namespace FATBox.Util
 {
     public static class Wait
     {

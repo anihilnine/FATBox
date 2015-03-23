@@ -1,4 +1,5 @@
 ﻿using System;
+using FATBox.Core;
 using FATBox.Initialization;
 using Xamasoft.JsonClassGenerator;
 

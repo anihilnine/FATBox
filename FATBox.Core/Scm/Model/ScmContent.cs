@@ -1,4 +1,4 @@
-namespace FATBox.Core.Scm
+namespace FATBox.Core.Scm.Model
 {
     public class ScmContent
     {

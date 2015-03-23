@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.CatalogReading;
 using FATBox.Core.Lua;
+using FATBox.Core.MapScenarioLua;
 using FATBox.Core.ModCatalog;
 using FATBox.Initialization;
 using Microsoft.Win32.SafeHandles;

@@ -1,7 +1,7 @@
 ﻿using System;
 using SlimDX;
 
-namespace FATBox.Core.Scm
+namespace FATBox.Core.Scm.Model
 {
     public class ScmVertex
     {

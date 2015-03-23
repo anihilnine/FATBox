@@ -1,4 +1,4 @@
-﻿namespace FATBox.Core.Lua
+﻿namespace FATBox.Core.MapScenarioLua.Model
 {
     public class ScenarioContent
     {

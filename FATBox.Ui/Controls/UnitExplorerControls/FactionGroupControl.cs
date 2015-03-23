@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FATBox.Ui.UnitStuff;
+using FATBox.Core.Units.Model;
 
 namespace FATBox.Ui.Controls.UnitExplorerControls
 {

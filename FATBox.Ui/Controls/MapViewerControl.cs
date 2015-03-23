@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.Lua;
 using FATBox.Core.Maps;
+using FATBox.Core.MapSaveLua;
 using FATBox.Mapping.Rendering;
 using FATBox.Mapping.Scmap;
 

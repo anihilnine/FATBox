@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using FATBox.Core.Lua;
+using FATBox.Core.MapScenarioLua;
 using FATBox.Util;
 using FATBox.Util.IO;
 

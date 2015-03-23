@@ -84,7 +84,7 @@
     <Compile Include="Controls\UnitExplorerControls\TechGroupControl.Designer.cs">
       <DependentUpon>TechGroupControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UnitExplorerControls\TransparentControl.cs">
+    <Compile Include="Controls\Util\TransparentControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\UnitExplorerControls\UnitControl.cs">
@@ -98,9 +98,6 @@
     </Compile>
     <Compile Include="Controls\UnitExplorerControls\UnitDescriptionControl.Designer.cs">
       <DependentUpon>UnitDescriptionControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HexEditor.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Icons.cs">
       <SubType>Form</SubType>
@@ -117,8 +114,6 @@
     <Compile Include="Renderers\ScmRenderer.Designer.cs">
       <DependentUpon>ScmRenderer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UnitStuff\DescriptionGroup.cs" />
-    <Compile Include="UnitStuff\FactionGroup.cs" />
     <Compile Include="Controls\MapThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -137,15 +132,12 @@
     <Compile Include="Controls\ThinkingForm.Designer.cs">
       <DependentUpon>ThinkingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UnitStuff\TechGroup.cs" />
-    <Compile Include="UnitStuff\UnitBlueprintWrapper.cs" />
     <Compile Include="Controls\UnitExplorer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\UnitExplorer.Designer.cs">
       <DependentUpon>UnitExplorer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UnitStuff\UnitGroup.cs" />
     <Compile Include="DataNavigator\BaseRenderer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -238,9 +230,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataNavigator\DataNavigator.resx">
       <DependentUpon>DataNavigator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HexEditor.resx">
-      <DependentUpon>HexEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Icons.resx">
       <DependentUpon>Icons.cs</DependentUpon>

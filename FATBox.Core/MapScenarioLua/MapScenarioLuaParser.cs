@@ -1,7 +1,9 @@
 ﻿using FATBox.Core.CatalogReading;
+using FATBox.Core.Lua;
+using FATBox.Core.MapScenarioLua.Model;
 using SharpLua;
 
-namespace FATBox.Core.Lua
+namespace FATBox.Core.MapScenarioLua
 {
     public class MapScenarioLuaParser : BaseLuaParser
     {

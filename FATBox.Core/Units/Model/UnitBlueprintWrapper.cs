@@ -1,16 +1,20 @@
 ﻿using System.Drawing;
 using System.Linq;
-using FATBox.Core;
+using FATBox.Core.CatalogReading;
 using FATBox.Core.ModCatalog;
 
-namespace FATBox.Ui.UnitStuff
+namespace FATBox.Core.Units.Model
 {
     public class UnitBlueprintWrapper
     {
+        private readonly CatalogCache _catalogCache;
+        private readonly StrategicIconFactionifier _strategicIconFactionifier;
         public Blueprint Blueprint { get; set; }
 
-        public UnitBlueprintWrapper(Blueprint blueprint)
+        public UnitBlueprintWrapper(Blueprint blueprint, CatalogCache catalogCache, StrategicIconFactionifier strategicIconFactionifier)
         {
+            _catalogCache = catalogCache;
+            _strategicIconFactionifier = strategicIconFactionifier;
             Blueprint = blueprint;
         }
 
@@ -132,8 +136,8 @@ xsb3104,Omni Sensor Array";
             {
                 if (_strategicIcon == null)
                 {
-                    _strategicIcon = UiData.Cache.GetCachedStrategicIconPng(Blueprint.StrategicIconName);
-                    _strategicIcon = UiData.StrategicIconFactionifier.ModifyIcon((Bitmap) _strategicIcon, FactionName);
+                    _strategicIcon = _catalogCache.GetCachedStrategicIconPng(Blueprint.StrategicIconName);
+                    _strategicIcon = _strategicIconFactionifier.ModifyIcon((Bitmap)_strategicIcon, FactionName);
                 }
                 return _strategicIcon;
             }

@@ -1,4 +1,5 @@
 using System.Linq;
+using FATBox.Core.Scm.Model;
 using FATBox.Util.IO;
 
 namespace FATBox.Core.Scm

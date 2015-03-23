@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace FATBox.Initialization
+namespace FATBox.Core
 {
     public static class CatalogInitializer
     {

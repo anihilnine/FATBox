@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FATBox.Core.CatalogReading;
+﻿using FATBox.Core.CatalogReading;
+using FATBox.Core.Lua;
+using FATBox.Core.MapSaveLua.Model;
 using SharpLua;
 
-namespace FATBox.Core.Lua
+namespace FATBox.Core.MapSaveLua
 {
     public class MapSaveLuaParser : BaseLuaParser
     {

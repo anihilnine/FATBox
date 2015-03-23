@@ -315,6 +315,12 @@
     <Compile Include="ModCatalog\WreckageLayers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CatalogReading\ZipModReader.cs" />
+    <Compile Include="Units\Model\DescriptionGroup.cs" />
+    <Compile Include="Units\Model\FactionGroup.cs" />
+    <Compile Include="Units\Model\TechGroup.cs" />
+    <Compile Include="Units\Model\UnitBlueprintWrapper.cs" />
+    <Compile Include="Units\UnitDatabase.cs" />
+    <Compile Include="Units\Model\UnitGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

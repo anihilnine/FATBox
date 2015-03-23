@@ -2,7 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using FATBox.Core;
+using FATBox.Core.Log;
 using FATBox.Initialization.Properties;
+using FATBox.Util;
 
 namespace FATBox.Initialization
 {

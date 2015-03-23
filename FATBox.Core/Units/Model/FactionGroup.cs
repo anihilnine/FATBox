@@ -1,4 +1,4 @@
-﻿namespace FATBox.Ui.UnitStuff
+﻿namespace FATBox.Core.Units.Model
 {
     public class FactionGroup
     {

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using SlimDX;
 
-namespace FATBox.Core.Lua
+namespace FATBox.Core.MapSaveLua.Model
 {
     public class Unit
     {

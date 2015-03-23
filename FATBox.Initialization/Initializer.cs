@@ -1,4 +1,5 @@
 ﻿using System;
+using FATBox.Core;
 
 namespace FATBox.Initialization
 {

@@ -3,6 +3,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using FATBox.Core.Lua;
+using FATBox.Core.MapScenarioLua;
+using FATBox.Core.MapScenarioLua.Model;
 using SlimDX.DirectSound;
 
 namespace FATBox.Core.Maps

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace FATBox.Ui.UnitStuff
+namespace FATBox.Core.Units.Model
 {
     public class UnitGroup
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FATBox.Core.Lua
+namespace FATBox.Core.MapSaveLua.Model
 {
     public class SaveContent
     {

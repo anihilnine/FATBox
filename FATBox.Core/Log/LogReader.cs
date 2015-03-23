@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using FATBox.Util;
 
-namespace FATBox.Initialization
+namespace FATBox.Core.Log
 {
     public class LogReader
     {
