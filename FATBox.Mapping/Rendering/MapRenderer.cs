@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FATBox.Core.CatalogReading;
 using FATBox.Core.MapScmap;
+using FATBox.Mapping.Rendering.Props;
 using SlimDX;
 using SlimDX.D3DCompiler;
 using SlimDX.Direct3D10;
@@ -102,6 +103,7 @@ namespace FATBox.Mapping.Rendering
             LoadStratIconStuff();
            
             _waffle = new WaffleMaker(_device, _viewport, _stratIconCompositeMatrix, _mergedModDdsLoader);
+           // _propShader = new PropShader(cache);
 
             TimeValue = 0;
 
@@ -982,6 +984,7 @@ namespace FATBox.Mapping.Rendering
         private float _cameraAdjustAmount = 0;
         private Point _cameraAdjustPos;
         private MapUnitDisplay[] _mapMarkerDisplays = new MapUnitDisplay[0];
+        private PropShader _propShader;
 
         public void HandleMouseWheel(Point location, int delta)
         {

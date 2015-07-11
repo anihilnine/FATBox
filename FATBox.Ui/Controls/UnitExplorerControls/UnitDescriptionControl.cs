@@ -173,5 +173,10 @@ namespace FATBox.Ui.Controls.UnitExplorerControls
 
             }
         }
+
+		private void pictureBox2_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText("\"" + _unit.BlueprintId + "\", -- " + _unit.UnitName);
+		}
     }
 }

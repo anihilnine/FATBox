@@ -58,6 +58,7 @@
     <Compile Include="Rendering\MapUnitDisplay.cs" />
     <Compile Include="Rendering\MergedModDdsLoader.cs" />
     <Compile Include="Rendering\CellRefrence.cs" />
+    <Compile Include="Rendering\Props\PropShader.cs" />
     <Compile Include="Rendering\WaffleMaker.cs" />
     <Compile Include="Rendering\Utilities.cs" />
   </ItemGroup>

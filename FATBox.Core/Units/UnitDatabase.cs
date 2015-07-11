@@ -31,6 +31,7 @@ namespace FATBox.Core.Units
             var excludeIds = @"uxl0021,urb3103,uab5204,urb5204,ueb5204,ueb5208,ura0001,urb5206".Split(',');
 
             _units = _catalog.Blueprints
+
                 .Where(includeExpression.Matches)
                 .Where(x => !excludeExpression.Matches(x))
                 .Where(x => !excludeIds.Contains(x.BlueprintId))

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FATBox.Core;
 using FATBox.Core.Maps;
+using FATBox.Core.MapScmap;
 using FATBox.Ui.Controls;
 using FATBox.Util;
 using SlimDX;
@@ -74,7 +75,7 @@ namespace FATBox.Ui
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            LaunchMap(new MapRepository(UiData.MapScenarioLuaParser).GetAllMaps().First(x => x.Name.Contains("Balv")));
+            LaunchMap(new MapRepository(UiData.MapScenarioLuaParser).GetAllMaps().First(x => x.FolderPath.Contains("test")));
         }
 
         private void button2_Click_1(object sender, EventArgs e)
@@ -109,6 +110,16 @@ namespace FATBox.Ui
             {
                 NewTab( new UnitExplorer(true));
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+			new Icons().Show();
+			//var m = new MapRepository(UiData.MapScenarioLuaParser).GetAllMaps().First(x => x.Name.Contains("Balv"));
+			//var sm = new ScmapContent();
+			//sm.Load(m.ScmapPath, UiData.DirectX9Device);
+			//sm.Props = sm.Props.Where(x => x.BlueprintPath.Contains("rock")).Take(1).ToList();
+			//sm.Save(@"E:\Documents\My Games\Gas Powered Games\Supreme Commander Forged Alliance\Maps\test\test.scmap");
         }
 
 

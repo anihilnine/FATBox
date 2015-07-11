@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 using SlimDX.Direct3D9;
 
 namespace FATBox.Ui
-{
+{    
+
     public static class UiData
     {
         private static Form _thinkingForm;

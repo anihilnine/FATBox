@@ -55,7 +55,8 @@ namespace FATBox.Initialization
             System.IO.File.WriteAllText(@"C:\ProgramData\FAForever\bin\init_FATBox.lua", contents);
 
             args.InitFilename = "init_FATBox.lua";
-            _launcher.Launch(args);
+			args.MapFoldername = "SCMP_013";
+			_launcher.Launch(args);
 
             var jsonPath = CatalogInitializer.WorkingFolder + @"\blueprints.json";
             if (System.IO.File.Exists(jsonPath))

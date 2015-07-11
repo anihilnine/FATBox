@@ -18,6 +18,17 @@ namespace FATBox.Ui.Controls
 
         private void SetData(IEnumerable<Blueprint> blueprints)
         {
+
+
+            //var zzz = blueprints.Where(x => x.Type == "env")
+            //    .Where(x => x.Display != null && x.Display.Mesh != null && x.Display.Mesh.LODs != null)
+            //    .GroupBy(x => x.Display.Mesh.LODs.First().ShaderName)
+            //    .Select(x => new { x.Key, count = x.Count(), items = x.ToArray() })
+            //    .ToList();
+
+            
+            //dataNavigator.SetObject(null, zzz, true);
+
             dataNavigator.SetObject(null, blueprints.Select(x => new BlueprintGridRow(x)).ToArray());
         }
 
